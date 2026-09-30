@@ -1,0 +1,415 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Nova Commerce Framework",
+    "theme_version": "4.1.0",
+    "theme_author": "NCF Engineering",
+    "theme_documentation_url": "https://nova-commerce.dev/docs",
+    "theme_support_url": "https://nova-commerce.dev/support"
+  },
+  {
+    "name": "1. Brand Identity",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Primary Brand Logo"
+      },
+      {
+        "type": "range",
+        "id": "logo_width",
+        "min": 50,
+        "max": 300,
+        "step": 10,
+        "default": 160,
+        "unit": "px",
+        "label": "Custom Logo Width"
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon Image",
+        "info": "Will be scaled down to 32x32px PNG"
+      }
+    ]
+  },
+  {
+    "name": "2. Color System",
+    "settings": [
+      {
+        "type": "color",
+        "id": "color_primary_bg",
+        "label": "Primary Canvas Background",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "color_secondary_bg",
+        "label": "Secondary Background",
+        "default": "#F8FAFC"
+      },
+      {
+        "type": "color",
+        "id": "color_surface",
+        "label": "Card & Surface Background",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "color_primary_text",
+        "label": "Primary Text Color",
+        "default": "#0F172A"
+      },
+      {
+        "type": "color",
+        "id": "color_muted_text",
+        "label": "Muted Text Color",
+        "default": "#64748B"
+      },
+      {
+        "type": "color",
+        "id": "color_brand_accent",
+        "label": "Brand Accent Color",
+        "default": "#0284C7"
+      },
+      {
+        "type": "color",
+        "id": "color_border",
+        "label": "Border & Divider Color",
+        "default": "#E2E8F0"
+      },
+      {
+        "type": "color",
+        "id": "color_success",
+        "label": "Success & In-Stock Badge Color",
+        "default": "#10B981"
+      },
+      {
+        "type": "color",
+        "id": "color_warning",
+        "label": "Warning Badge Color",
+        "default": "#F59E0B"
+      },
+      {
+        "type": "color",
+        "id": "color_danger",
+        "label": "Danger Badge Color",
+        "default": "#EF4444"
+      }
+    ]
+  },
+  {
+    "name": "3. Typography Engine",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "type_heading_font",
+        "label": "Heading Font Family",
+        "default": "sans-serif"
+      },
+      {
+        "type": "range",
+        "id": "type_heading_size",
+        "min": 80,
+        "max": 150,
+        "step": 5,
+        "default": 100,
+        "unit": "%",
+        "label": "Heading Font Scale Multiplier"
+      },
+      {
+        "type": "font_picker",
+        "id": "type_body_font",
+        "label": "Body Font Family",
+        "default": "sans-serif"
+      },
+      {
+        "type": "range",
+        "id": "type_body_size",
+        "min": 80,
+        "max": 130,
+        "step": 5,
+        "default": 100,
+        "unit": "%",
+        "label": "Body Font Scale Multiplier"
+      }
+    ]
+  },
+  {
+    "name": "4. Layout & Grid System",
+    "settings": [
+      {
+        "type": "range",
+        "id": "layout_page_width",
+        "min": 1000,
+        "max": 1600,
+        "step": 40,
+        "default": 1440,
+        "unit": "px",
+        "label": "Maximum Container Page Width"
+      },
+      {
+        "type": "range",
+        "id": "layout_container_padding_desktop",
+        "min": 16,
+        "max": 64,
+        "step": 4,
+        "default": 32,
+        "unit": "px",
+        "label": "Desktop Container Padding"
+      },
+      {
+        "type": "range",
+        "id": "layout_container_padding_mobile",
+        "min": 12,
+        "max": 32,
+        "step": 2,
+        "default": 16,
+        "unit": "px",
+        "label": "Mobile Container Padding"
+      },
+      {
+        "type": "range",
+        "id": "layout_grid_gap_desktop",
+        "min": 16,
+        "max": 48,
+        "step": 4,
+        "default": 24,
+        "unit": "px",
+        "label": "Desktop Grid Gap"
+      },
+      {
+        "type": "range",
+        "id": "layout_grid_gap_tablet",
+        "min": 12,
+        "max": 36,
+        "step": 4,
+        "default": 20,
+        "unit": "px",
+        "label": "Tablet Grid Gap"
+      },
+      {
+        "type": "range",
+        "id": "layout_grid_gap_mobile",
+        "min": 8,
+        "max": 24,
+        "step": 2,
+        "default": 16,
+        "unit": "px",
+        "label": "Mobile Grid Gap"
+      }
+    ]
+  },
+  {
+    "name": "5. Buttons & Controls",
+    "settings": [
+      {
+        "type": "range",
+        "id": "button_border_radius",
+        "min": 0,
+        "max": 30,
+        "step": 2,
+        "default": 6,
+        "unit": "px",
+        "label": "Button Corner Radius"
+      }
+    ]
+  },
+  {
+    "name": "6. Forms & Inputs",
+    "settings": [
+      {
+        "type": "range",
+        "id": "input_border_radius",
+        "min": 0,
+        "max": 20,
+        "step": 2,
+        "default": 6,
+        "unit": "px",
+        "label": "Form Input Corner Radius"
+      }
+    ]
+  },
+  {
+    "name": "7. Cards & Badges",
+    "settings": [
+      {
+        "type": "range",
+        "id": "card_border_radius",
+        "min": 0,
+        "max": 24,
+        "step": 2,
+        "default": 10,
+        "unit": "px",
+        "label": "Product & Bento Card Border Radius"
+      },
+      {
+        "type": "range",
+        "id": "badge_border_radius",
+        "min": 0,
+        "max": 12,
+        "step": 2,
+        "default": 4,
+        "unit": "px",
+        "label": "Badge & Tag Border Radius"
+      }
+    ]
+  },
+  {
+    "name": "8. Collection Filters & PLP Grid",
+    "settings": [
+      {
+        "type": "select",
+        "id": "plp_default_grid_columns",
+        "label": "Default Desktop Grid Columns",
+        "options": [
+          { "value": "2", "label": "2 Columns" },
+          { "value": "3", "label": "3 Columns" },
+          { "value": "4", "label": "4 Columns" },
+          { "value": "6", "label": "6 Columns" }
+        ],
+        "default": "3"
+      },
+      {
+        "type": "checkbox",
+        "id": "plp_enable_sticky_sidebar",
+        "label": "Enable Sticky Filter Sidebar",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "plp_enable_color_swatches",
+        "label": "Enable Color Swatch Facets",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "9. Product Cards & Shopping Experience",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "card_enable_quick_view",
+        "label": "Enable Accessible Quick View Modal",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "card_enable_quick_add",
+        "label": "Enable AJAX Quick Add to Cart",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "card_enable_hover_media",
+        "label": "Enable Secondary Image/Video Hover Swap",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "card_enable_delivery_badges",
+        "label": "Enable Delivery & Trust Badges",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "10. Product Detail Page (PDP) Experience",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "pdp_enable_sticky_gallery",
+        "label": "Enable Sticky Media Gallery on Desktop",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "pdp_enable_mobile_sticky_atc",
+        "label": "Enable Sticky Mobile Add To Cart Floating Bar",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "pdp_enable_zoom",
+        "label": "Enable Media Gallery Image Zoom Modal",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "pdp_enable_spec_highlights",
+        "label": "Enable Technical Specification Highlights Cards",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "pdp_enable_info_tabs",
+        "label": "Enable Product Information Tabs & Accordions",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "pdp_enable_feature_grid",
+        "label": "Enable Feature Grid Section",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "pdp_enable_spec_table",
+        "label": "Enable Dynamic Specification Table",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "pdp_enable_downloads",
+        "label": "Enable PDF Technical Downloads",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "11. Product Recommendation Merchandising Engine",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "rec_enable_related",
+        "label": "Enable Related Products Recommendation Engine",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "rec_enable_fbt",
+        "label": "Enable Frequently Bought Together Widget",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "rec_enable_accessories",
+        "label": "Enable Recommended Accessories Carousel",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "rec_enable_recently_viewed",
+        "label": "Enable LocalStorage Recently Viewed History",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "rec_enable_bundles",
+        "label": "Enable Curated Bundle Suggestions",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "12. Developer Debug Flags",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "dev_enable_grid_overlay",
+        "label": "Enable Debug Grid Overlay",
+        "default": false
+      }
+    ]
+  }
+]

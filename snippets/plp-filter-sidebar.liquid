@@ -1,0 +1,215 @@
+{%- comment -%}
+  Nova Commerce Framework (NCF) - Snippet: Desktop Filter Sidebar
+  File: snippets/plp-filter-sidebar.liquid
+  Sprint: 4.1 – Premium Collection Filters & Product Listing Experience
+  Architecture: Sticky Desktop Filter Sidebar containing Header, Active Filters, and Accordion Facets
+{%- endcomment -%}
+
+{%- assign show_product_count = section.settings.show_product_count | default: true -%}
+{%- assign show_search = section.settings.show_search | default: true -%}
+{%- assign default_expanded_count = section.settings.expanded_groups | default: 4 -%}
+
+<aside class="ncf-plp-sidebar bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 shadow-xs sticky top-24" id="ncf-plp-desktop-sidebar" aria-label="{{ 'products.facets.filter_by' | t | default: 'Collection Filters' }}">
+  
+  {%- comment -%} SIDEBAR HEADER {%- endcomment -%}
+  <div class="flex items-center justify-between pb-4 mb-2 border-b border-slate-200 dark:border-slate-800">
+    <div class="flex items-center gap-2">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-sky-600 dark:text-sky-400">
+        <line x1="4" y1="21" x2="4" y2="14"></line>
+        <line x1="4" y1="10" x2="4" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="12"></line>
+        <line x1="12" y1="8" x2="12" y2="3"></line>
+        <line x1="20" y1="21" x2="20" y2="16"></line>
+        <line x1="20" y1="12" x2="20" y2="3"></line>
+        <line x1="1" y1="14" x2="7" y2="14"></line>
+        <line x1="9" y1="8" x2="15" y2="8"></line>
+        <line x1="17" y1="16" x2="23" y2="16"></line>
+      </svg>
+      <h2 class="font-extrabold text-base text-slate-900 dark:text-slate-100 uppercase tracking-wide font-mono">
+        {{ 'products.facets.filter_by' | t | default: 'Filters' }}
+      </h2>
+    </div>
+
+    <a
+      href="{{ collection.url }}"
+      class="text-xs font-bold text-sky-600 dark:text-sky-400 hover:underline min-h-[36px] flex items-center"
+      data-filter-clear-all
+    >
+      {{ 'products.facets.clear_all' | t | default: 'Clear All' }}
+    </a>
+  </div>
+
+  {%- comment -%} ACTIVE FILTERS BADGES SUMMARY {%- endcomment -%}
+  {% render 'plp-active-filters' %}
+
+  {%- comment -%} MAIN FILTERS FORM {%- endcomment -%}
+  <form id="ncf-desktop-filter-form" class="ncf-plp-filter-form space-y-1">
+    {%- if collection.filters.size > 0 -%}
+      {%- for filter in collection.filters -%}
+        {% render 'plp-filter-group',
+          filter: filter,
+          group_index: forloop.index0,
+          show_product_count: show_product_count,
+          show_search: show_search,
+          default_expanded_count: default_expanded_count
+        %}
+      {%- endfor -%}
+
+    {%- else -%}
+      {%- comment -%} DEMO/FALLBACK FACET GROUPS FOR DESIGN PREVIEW & STOREFRONT {%- endcomment -%}
+      <div class="space-y-1">
+        
+        {/* Availability */}
+        <div class="ncf-filter-group border-b border-slate-200 dark:border-slate-800 py-3">
+          <button type="button" class="w-full flex items-center justify-between text-left font-extrabold text-sm text-slate-900 dark:text-slate-100 py-1" aria-expanded="true" data-accordion-trigger>
+            <span>Availability</span>
+            <svg class="w-4 h-4 text-slate-400 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="pt-3 pb-1 space-y-2" data-accordion-body>
+            <label class="flex items-center justify-between text-xs font-medium text-slate-700 dark:text-slate-300 cursor-pointer min-h-[44px]">
+              <div class="flex items-center gap-2">
+                <input type="checkbox" name="filter.v.availability" value="1" checked class="w-4 h-4 rounded text-sky-600 focus:ring-sky-500">
+                <span>In Stock</span>
+              </div>
+              <span class="text-[11px] font-mono text-slate-400">(42)</span>
+            </label>
+            <label class="flex items-center justify-between text-xs font-medium text-slate-700 dark:text-slate-300 cursor-pointer min-h-[44px]">
+              <div class="flex items-center gap-2">
+                <input type="checkbox" name="filter.v.availability" value="0" class="w-4 h-4 rounded text-sky-600 focus:ring-sky-500">
+                <span>Out of Stock</span>
+              </div>
+              <span class="text-[11px] font-mono text-slate-400">(6)</span>
+            </label>
+          </div>
+        </div>
+
+        {/* Price Range */}
+        <div class="ncf-filter-group border-b border-slate-200 dark:border-slate-800 py-3">
+          <button type="button" class="w-full flex items-center justify-between text-left font-extrabold text-sm text-slate-900 dark:text-slate-100 py-1" aria-expanded="true" data-accordion-trigger>
+            <span>Price Range</span>
+            <svg class="w-4 h-4 text-slate-400 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="pt-3 pb-1 space-y-3" data-accordion-body>
+            <div class="grid grid-cols-2 gap-3">
+              <div class="relative">
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">$</span>
+                <input type="number" placeholder="0" min="0" max="1000" value="0" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg pl-7 pr-2 py-2 text-xs font-mono font-bold text-slate-900 dark:text-slate-100 min-h-[44px]">
+              </div>
+              <div class="relative">
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">$</span>
+                <input type="number" placeholder="1000" min="0" max="1000" value="1000" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg pl-7 pr-2 py-2 text-xs font-mono font-bold text-slate-900 dark:text-slate-100 min-h-[44px]">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Color Swatches */}
+        <div class="ncf-filter-group border-b border-slate-200 dark:border-slate-800 py-3">
+          <button type="button" class="w-full flex items-center justify-between text-left font-extrabold text-sm text-slate-900 dark:text-slate-100 py-1" aria-expanded="true" data-accordion-trigger>
+            <span>Color</span>
+            <svg class="w-4 h-4 text-slate-400 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="pt-3 pb-1" data-accordion-body>
+            <ul class="flex flex-wrap gap-2">
+              <li>
+                <label class="w-8 h-8 rounded-full border-2 border-slate-300 dark:border-slate-700 bg-slate-950 block cursor-pointer" title="Midnight Black">
+                  <input type="checkbox" name="filter.v.option.color" value="black" class="sr-only">
+                </label>
+              </li>
+              <li>
+                <label class="w-8 h-8 rounded-full border-2 border-sky-500 bg-slate-200 block cursor-pointer ring-2 ring-sky-500/30" title="Titanium Silver">
+                  <input type="checkbox" name="filter.v.option.color" value="silver" class="sr-only" checked>
+                </label>
+              </li>
+              <li>
+                <label class="w-8 h-8 rounded-full border-2 border-slate-300 dark:border-slate-700 bg-sky-600 block cursor-pointer" title="Pacific Blue">
+                  <input type="checkbox" name="filter.v.option.color" value="blue" class="sr-only">
+                </label>
+              </li>
+              <li>
+                <label class="w-8 h-8 rounded-full border-2 border-slate-300 dark:border-slate-700 bg-emerald-600 block cursor-pointer" title="Forest Green">
+                  <input type="checkbox" name="filter.v.option.color" value="green" class="sr-only">
+                </label>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Size / Capacity Pills */}
+        <div class="ncf-filter-group border-b border-slate-200 dark:border-slate-800 py-3">
+          <button type="button" class="w-full flex items-center justify-between text-left font-extrabold text-sm text-slate-900 dark:text-slate-100 py-1" aria-expanded="true" data-accordion-trigger>
+            <span>Storage / Capacity</span>
+            <svg class="w-4 h-4 text-slate-400 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="pt-3 pb-1" data-accordion-body>
+            <ul class="flex flex-wrap gap-2">
+              <li>
+                <label class="px-3 py-2 rounded-xl text-xs font-mono font-bold border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 min-h-[44px] min-w-[44px] inline-flex items-center justify-center cursor-pointer">
+                  <input type="checkbox" name="filter.v.option.storage" value="128gb" class="sr-only">
+                  <span>128GB</span>
+                </label>
+              </li>
+              <li>
+                <label class="px-3 py-2 rounded-xl text-xs font-mono font-bold border border-sky-600 bg-sky-500 text-white min-h-[44px] min-w-[44px] inline-flex items-center justify-center cursor-pointer shadow-xs">
+                  <input type="checkbox" name="filter.v.option.storage" value="256gb" class="sr-only" checked>
+                  <span>256GB</span>
+                </label>
+              </li>
+              <li>
+                <label class="px-3 py-2 rounded-xl text-xs font-mono font-bold border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 min-h-[44px] min-w-[44px] inline-flex items-center justify-center cursor-pointer">
+                  <input type="checkbox" name="filter.v.option.storage" value="512gb" class="sr-only">
+                  <span>512GB</span>
+                </label>
+              </li>
+              <li>
+                <label class="px-3 py-2 rounded-xl text-xs font-mono font-bold border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 min-h-[44px] min-w-[44px] inline-flex items-center justify-center cursor-pointer">
+                  <input type="checkbox" name="filter.v.option.storage" value="1tb" class="sr-only">
+                  <span>1TB</span>
+                </label>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Brand / Vendor */}
+        <div class="ncf-filter-group border-b border-slate-200 dark:border-slate-800 py-3">
+          <button type="button" class="w-full flex items-center justify-between text-left font-extrabold text-sm text-slate-900 dark:text-slate-100 py-1" aria-expanded="true" data-accordion-trigger>
+            <span>Brand / Vendor</span>
+            <svg class="w-4 h-4 text-slate-400 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="pt-3 pb-1 space-y-2" data-accordion-body>
+            <div class="relative mb-2">
+              <svg class="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              <input type="text" placeholder="Search brands..." class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg pl-8 pr-3 py-1.5 text-xs min-h-[38px]" data-in-facet-search>
+            </div>
+            <ul class="space-y-2">
+              <li class="flex items-center justify-between">
+                <label class="flex items-center gap-2 text-xs font-medium text-slate-700 dark:text-slate-300 cursor-pointer min-h-[44px]">
+                  <input type="checkbox" name="filter.p.vendor" value="Nova Audio" checked class="w-4 h-4 rounded text-sky-600 focus:ring-sky-500">
+                  <span>Nova Audio</span>
+                </label>
+                <span class="text-[11px] font-mono text-slate-400">(18)</span>
+              </li>
+              <li class="flex items-center justify-between">
+                <label class="flex items-center gap-2 text-xs font-medium text-slate-700 dark:text-slate-300 cursor-pointer min-h-[44px]">
+                  <input type="checkbox" name="filter.p.vendor" value="Apex Tech" class="w-4 h-4 rounded text-sky-600 focus:ring-sky-500">
+                  <span>Apex Tech</span>
+                </label>
+                <span class="text-[11px] font-mono text-slate-400">(12)</span>
+              </li>
+              <li class="flex items-center justify-between">
+                <label class="flex items-center gap-2 text-xs font-medium text-slate-700 dark:text-slate-300 cursor-pointer min-h-[44px]">
+                  <input type="checkbox" name="filter.p.vendor" value="Sonic Lab" class="w-4 h-4 rounded text-sky-600 focus:ring-sky-500">
+                  <span>Sonic Lab</span>
+                </label>
+                <span class="text-[11px] font-mono text-slate-400">(8)</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    {%- endif -%}
+  </form>
+
+</aside>

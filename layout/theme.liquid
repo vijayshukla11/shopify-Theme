@@ -1,0 +1,107 @@
+{%- comment -%}
+  Nova Commerce Framework (NCF) - Core Theme Shell
+  File: layout/theme.liquid
+  Architecture: Shopify OS 2.0 / NCF Original Architecture
+  Description: Production-ready, ultra-performant, WCAG 2.1 AA accessible HTML5 layout document.
+{%- endcomment -%}
+<!doctype html>
+<html
+  class="no-js"
+  lang="{{ request.locale.iso_code }}"
+  dir="{% if request.locale.iso_code == 'ar' or request.locale.iso_code == 'he' %}rtl{% else %}ltr{% endif %}"
+>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0">
+    <meta name="theme-color" content="{{ settings.color_primary_bg | default: '#ffffff' }}">
+
+    {%- comment -%} Preconnect & Resource Hints for Core Web Vitals {%- endcomment -%}
+    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+    <link rel="dns-prefetch" href="https://cdn.shopify.com">
+
+    {%- comment -%} Production SEO, Social Graph & JSON-LD Structured Data {%- endcomment -%}
+    {% render 'seo-tags' %}
+
+    {%- comment -%} Favicon Integration {%- endcomment -%}
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+      <link rel="apple-touch-icon" href="{{ settings.favicon | image_url: width: 180, height: 180 }}">
+    {%- endif -%}
+
+    {%- comment -%} Mandatory Shopify Header Hook {%- endcomment -%}
+    {{ content_for_header }}
+
+    {%- comment -%} Foundation, Typography, Layout, Utilities, Component, Form, Header, Hero & Category Slider CSS Loaders {%- endcomment -%}
+    {{ 'tokens-foundation.css' | asset_url | stylesheet_tag }}
+    {{ 'typography-grid.css' | asset_url | stylesheet_tag }}
+    {{ 'layout.css' | asset_url | stylesheet_tag }}
+    {{ 'utilities.css' | asset_url | stylesheet_tag }}
+    {{ 'components.css' | asset_url | stylesheet_tag }}
+    {{ 'forms.css' | asset_url | stylesheet_tag }}
+    {{ 'header.css' | asset_url | stylesheet_tag }}
+    {{ 'hero.css' | asset_url | stylesheet_tag }}
+    {{ 'category-slider.css' | asset_url | stylesheet_tag }}
+    {{ 'service-features.css' | asset_url | stylesheet_tag }}
+    {{ 'product-card.css' | asset_url | stylesheet_tag }}
+    {{ 'product-tabs.css' | asset_url | stylesheet_tag }}
+    {{ 'promo-banner.css' | asset_url | stylesheet_tag }}
+    {{ 'collection-card.css' | asset_url | stylesheet_tag }}
+    {{ 'brand-showcase.css' | asset_url | stylesheet_tag }}
+    {{ 'testimonials.css' | asset_url | stylesheet_tag }}
+    {{ 'footer.css' | asset_url | stylesheet_tag }}
+    {{ 'collection-banner.css' | asset_url | stylesheet_tag }}
+    {{ 'plp-filters.css' | asset_url | stylesheet_tag }}
+    {{ 'plp.css' | asset_url | stylesheet_tag }}
+    {{ 'product-card-enhanced.css' | asset_url | stylesheet_tag }}
+    {{ 'product-page.css' | asset_url | stylesheet_tag }}
+    {{ 'product-recommendations.css' | asset_url | stylesheet_tag }}
+    {{ 'cart-drawer.css' | asset_url | stylesheet_tag }}
+    {{ 'theme.css' | asset_url | stylesheet_tag }}
+
+    {%- comment -%} Dynamic Typography & Color Tokens Override {%- endcomment -%}
+    {% render 'typography-tokens' %}
+
+    {%- comment -%} Foundation, Header, Hero, Category Slider, Product Card, Product Tabs, Promo Banner, Collection Card, Brand Showcase, Testimonials, Footer & PLP Filters JavaScript Loading (Deferred) {%- endcomment -%}
+    <script src="{{ 'theme-foundation.js' | asset_url }}" defer></script>
+    <script src="{{ 'header.js' | asset_url }}" defer></script>
+    <script src="{{ 'hero.js' | asset_url }}" defer></script>
+    <script src="{{ 'category-slider.js' | asset_url }}" defer></script>
+    <script src="{{ 'product-card.js' | asset_url }}" defer></script>
+    <script src="{{ 'product-tabs.js' | asset_url }}" defer></script>
+    <script src="{{ 'promo-banner.js' | asset_url }}" defer></script>
+    <script src="{{ 'collection-card.js' | asset_url }}" defer></script>
+    <script src="{{ 'brand-showcase.js' | asset_url }}" defer></script>
+    <script src="{{ 'testimonials.js' | asset_url }}" defer></script>
+    <script src="{{ 'footer.js' | asset_url }}" defer></script>
+    <script src="{{ 'plp-filters.js' | asset_url }}" defer></script>
+    <script src="{{ 'plp.js' | asset_url }}" defer></script>
+    <script src="{{ 'product-card-enhanced.js' | asset_url }}" defer></script>
+    <script src="{{ 'product-page.js' | asset_url }}" defer></script>
+    <script src="{{ 'product-recommendations.js' | asset_url }}" defer></script>
+    <script src="{{ 'cart-drawer.js' | asset_url }}" defer></script>
+
+    {%- comment -%} Progressive Enhancement Script (JS Enabled Class Swapping) {%- endcomment -%}
+    <script>
+      document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+    </script>
+  </head>
+
+  <body class="ncf-body template-{{ request.page_type | handle }}">
+    {%- comment -%} WCAG 2.1 AA Accessibility Skip Link {%- endcomment -%}
+    <a href="#MainContent" class="ncf-skip-link">
+      {{ 'accessibility.skip_to_text' | t | default: 'Skip to main content' }}
+    </a>
+
+    {%- comment -%} Primary Content Region with Landmark Tag {%- endcomment -%}
+    <main id="MainContent" class="ncf-main-content focus-none" tabindex="-1" role="main">
+      {{ content_for_layout }}
+    </main>
+
+    {%- comment -%} Live AJAX Cart Drawer {%- endcomment -%}
+    {% render 'cart-drawer' %}
+
+    {%- comment -%} Accessibility Announcement Live Region {%- endcomment -%}
+    <div id="ncf-a11y-announcer" class="ncf-sr-only" aria-live="polite" aria-atomic="true"></div>
+  </body>
+</html>

@@ -1,0 +1,142 @@
+{%- comment -%}
+  Nova Commerce Framework (NCF) - Snippet: Promotional Banner Card
+  File: snippets/promo-banner-card.liquid
+  Sprint: 2.6 – Premium Promotional Banner System
+  Architecture: Atomic Responsive Card Snippet with Media & Typography
+{%- endcomment -%}
+
+{%- assign desktop_img = block.settings.desktop_image -%}
+{%- assign mobile_img = block.settings.mobile_image -%}
+{%- assign height_class = block.settings.card_height | default: section.settings.card_height | default: 'medium' -%}
+{%- assign content_align = block.settings.content_alignment | default: 'left-center' -%}
+{%- assign overlay_opacity = block.settings.overlay_opacity | default: 40 -%}
+
+<article
+  class="ncf-promo-card ncf-promo-card--height-{{ height_class }}"
+  style="
+    {% if block.settings.card_bg_color != blank %}background-color: {{ block.settings.card_bg_color }};{% endif %}
+    {% if block.settings.card_text_color != blank %}color: {{ block.settings.card_text_color }};{% endif %}
+  "
+  {{ block.shopify_attributes }}
+>
+  {%- comment -%} MEDIA BACKGROUND LAYER {%- endcomment -%}
+  <div class="ncf-promo-card__media">
+    {%- if desktop_img != blank -%}
+      {{ desktop_img | image_url: width: 1800 | image_tag:
+        loading: 'lazy',
+        sizes: '(min-width: 1024px) 50vw, 100vw',
+        widths: '375, 640, 750, 1024, 1280, 1500, 1800',
+        class: 'ncf-promo-card__img ncf-promo-card__img--desktop {% if mobile_img != blank %}has-mobile-img{% endif %}',
+        alt: block.settings.heading | escape
+      }}
+    {%- else -%}
+      {{ 'lifestyle-1' | placeholder_svg_tag: 'ncf-promo-card__img ncf-promo-card__placeholder' }}
+    {%- endif -%}
+
+    {%- if mobile_img != blank -%}
+      {{ mobile_img | image_url: width: 800 | image_tag:
+        loading: 'lazy',
+        sizes: '100vw',
+        widths: '375, 640, 800',
+        class: 'ncf-promo-card__img ncf-promo-card__img--mobile',
+        alt: block.settings.heading | escape
+      }}
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} OVERLAY LAYER {%- endcomment -%}
+  <div
+    class="ncf-promo-card__overlay"
+    style="background-color: rgba(15, 23, 42, {{ overlay_opacity | divided_by: 100.0 }});"
+    aria-hidden="true"
+  ></div>
+
+  {%- comment -%} CONTENT LAYER {%- endcomment -%}
+  <div class="ncf-promo-card__content ncf-promo-card__content--align-{{ content_align }}">
+    
+    {%- comment -%} DISCOUNT BADGE {%- endcomment -%}
+    {%- if block.settings.badge_text != blank -%}
+      <div class="ncf-promo-card__badge">
+        {{ block.settings.badge_text }}
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} EYEBROW {%- endcomment -%}
+    {%- if block.settings.eyebrow != blank -%}
+      <span class="ncf-promo-card__eyebrow">
+        {{ block.settings.eyebrow }}
+      </span>
+    {%- endif -%}
+
+    {%- comment -%} HEADING {%- endcomment -%}
+    {%- if block.settings.heading != blank -%}
+      <h3 class="ncf-promo-card__title">
+        {{ block.settings.heading }}
+      </h3>
+    {%- endif -%}
+
+    {%- comment -%} DESCRIPTION {%- endcomment -%}
+    {%- if block.settings.description != blank -%}
+      <p class="ncf-promo-card__description">
+        {{ block.settings.description }}
+      </p>
+    {%- endif -%}
+
+    {%- comment -%} COUNTDOWN TIMER PLACEHOLDER {%- endcomment -%}
+    {%- if block.settings.enable_countdown and block.settings.countdown_date != blank -%}
+      <div class="ncf-promo-countdown" data-promo-countdown data-countdown-target="{{ block.settings.countdown_date }}">
+        <div class="ncf-promo-countdown__item">
+          <span class="ncf-promo-countdown__val" data-countdown-days>00</span>
+          <span class="ncf-promo-countdown__lbl">Days</span>
+        </div>
+        <span class="ncf-promo-countdown__sep">:</span>
+        <div class="ncf-promo-countdown__item">
+          <span class="ncf-promo-countdown__val" data-countdown-hours>00</span>
+          <span class="ncf-promo-countdown__lbl">Hrs</span>
+        </div>
+        <span class="ncf-promo-countdown__sep">:</span>
+        <div class="ncf-promo-countdown__item">
+          <span class="ncf-promo-countdown__val" data-countdown-minutes>00</span>
+          <span class="ncf-promo-countdown__lbl">Min</span>
+        </div>
+        <span class="ncf-promo-countdown__sep">:</span>
+        <div class="ncf-promo-countdown__item">
+          <span class="ncf-promo-countdown__val" data-countdown-seconds>00</span>
+          <span class="ncf-promo-countdown__lbl">Sec</span>
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} PRODUCT HIGHLIGHT CHIP {%- endcomment -%}
+    {%- if block.settings.highlight_product != blank -%}
+      {%- assign featured_prod = block.settings.highlight_product -%}
+      <a href="{{ featured_prod.url }}" class="inline-flex items-center gap-3 p-2 pr-4 bg-slate-900/80 backdrop-blur-md rounded-full border border-white/20 text-xs font-bold text-white hover:bg-slate-800 transition">
+        {%- if featured_prod.featured_media != blank -%}
+          {{ featured_prod.featured_media | image_url: width: 60 | image_tag: class: 'w-8 h-8 rounded-full object-cover', alt: featured_prod.title | escape }}
+        {%- endif -%}
+        <span>Featured: {{ featured_prod.title }} — {{ featured_prod.price | money }}</span>
+      </a>
+    {%- endif -%}
+
+    {%- comment -%} CTA BUTTONS GROUP {%- endcomment -%}
+    {%- if block.settings.btn_primary_text != blank or block.settings.btn_secondary_text != blank -%}
+      <div class="ncf-promo-card__buttons">
+        {%- if block.settings.btn_primary_text != blank -%}
+          <a href="{{ block.settings.btn_primary_url | default: '#' }}" class="ncf-promo-btn ncf-promo-btn--primary">
+            <span>{{ block.settings.btn_primary_text }}</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </a>
+        {%- endif -%}
+
+        {%- if block.settings.btn_secondary_text != blank -%}
+          <a href="{{ block.settings.btn_secondary_url | default: '#' }}" class="ncf-promo-btn ncf-promo-btn--secondary">
+            <span>{{ block.settings.btn_secondary_text }}</span>
+          </a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+  </div>
+</article>

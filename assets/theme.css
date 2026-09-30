@@ -1,0 +1,37 @@
+/*
+  ==============================================================================
+  NOVA COMMERCE FRAMEWORK (NCF) - MAIN THEME STYLESHEET ENTRY POINT
+  File: assets/theme.css
+  Sprint: 2.2 - Premium Category Collection Slider
+  Architecture: Central CSS Import Registry
+  ==============================================================================
+*/
+
+@import url('./tokens-foundation.css');
+@import url('./typography-grid.css');
+@import url('./layout.css');
+@import url('./utilities.css');
+@import url('./components.css');
+@import url('./forms.css');
+@import url('./header.css');
+@import url('./hero.css');
+@import url('./category-slider.css');
+@import url('./service-features.css');
+@import url('./product-card.css');
+@import url('./product-tabs.css');
+@import url('./promo-banner.css');
+@import url('./collection-card.css');
+@import url('./brand-showcase.css');
+@import url('./testimonials.css');
+@import url('./footer.css');
+@import url('./collection-banner.css');
+@import url('./plp-filters.css');
+@import url('./plp.css');
+@import url('./product-card-enhanced.css');
+@import url('./product-page.css');
+@import url('./product-recommendations.css');
+
+/* Custom Framework Layer Overrides */
+:root {
+  --ncf-theme-version: '4.6.0';
+}

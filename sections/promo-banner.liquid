@@ -1,0 +1,365 @@
+{%- comment -%}
+  Nova Commerce Framework (NCF) - Section: Premium Promotional Banner System
+  File: sections/promo-banner.liquid
+  Sprint: 2.6 – Premium Promotional Banner System
+  Architecture: Reusable Banner Engine & Grid Layout Engine
+{%- endcomment -%}
+
+{%- assign layout_variant = section.settings.layout_variant | default: 'two-column' -%}
+{%- assign container_type = section.settings.container_type | default: 'container' -%}
+
+<section
+  class="ncf-promo-section {% if container_type == 'full' %}ncf-promo-section--full-width{% endif %}"
+  id="ncf-promo-section-{{ section.id }}"
+  style="
+    background-color: {{ section.settings.bg_color | default: 'transparent' }};
+    padding-top: {{ section.settings.padding_top | default: 64 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | default: 64 }}px;
+  "
+  aria-label="{{ section.settings.heading | default: 'Promotional Offers & Highlights' }}"
+>
+  <div class="{% if container_type == 'container' %}max-w-7xl mx-auto px-6 lg:px-8{% else %}w-full px-0{% endif %}">
+    
+    {%- comment -%} SECTION HEADER {%- endcomment -%}
+    {%- if section.settings.heading != blank or section.settings.eyebrow != blank -%}
+      <div class="ncf-promo-section__header text-{{ section.settings.header_alignment | default: 'center' }} mb-10 {% if container_type == 'full' %}px-6 lg:px-8{% endif %}">
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="inline-block text-xs font-mono font-extrabold uppercase tracking-widest text-sky-600 mb-2">
+            {{ section.settings.eyebrow }}
+          </span>
+        {%- endif -%}
+
+        {%- if section.settings.heading != blank -%}
+          <h2 class="text-3xl sm:text-4xl font-black tracking-tight text-slate-900 uppercase">
+            {{ section.settings.heading }}
+          </h2>
+        {%- endif -%}
+
+        {%- if section.settings.subtitle != blank -%}
+          <p class="text-slate-600 text-sm sm:text-base max-w-2xl mt-2 {% if section.settings.header_alignment == 'center' %}mx-auto{% endif %}">
+            {{ section.settings.subtitle }}
+          </p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} PROMOTIONAL BANNER GRID {%- endcomment -%}
+    <div class="ncf-promo-grid ncf-promo-grid--{{ layout_variant }}">
+      {%- if section.blocks.size > 0 -%}
+        {%- for block in section.blocks -%}
+          {% render 'promo-banner-card', block: block, section: section %}
+        {%- endfor -%}
+      {%- else -%}
+        {%- comment -%} DEFAULT FALLBACK BLOCKS FOR PREVIEW {%- endcomment -%}
+        {%- for i in (1..2) -%}
+          <article class="ncf-promo-card ncf-promo-card--height-medium">
+            <div class="ncf-promo-card__media">
+              {{ 'lifestyle-1' | placeholder_svg_tag: 'ncf-promo-card__img' }}
+            </div>
+            <div class="ncf-promo-card__overlay" style="background-color: rgba(15, 23, 42, 0.45);"></div>
+            <div class="ncf-promo-card__content ncf-promo-card__content--align-left-center">
+              <div class="ncf-promo-card__badge">LIMITED EDITION</div>
+              <h3 class="ncf-promo-card__title">Summer Performance Showcase #{{ i }}</h3>
+              <p class="ncf-promo-card__description">Upgrade your gear with our high-end engineered apparel crafted for durability and active lifestyles.</p>
+              <div class="ncf-promo-card__buttons">
+                <a href="#" class="ncf-promo-btn ncf-promo-btn--primary">
+                  <span>Shop Collection</span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </a>
+              </div>
+            </div>
+          </article>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Promotional Banner System",
+  "tag": "section",
+  "class": "section-promo-banner",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Label",
+      "default": "LIMITED TIME CAMPAIGN"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Section Subtitle"
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "Header Alignment",
+      "options": [
+        { "value": "left", "label": "Left Aligned" },
+        { "value": "center", "label": "Center Aligned" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Layout & Container Options"
+    },
+    {
+      "type": "select",
+      "id": "layout_variant",
+      "label": "Banner Layout Variant",
+      "options": [
+        { "value": "single", "label": "Single Full Width Banner" },
+        { "value": "two-column", "label": "Two Column Grid (50 / 50)" },
+        { "value": "three-column", "label": "Three Column Grid (33 / 33 / 33)" },
+        { "value": "full-width", "label": "Full Bleed Unconstrained" },
+        { "value": "split", "label": "Split Asymmetric (66 / 33)" },
+        { "value": "editorial", "label": "Editorial Asymmetric (33 / 66)" }
+      ],
+      "default": "two-column"
+    },
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container Width",
+      "options": [
+        { "value": "container", "label": "Standard Boxed Container (Max 1280px)" },
+        { "value": "full", "label": "Full Width (Edge-to-Edge)" }
+      ],
+      "default": "container"
+    },
+    {
+      "type": "select",
+      "id": "card_height",
+      "label": "Default Banner Height",
+      "options": [
+        { "value": "small", "label": "Small (280px)" },
+        { "value": "medium", "label": "Medium (380px)" },
+        { "value": "large", "label": "Large (500px)" },
+        { "value": "full", "label": "Full Hero (650px)" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing & Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 8,
+      "unit": "px",
+      "label": "Top Padding",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 8,
+      "unit": "px",
+      "label": "Bottom Padding",
+      "default": 64
+    }
+  ],
+  "blocks": [
+    {
+      "type": "banner_card",
+      "name": "Banner Card",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Media Assets"
+        },
+        {
+          "type": "image_picker",
+          "id": "desktop_image",
+          "label": "Desktop Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile Image (Optional)"
+        },
+        {
+          "type": "range",
+          "id": "overlay_opacity",
+          "min": 0,
+          "max": 90,
+          "step": 5,
+          "unit": "%",
+          "label": "Dark Overlay Opacity",
+          "default": 40
+        },
+        {
+          "type": "header",
+          "content": "Banner Content"
+        },
+        {
+          "type": "text",
+          "id": "badge_text",
+          "label": "Discount / Promo Badge Text",
+          "default": "SAVE 30% OFF"
+        },
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Eyebrow Label",
+          "default": "NEW SEASON ARRIVAL"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Banner Heading",
+          "default": "Next-Gen Audio Experience"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Banner Description",
+          "default": "Discover premium wireless active noise-canceling headphones engineered for pristine clarity."
+        },
+        {
+          "type": "product",
+          "id": "highlight_product",
+          "label": "Optional Highlighted Product"
+        },
+        {
+          "type": "header",
+          "content": "Countdown Timer"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_countdown",
+          "label": "Enable Countdown Timer",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "countdown_date",
+          "label": "Target Date (YYYY-MM-DDTHH:MM:SS)",
+          "default": "2026-12-31T23:59:59"
+        },
+        {
+          "type": "header",
+          "content": "Call To Action Buttons"
+        },
+        {
+          "type": "text",
+          "id": "btn_primary_text",
+          "label": "Primary Button Label",
+          "default": "Explore Collection"
+        },
+        {
+          "type": "url",
+          "id": "btn_primary_url",
+          "label": "Primary Button Link"
+        },
+        {
+          "type": "text",
+          "id": "btn_secondary_text",
+          "label": "Secondary Button Label",
+          "default": "Learn More"
+        },
+        {
+          "type": "url",
+          "id": "btn_secondary_url",
+          "label": "Secondary Button Link"
+        },
+        {
+          "type": "header",
+          "content": "Card Styling & Alignment"
+        },
+        {
+          "type": "select",
+          "id": "card_height",
+          "label": "Card Height Override",
+          "options": [
+            { "value": "small", "label": "Small (280px)" },
+            { "value": "medium", "label": "Medium (380px)" },
+            { "value": "large", "label": "Large (500px)" },
+            { "value": "full", "label": "Full Hero (650px)" }
+          ],
+          "default": "medium"
+        },
+        {
+          "type": "select",
+          "id": "content_alignment",
+          "label": "Content Alignment",
+          "options": [
+            { "value": "left-top", "label": "Top Left" },
+            { "value": "left-center", "label": "Center Left" },
+            { "value": "left-bottom", "label": "Bottom Left" },
+            { "value": "center-top", "label": "Top Center" },
+            { "value": "center-center", "label": "Center Center" },
+            { "value": "center-bottom", "label": "Bottom Center" },
+            { "value": "right-top", "label": "Top Right" },
+            { "value": "right-center", "label": "Center Right" },
+            { "value": "right-bottom", "label": "Bottom Right" }
+          ],
+          "default": "left-center"
+        },
+        {
+          "type": "color",
+          "id": "card_bg_color",
+          "label": "Background Color Override",
+          "default": "#0f172a"
+        },
+        {
+          "type": "color",
+          "id": "card_text_color",
+          "label": "Text Color Override",
+          "default": "#ffffff"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Promotional Banner System",
+      "blocks": [
+        {
+          "type": "banner_card",
+          "settings": {
+            "badge_text": "SAVE 25%",
+            "eyebrow": "SUMMER COLLECTION",
+            "heading": "Pro Wireless Headsets",
+            "description": "Ergonomic design with loss-free studio sound reproduction."
+          }
+        },
+        {
+          "type": "banner_card",
+          "settings": {
+            "badge_text": "NEW RELEASE",
+            "eyebrow": "LIMITED RUN",
+            "heading": "Smart Wearables",
+            "description": "Precision biometric tracking housed in aviation-grade aluminum."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

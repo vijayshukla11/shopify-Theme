@@ -1,0 +1,24 @@
+/* Nova Commerce Framework (NCF) - Product Tabs CSS */
+.ncf-pdp-tab-btn {
+  outline: none;
+  cursor: pointer;
+}
+
+.ncf-pdp-tab-btn:focus-visible {
+  ring: 2px;
+  ring-color: #0284c7;
+}
+
+/* Tab Panel visibility management */
+.ncf-pdp-tab-panel {
+  transition: opacity 0.2s ease-in-out;
+}
+
+@media (min-width: 768px) {
+  .ncf-pdp-tab-panel.hidden {
+    display: none !important;
+  }
+  .ncf-pdp-tab-panel.block {
+    display: block !important;
+  }
+}

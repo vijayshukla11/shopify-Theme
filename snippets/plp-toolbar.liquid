@@ -1,0 +1,141 @@
+{%- comment -%}
+  Nova Commerce Framework (NCF) - Snippet: PLP Sticky Toolbar
+  File: snippets/plp-toolbar.liquid
+  Sprint: 4.1 – Premium Collection Filters & Product Listing Experience
+  Architecture: Sticky Toolbar with Product Count, Sort Selector, Grid View Toggle, Active Filters & Mobile Trigger
+{%- endcomment -%}
+
+{%- assign default_sort = collection.default_sort_by | default: 'manual' -%}
+{%- assign current_sort = collection.sort_by | default: default_sort -%}
+
+<div class="ncf-plp-toolbar bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 py-3 px-4 sm:px-6 lg:px-8 mb-6 rounded-xl shadow-xs" id="ncf-plp-toolbar" data-sticky-toolbar="true">
+  <div class="flex flex-wrap items-center justify-between gap-4">
+    
+    {%- comment -%} LEFT: Mobile Filter Trigger & Product Count {%- endcomment -%}
+    <div class="flex items-center gap-3">
+      <button
+        type="button"
+        class="lg:hidden inline-flex items-center gap-2 px-3.5 py-2.5 rounded-lg bg-slate-900 dark:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider hover:bg-sky-600 transition-colors focus:outline-none focus:ring-2 focus:ring-sky-500"
+        id="ncf-mobile-filter-drawer-btn"
+        data-filter-drawer-trigger
+        aria-expanded="false"
+        aria-controls="ncf-plp-filter-drawer"
+        aria-label="{{ 'products.facets.filter_by' | t | default: 'Open Filters' }}"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="4" y1="21" x2="4" y2="14"></line>
+          <line x1="4" y1="10" x2="4" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="12"></line>
+          <line x1="12" y1="8" x2="12" y2="3"></line>
+          <line x1="20" y1="21" x2="20" y2="16"></line>
+          <line x1="20" y1="12" x2="20" y2="3"></line>
+          <line x1="1" y1="14" x2="7" y2="14"></line>
+          <line x1="9" y1="8" x2="15" y2="8"></line>
+          <line x1="17" y1="16" x2="23" y2="16"></line>
+        </svg>
+        <span>{{ 'products.facets.filter_by' | t | default: 'Filters' }}</span>
+        <span class="inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full bg-sky-500 text-white text-[10px] font-extrabold" id="ncf-toolbar-mobile-count" hidden>0</span>
+      </button>
+
+      <div class="text-xs font-mono font-medium text-slate-600 dark:text-slate-400">
+        <span id="ncf-plp-product-count" class="font-bold text-slate-900 dark:text-slate-100">
+          {{ collection.products_count | default: 24 }}
+        </span>
+        <span>{{ 'products.facets.products_count' | t | default: 'Products' }}</span>
+      </div>
+    </div>
+
+    {%- comment -%} RIGHT: Sort Dropdown & Grid Column View Toggle {%- endcomment -%}
+    <div class="flex items-center gap-4">
+      
+      {%- comment -%} SORT BY SELECTOR {%- endcomment -%}
+      <div class="flex items-center gap-2">
+        <label for="ncf-plp-sort-by" class="text-xs font-mono font-semibold uppercase text-slate-500 dark:text-slate-400 hidden sm:inline-block">
+          {{ 'products.facets.sort_by' | t | default: 'Sort By:' }}
+        </label>
+        <div class="relative">
+          <select
+            id="ncf-plp-sort-by"
+            name="sort_by"
+            class="bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 text-xs font-semibold rounded-lg pl-3 pr-8 py-2 appearance-none focus:outline-none focus:ring-2 focus:ring-sky-500 cursor-pointer min-h-[44px]"
+            data-plp-sort-select
+          >
+            <option value="manual" {% if current_sort == 'manual' %}selected{% endif %}>Featured</option>
+            <option value="best-selling" {% if current_sort == 'best-selling' %}selected{% endif %}>Best Selling</option>
+            <option value="title-ascending" {% if current_sort == 'title-ascending' %}selected{% endif %}>Alphabetical, A-Z</option>
+            <option value="title-descending" {% if current_sort == 'title-descending' %}selected{% endif %}>Alphabetical, Z-A</option>
+            <option value="price-ascending" {% if current_sort == 'price-ascending' %}selected{% endif %}>Price, Low to High</option>
+            <option value="price-descending" {% if current_sort == 'price-descending' %}selected{% endif %}>Price, High to Low</option>
+            <option value="created-descending" {% if current_sort == 'created-descending' %}selected{% endif %}>Date, New to Old</option>
+          </select>
+          <svg class="w-4 h-4 text-slate-500 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </div>
+      </div>
+
+      {%- comment -%} GRID VIEW TOGGLE BUTTONS {%- endcomment -%}
+      <div class="hidden md:flex items-center bg-slate-100 dark:bg-slate-800 p-1 rounded-lg border border-slate-200 dark:border-slate-700" id="ncf-plp-grid-toggle-group">
+        <button
+          type="button"
+          class="p-2 rounded-md text-slate-500 hover:text-slate-900 dark:hover:text-slate-100 transition-colors focus:outline-none focus:ring-2 focus:ring-sky-500 min-h-[36px] min-w-[36px] flex items-center justify-center"
+          data-grid-cols="2"
+          aria-label="{{ 'products.facets.view_grid_2' | t | default: '2 Column Grid' }}"
+          title="2 Columns"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <rect x="3" y="3" width="8" height="18" rx="1.5"/>
+            <rect x="13" y="3" width="8" height="18" rx="1.5"/>
+          </svg>
+        </button>
+
+        <button
+          type="button"
+          class="p-2 rounded-md bg-white dark:bg-slate-900 text-sky-600 dark:text-sky-400 font-bold shadow-xs border border-slate-200 dark:border-slate-700 min-h-[36px] min-w-[36px] flex items-center justify-center"
+          data-grid-cols="3"
+          aria-label="{{ 'products.facets.view_grid_3' | t | default: '3 Column Grid' }}"
+          title="3 Columns"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <rect x="3" y="3" width="5" height="18" rx="1"/>
+            <rect x="9.5" y="3" width="5" height="18" rx="1"/>
+            <rect x="16" y="3" width="5" height="18" rx="1"/>
+          </svg>
+        </button>
+
+        <button
+          type="button"
+          class="p-2 rounded-md text-slate-500 hover:text-slate-900 dark:hover:text-slate-100 transition-colors focus:outline-none focus:ring-2 focus:ring-sky-500 min-h-[36px] min-w-[36px] flex items-center justify-center"
+          data-grid-cols="4"
+          aria-label="{{ 'products.facets.view_grid_4' | t | default: '4 Column Grid' }}"
+          title="4 Columns"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <rect x="2" y="3" width="4" height="18" rx="1"/>
+            <rect x="7.5" y="3" width="4" height="18" rx="1"/>
+            <rect x="13" y="3" width="4" height="18" rx="1"/>
+            <rect x="18.5" y="3" width="4" height="18" rx="1"/>
+          </svg>
+        </button>
+
+        <button
+          type="button"
+          class="p-2 rounded-md text-slate-500 hover:text-slate-900 dark:hover:text-slate-100 transition-colors focus:outline-none focus:ring-2 focus:ring-sky-500 min-h-[36px] min-w-[36px] flex items-center justify-center"
+          data-grid-cols="6"
+          aria-label="{{ 'products.facets.view_grid_6' | t | default: '6 Column Grid' }}"
+          title="6 Columns"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <rect x="2" y="3" width="2.5" height="18" rx="0.5"/>
+            <rect x="5.5" y="3" width="2.5" height="18" rx="0.5"/>
+            <rect x="9" y="3" width="2.5" height="18" rx="0.5"/>
+            <rect x="12.5" y="3" width="2.5" height="18" rx="0.5"/>
+            <rect x="16" y="3" width="2.5" height="18" rx="0.5"/>
+            <rect x="19.5" y="3" width="2.5" height="18" rx="0.5"/>
+          </svg>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>

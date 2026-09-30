@@ -1,0 +1,22 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "settings": {
+        "enable_sticky_gallery": true,
+        "enable_sticky_buybox": false,
+        "enable_sticky_mobile_atc": true,
+        "enable_gallery_zoom": true,
+        "enable_fullscreen_gallery": true,
+        "enable_videos": true,
+        "enable_3d_placeholder": true,
+        "enable_highlights": true,
+        "enable_trust_badges": true,
+        "enable_dynamic_checkout": true
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

@@ -1,0 +1,247 @@
+{%- comment -%}
+  Nova Commerce Framework (NCF) - Snippet: Product Information Tabs & Mobile Accordions
+  File: snippets/product-tabs.liquid
+  Sprint: 4.5 – Product Information, Specifications & Trust Experience
+  Desktop: Horizontal Tabs with Keyboard Navigation (WCAG 2.2 AA).
+  Mobile: Responsive Accordion List with ARIA support.
+{%- endcomment -%}
+
+<div class="ncf-pdp-tabs-container w-full my-10" data-pdp-tabs-wrapper>
+  
+  {%- comment -%} DESKTOP TAB HEADER BUTTONS (Hidden on Mobile) {%- endcomment -%}
+  <div class="hidden md:flex items-center border-b border-slate-200 dark:border-slate-800 gap-2" role="tablist" aria-label="Product Details Tabs">
+    <button
+      type="button"
+      role="tab"
+      aria-selected="true"
+      aria-controls="pdp-tab-panel-description"
+      id="pdp-tab-btn-description"
+      class="ncf-pdp-tab-btn py-3.5 px-5 font-bold text-xs uppercase font-mono tracking-wider transition-all border-b-2 border-sky-600 dark:border-sky-400 text-sky-600 dark:text-sky-400"
+      data-tab-target="description"
+    >
+      Description
+    </button>
+
+    <button
+      type="button"
+      role="tab"
+      aria-selected="false"
+      aria-controls="pdp-tab-panel-specs"
+      id="pdp-tab-btn-specs"
+      class="ncf-pdp-tab-btn py-3.5 px-5 font-bold text-xs uppercase font-mono tracking-wider transition-all border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
+      data-tab-target="specs"
+    >
+      Specifications
+    </button>
+
+    <button
+      type="button"
+      role="tab"
+      aria-selected="false"
+      aria-controls="pdp-tab-panel-shipping"
+      id="pdp-tab-btn-shipping"
+      class="ncf-pdp-tab-btn py-3.5 px-5 font-bold text-xs uppercase font-mono tracking-wider transition-all border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
+      data-tab-target="shipping"
+    >
+      Shipping & Dispatch
+    </button>
+
+    <button
+      type="button"
+      role="tab"
+      aria-selected="false"
+      aria-controls="pdp-tab-panel-warranty"
+      id="pdp-tab-btn-warranty"
+      class="ncf-pdp-tab-btn py-3.5 px-5 font-bold text-xs uppercase font-mono tracking-wider transition-all border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
+      data-tab-target="warranty"
+    >
+      Warranty & Guarantee
+    </button>
+
+    <button
+      type="button"
+      role="tab"
+      aria-selected="false"
+      aria-controls="pdp-tab-panel-downloads"
+      id="pdp-tab-btn-downloads"
+      class="ncf-pdp-tab-btn py-3.5 px-5 font-bold text-xs uppercase font-mono tracking-wider transition-all border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
+      data-tab-target="downloads"
+    >
+      Downloads & Manuals
+    </button>
+
+    <button
+      type="button"
+      role="tab"
+      aria-selected="false"
+      aria-controls="pdp-tab-panel-faq"
+      id="pdp-tab-btn-faq"
+      class="ncf-pdp-tab-btn py-3.5 px-5 font-bold text-xs uppercase font-mono tracking-wider transition-all border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
+      data-tab-target="faq"
+    >
+      Frequently Asked Questions
+    </button>
+  </div>
+
+  {%- comment -%} TAB CONTENT PANELS & MOBILE ACCORDION STACK {%- endcomment -%}
+  <div class="mt-4 md:mt-6 space-y-3 md:space-y-0">
+
+    {%- comment -%} 1. DESCRIPTION PANEL / ACCORDION {%- endcomment -%}
+    <div class="ncf-pdp-accordion-item rounded-2xl border border-slate-200 dark:border-slate-800 md:border-none md:rounded-none overflow-hidden" data-panel-id="description">
+      <button
+        type="button"
+        class="md:hidden w-full p-4 bg-slate-50 dark:bg-slate-800/60 font-bold text-sm text-left flex items-center justify-between text-slate-900 dark:text-slate-100"
+        data-pdp-accordion-trigger
+        aria-expanded="true"
+        aria-controls="pdp-tab-panel-description"
+      >
+        <span>Description</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="transition-transform duration-300 rotate-180" data-accordion-icon><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </button>
+
+      <div
+        id="pdp-tab-panel-description"
+        role="tabpanel"
+        aria-labelledby="pdp-tab-btn-description"
+        class="ncf-pdp-tab-panel p-4 md:p-0 block"
+      >
+        <div class="prose prose-slate dark:prose-invert max-w-none text-xs sm:text-sm leading-relaxed space-y-3">
+          <p>
+            {{ product.description | default: "Engineered for pure acoustic transparency, the Nova Pro Wireless ANC Headphones combine aerospace-grade titanium driver diaphragms with dual-core neural DSP noise cancellation. Designed for audio professionals and audiophiles who demand uncompromising studio quality on the go." }}
+          </p>
+          <ul class="list-disc pl-5 space-y-1">
+            <li>Dual-Core Neural Audio Processing with 48kHz sampling rate.</li>
+            <li>Custom 40mm Titanium Acoustic Drivers tuned for ultra-flat frequency response.</li>
+            <li>Ergonomic memory foam ear cushions with breathable protein leather covers.</li>
+            <li>Ultra-Fast USB-C Quick Charge & Bluetooth 5.3 Multipoint connectivity.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    {%- comment -%} 2. SPECIFICATIONS PANEL / ACCORDION {%- endcomment -%}
+    <div class="ncf-pdp-accordion-item rounded-2xl border border-slate-200 dark:border-slate-800 md:border-none md:rounded-none overflow-hidden" data-panel-id="specs">
+      <button
+        type="button"
+        class="md:hidden w-full p-4 bg-slate-50 dark:bg-slate-800/60 font-bold text-sm text-left flex items-center justify-between text-slate-900 dark:text-slate-100"
+        data-pdp-accordion-trigger
+        aria-expanded="false"
+        aria-controls="pdp-tab-panel-specs"
+      >
+        <span>Specifications</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="transition-transform duration-300" data-accordion-icon><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </button>
+
+      <div
+        id="pdp-tab-panel-specs"
+        role="tabpanel"
+        aria-labelledby="pdp-tab-btn-specs"
+        class="ncf-pdp-tab-panel p-4 md:p-0 hidden md:hidden"
+      >
+        {% render 'product-specification-table', product: product %}
+      </div>
+    </div>
+
+    {%- comment -%} 3. SHIPPING PANEL / ACCORDION {%- endcomment -%}
+    <div class="ncf-pdp-accordion-item rounded-2xl border border-slate-200 dark:border-slate-800 md:border-none md:rounded-none overflow-hidden" data-panel-id="shipping">
+      <button
+        type="button"
+        class="md:hidden w-full p-4 bg-slate-50 dark:bg-slate-800/60 font-bold text-sm text-left flex items-center justify-between text-slate-900 dark:text-slate-100"
+        data-pdp-accordion-trigger
+        aria-expanded="false"
+        aria-controls="pdp-tab-panel-shipping"
+      >
+        <span>Shipping & Dispatch</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="transition-transform duration-300" data-accordion-icon><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </button>
+
+      <div
+        id="pdp-tab-panel-shipping"
+        role="tabpanel"
+        aria-labelledby="pdp-tab-btn-shipping"
+        class="ncf-pdp-tab-panel p-4 md:p-0 hidden md:hidden"
+      >
+        {% render 'product-shipping-info', product: product %}
+      </div>
+    </div>
+
+    {%- comment -%} 4. WARRANTY PANEL / ACCORDION {%- endcomment -%}
+    <div class="ncf-pdp-accordion-item rounded-2xl border border-slate-200 dark:border-slate-800 md:border-none md:rounded-none overflow-hidden" data-panel-id="warranty">
+      <button
+        type="button"
+        class="md:hidden w-full p-4 bg-slate-50 dark:bg-slate-800/60 font-bold text-sm text-left flex items-center justify-between text-slate-900 dark:text-slate-100"
+        data-pdp-accordion-trigger
+        aria-expanded="false"
+        aria-controls="pdp-tab-panel-warranty"
+      >
+        <span>Warranty & Guarantee</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="transition-transform duration-300" data-accordion-icon><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </button>
+
+      <div
+        id="pdp-tab-panel-warranty"
+        role="tabpanel"
+        aria-labelledby="pdp-tab-btn-warranty"
+        class="ncf-pdp-tab-panel p-4 md:p-0 hidden md:hidden"
+      >
+        {% render 'product-warranty', product: product %}
+      </div>
+    </div>
+
+    {%- comment -%} 5. DOWNLOADS PANEL / ACCORDION {%- endcomment -%}
+    <div class="ncf-pdp-accordion-item rounded-2xl border border-slate-200 dark:border-slate-800 md:border-none md:rounded-none overflow-hidden" data-panel-id="downloads">
+      <button
+        type="button"
+        class="md:hidden w-full p-4 bg-slate-50 dark:bg-slate-800/60 font-bold text-sm text-left flex items-center justify-between text-slate-900 dark:text-slate-100"
+        data-pdp-accordion-trigger
+        aria-expanded="false"
+        aria-controls="pdp-tab-panel-downloads"
+      >
+        <span>Downloads & Manuals</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="transition-transform duration-300" data-accordion-icon><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </button>
+
+      <div
+        id="pdp-tab-panel-downloads"
+        role="tabpanel"
+        aria-labelledby="pdp-tab-btn-downloads"
+        class="ncf-pdp-tab-panel p-4 md:p-0 hidden md:hidden"
+      >
+        {% render 'product-downloads', product: product %}
+      </div>
+    </div>
+
+    {%- comment -%} 6. FAQ PANEL / ACCORDION {%- endcomment -%}
+    <div class="ncf-pdp-accordion-item rounded-2xl border border-slate-200 dark:border-slate-800 md:border-none md:rounded-none overflow-hidden" data-panel-id="faq">
+      <button
+        type="button"
+        class="md:hidden w-full p-4 bg-slate-50 dark:bg-slate-800/60 font-bold text-sm text-left flex items-center justify-between text-slate-900 dark:text-slate-100"
+        data-pdp-accordion-trigger
+        aria-expanded="false"
+        aria-controls="pdp-tab-panel-faq"
+      >
+        <span>Frequently Asked Questions</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="transition-transform duration-300" data-accordion-icon><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </button>
+
+      <div
+        id="pdp-tab-panel-faq"
+        role="tabpanel"
+        aria-labelledby="pdp-tab-btn-faq"
+        class="ncf-pdp-tab-panel p-4 md:p-0 hidden md:hidden"
+      >
+        <div class="space-y-3">
+          <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800">
+            <h4 class="font-bold text-xs text-slate-900 dark:text-slate-100 mb-1">Is this compatible with iOS, Android, and macOS?</h4>
+            <p class="text-slate-600 dark:text-slate-400 text-xs">Yes, the Nova Pro Wireless supports universal Bluetooth 5.3 and seamless multipoint pairing across iOS, Android, Windows, and macOS devices.</p>
+          </div>
+          <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800">
+            <h4 class="font-bold text-xs text-slate-900 dark:text-slate-100 mb-1">How does the 30-day trial work?</h4>
+            <p class="text-slate-600 dark:text-slate-400 text-xs">Test the headphones in your home for 30 days. If you are not completely satisfied, request a free return shipping label for a 100% full refund.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,379 @@
+{%- comment -%}
+  Nova Commerce Framework (NCF) - Section: Premium Category Collection Slider
+  File: sections/category-slider.liquid
+  Sprint: 2.2 - Premium Category Collection Slider
+{%- endcomment -%}
+
+{%- assign block_count = section.blocks.size -%}
+
+<section
+  class="ncf-category-section"
+  style="--ncf-section-padding-top: {{ section.settings.padding_top }}px; --ncf-section-padding-bottom: {{ section.settings.padding_bottom }}px; --ncf-category-section-bg: {{ section.settings.bg_color | default: '#f8fafc' }}; --ncf-cat-card-radius: {{ section.settings.card_radius }}px;"
+  id="ncf-category-slider-{{ section.id }}"
+>
+  <div class="max-w-7xl mx-auto px-4 lg:px-8">
+    
+    {%- comment -%} SECTION HEADER {%- endcomment -%}
+    {%- if section.settings.title != blank or section.settings.eyebrow != blank or section.settings.subtitle != blank -%}
+      <div class="ncf-category-header">
+        <div class="ncf-category-header__title-group">
+          {%- if section.settings.eyebrow != blank -%}
+            <span class="ncf-category-header__eyebrow">
+              {{ section.settings.eyebrow }}
+            </span>
+          {%- endif -%}
+
+          {%- if section.settings.title != blank -%}
+            <h2 class="ncf-category-header__title">
+              {{ section.settings.title }}
+            </h2>
+          {%- endif -%}
+
+          {%- if section.settings.subtitle != blank -%}
+            <p class="ncf-category-header__subtitle">
+              {{ section.settings.subtitle }}
+            </p>
+          {%- endif -%}
+        </div>
+
+        {%- comment -%} Header Navigation Buttons {%- endcomment -%}
+        {%- if section.settings.show_arrows and block_count > 1 -%}
+          <div class="ncf-category-header__controls">
+            <button
+              type="button"
+              class="ncf-category-header__nav-btn"
+              data-category-prev
+              aria-label="{{ 'general.hero.previous_slide' | t | default: 'Previous Categories' }}"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+            <button
+              type="button"
+              class="ncf-category-header__nav-btn"
+              data-category-next
+              aria-label="{{ 'general.hero.next_slide' | t | default: 'Next Categories' }}"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} SLIDER TRACK VIEWPORT {%- endcomment -%}
+    <div
+      class="ncf-category-slider ncf-category-slider--cols-{{ section.settings.desktop_columns }}"
+      data-ncf-category-slider
+      data-autoplay="{{ section.settings.enable_autoplay }}"
+      data-loop="{{ section.settings.enable_loop }}"
+      data-speed="{{ section.settings.autoplay_speed }}"
+      role="region"
+      aria-label="{{ section.settings.title | default: 'Category Collections' }}"
+    >
+      <div class="ncf-category-slider__viewport" data-category-viewport tabindex="0">
+        <div class="ncf-category-slider__track" data-category-track>
+          {%- if block_count > 0 -%}
+            {%- for block in section.blocks -%}
+              <div class="ncf-category-slider__slide" data-category-slide data-slide-index="{{ forloop.index0 }}">
+                {% render 'category-card', block: block, forloop: forloop %}
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+            {%- comment -%} Preset Fallback Cards when initialized in Theme Editor {%- endcomment -%}
+            {%- for i in (1..6) -%}
+              <div class="ncf-category-slider__slide" data-category-slide data-slide-index="{{ forloop.index0 }}">
+                <div class="ncf-category-card">
+                  <div class="ncf-category-card__media">
+                    {%- assign placeholder_name = 'collection-' | append: i -%}
+                    {{ placeholder_name | placeholder_svg_tag: 'ncf-category-card__placeholder' }}
+                  </div>
+                  <div class="ncf-category-card__content">
+                    <div class="ncf-category-card__header">
+                      <span class="ncf-category-card__subtitle">FEATURED COLLECTION</span>
+                      <h3 class="ncf-category-card__title">Category {{ i }}</h3>
+                    </div>
+                    <div class="ncf-category-card__footer">
+                      <span class="ncf-category-card__count">12 Items</span>
+                      <span class="ncf-category-card__cta">Shop Series →</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+      </div>
+
+      {%- comment -%} Pagination Dots {%- endcomment -%}
+      {%- if section.settings.show_dots and block_count > 1 -%}
+        <div class="ncf-category-slider__dots" role="tablist" aria-label="Category Slide Controls">
+          {%- for block in section.blocks -%}
+            <button
+              type="button"
+              class="ncf-category-slider__dot {% if forloop.first %}is-active{% endif %}"
+              data-category-dot
+              data-dot-index="{{ forloop.index0 }}"
+              role="tab"
+              aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+              aria-label="Go to category slide {{ forloop.index }}"
+            ></button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Category Slider",
+  "tag": "section",
+  "class": "section-category-slider",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Header & Titles"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Subtitle",
+      "default": "CURATED CATALOG"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Main Heading",
+      "default": "Explore Popular Categories"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subheading Description",
+      "default": "Browse our high-performance hardware, flagship audio, and next-gen wearable collections."
+    },
+    {
+      "type": "header",
+      "content": "Layout & Grid Settings"
+    },
+    {
+      "type": "select",
+      "id": "desktop_columns",
+      "label": "Desktop Visible Columns",
+      "options": [
+        { "value": "3", "label": "3 Columns" },
+        { "value": "4", "label": "4 Columns" },
+        { "value": "5", "label": "5 Columns" },
+        { "value": "6", "label": "6 Columns" }
+      ],
+      "default": "5"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "min": 4,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Card Border Radius",
+      "default": 12
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background Color",
+      "default": "#f8fafc"
+    },
+    {
+      "type": "header",
+      "content": "Carousel Navigation & Autoplay"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "label": "Show Navigation Arrows",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dots",
+      "label": "Show Pagination Dots",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_autoplay",
+      "label": "Enable Autoplay",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_loop",
+      "label": "Enable Infinite Loop",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "label": "Autoplay Speed (Seconds)",
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 16,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Top Padding",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 16,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom Padding",
+      "default": 64
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category_card",
+      "name": "Category Card",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Shopify Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Custom Category Image (Overrides Collection Image)"
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Badge Tag (e.g. HOT, NEW)",
+          "default": "HOT"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Card Subtitle",
+          "default": "ACOUSTICS"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Card Title",
+          "default": "Wireless Audio"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_count",
+          "label": "Show Product Count from Collection",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "custom_count_text",
+          "label": "Custom Count / Sub-text (if collection empty)",
+          "default": "18 Flagship Models"
+        },
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "CTA Link Text",
+          "default": "Shop Series"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Category Collection Slider",
+      "blocks": [
+        {
+          "type": "category_card",
+          "settings": {
+            "badge": "FLAGSHIP",
+            "subtitle": "PREMIUM AUDIO",
+            "title": "Wireless Headphones",
+            "custom_count_text": "24 Models",
+            "cta_text": "Explore Audio"
+          }
+        },
+        {
+          "type": "category_card",
+          "settings": {
+            "badge": "NEW",
+            "subtitle": "WORKSTATIONS",
+            "title": "Ultra Laptops",
+            "custom_count_text": "12 Models",
+            "cta_text": "Configure Laptop"
+          }
+        },
+        {
+          "type": "category_card",
+          "settings": {
+            "badge": "BESTSELLER",
+            "subtitle": "TITANIUM",
+            "title": "Smart Watches",
+            "custom_count_text": "16 Models",
+            "cta_text": "Shop Wearables"
+          }
+        },
+        {
+          "type": "category_card",
+          "settings": {
+            "badge": "POPULAR",
+            "subtitle": "HOME THEATER",
+            "title": "Soundbars & Speakers",
+            "custom_count_text": "10 Models",
+            "cta_text": "Discover Acoustics"
+          }
+        },
+        {
+          "type": "category_card",
+          "settings": {
+            "badge": "GAMING",
+            "subtitle": "ZERO-LATENCY",
+            "title": "Gaming Gear",
+            "custom_count_text": "30 Accessories",
+            "cta_text": "Level Up"
+          }
+        },
+        {
+          "type": "category_card",
+          "settings": {
+            "badge": "CREATIVE",
+            "subtitle": "OPTICS & LENSES",
+            "title": "Pro Cameras",
+            "custom_count_text": "8 Models",
+            "cta_text": "View Optics"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

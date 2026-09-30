@@ -1,0 +1,36 @@
+{%- comment -%}
+  Nova Commerce Framework (NCF) - Snippet: PLP Breadcrumbs Navigation
+  File: snippets/plp-breadcrumbs.liquid
+  Sprint: 4.0 – Collection Page Foundation
+  Architecture: WCAG 2.2 AA Accessible Breadcrumb with Schema.org Microdata
+{%- endcomment -%}
+
+<nav class="ncf-breadcrumbs" aria-label="{{ 'general.breadcrumbs.label' | t | default: 'Breadcrumb' }}">
+  <ol class="ncf-breadcrumbs__list" itemscope itemtype="https://schema.org/BreadcrumbList">
+    {%- comment -%} HOME LINK {%- endcomment -%}
+    <li class="ncf-breadcrumbs__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      <a href="{{ routes.root_url }}" class="ncf-breadcrumbs__link" itemprop="item">
+        <span itemprop="name">{{ 'general.breadcrumbs.home' | t | default: 'Home' }}</span>
+      </a>
+      <meta itemprop="position" content="1" />
+      <span class="ncf-breadcrumbs__separator" aria-hidden="true">/</span>
+    </li>
+
+    {%- comment -%} COLLECTIONS ROOT {%- endcomment -%}
+    <li class="ncf-breadcrumbs__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      <a href="{{ routes.collections_url }}" class="ncf-breadcrumbs__link" itemprop="item">
+        <span itemprop="name">{{ 'general.breadcrumbs.collections' | t | default: 'Collections' }}</span>
+      </a>
+      <meta itemprop="position" content="2" />
+      <span class="ncf-breadcrumbs__separator" aria-hidden="true">/</span>
+    </li>
+
+    {%- comment -%} ACTIVE COLLECTION {%- endcomment -%}
+    <li class="ncf-breadcrumbs__item ncf-breadcrumbs__item--active" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      <a href="{{ collection.url }}" class="ncf-breadcrumbs__link" itemprop="item" aria-current="page">
+        <span itemprop="name">{{ collection.title | default: 'Catalog' | escape }}</span>
+      </a>
+      <meta itemprop="position" content="3" />
+    </li>
+  </ol>
+</nav>

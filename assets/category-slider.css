@@ -1,0 +1,363 @@
+/*
+  ==============================================================================
+  NOVA COMMERCE FRAMEWORK (NCF) - CATEGORY COLLECTION SLIDER STYLESHEET
+  File: assets/category-slider.css
+  Sprint: 2.2 - Premium Category Collection Slider
+  Architecture: Lightweight CSS Scroll Snap / Flex Track & Dynamic Card Grid
+  ==============================================================================
+*/
+
+:root {
+  --ncf-cat-gap: 1.25rem;
+  --ncf-cat-card-radius: 1rem;
+  --ncf-cat-card-bg: #ffffff;
+  --ncf-cat-card-border: #e2e8f0;
+  --ncf-cat-accent: #0284c7;
+  --ncf-cat-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.05);
+  --ncf-cat-shadow-hover: 0 20px 30px -10px rgba(15, 23, 42, 0.12), 0 10px 12px -5px rgba(2, 132, 199, 0.15);
+}
+
+/* ---------------------------------------------------------------------------
+   1. SECTION WRAPPER & HEADER
+   --------------------------------------------------------------------------- */
+.ncf-category-section {
+  position: relative;
+  width: 100%;
+  padding-top: var(--ncf-section-padding-top, 4rem);
+  padding-bottom: var(--ncf-section-padding-bottom, 4rem);
+  background-color: var(--ncf-category-section-bg, #f8fafc);
+  overflow: hidden;
+}
+
+.ncf-category-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  gap: 1.5rem;
+}
+
+.ncf-category-header__title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ncf-category-header__eyebrow {
+  font-family: var(--font-heading-family, sans-serif);
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ncf-cat-accent);
+}
+
+.ncf-category-header__title {
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  color: #0f172a;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.ncf-category-header__subtitle {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin: 0;
+  max-width: 32rem;
+}
+
+.ncf-category-header__controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  shrink: 0;
+}
+
+.ncf-category-header__nav-btn {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background-color: #ffffff;
+  border: 1px solid var(--ncf-cat-card-border);
+  color: #0f172a;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+  transition: all 0.2s ease-in-out;
+}
+
+.ncf-category-header__nav-btn:hover:not(:disabled) {
+  background-color: var(--ncf-cat-accent);
+  border-color: var(--ncf-cat-accent);
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(2, 132, 199, 0.2);
+}
+
+.ncf-category-header__nav-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ---------------------------------------------------------------------------
+   2. CAROUSEL SLIDER TRACK & CONTAINER
+   --------------------------------------------------------------------------- */
+.ncf-category-slider {
+  position: relative;
+  width: 100%;
+}
+
+.ncf-category-slider__viewport {
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+  cursor: grab;
+  padding-bottom: 1rem;
+  margin-bottom: -1rem;
+}
+
+.ncf-category-slider__viewport::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+.ncf-category-slider__viewport.is-dragging {
+  scroll-behavior: auto;
+  cursor: grabbing;
+  user-select: none;
+}
+
+.ncf-category-slider__track {
+  display: flex;
+  gap: var(--ncf-cat-gap);
+  width: max-content;
+  padding-left: max(1rem, calc((100vw - 80rem) / 2));
+  padding-right: max(1rem, calc((100vw - 80rem) / 2));
+}
+
+/* Responsive Slide Item Sizing based on Column Settings */
+.ncf-category-slider__slide {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+}
+
+/* Desktop Columns */
+.ncf-category-slider--cols-6 .ncf-category-slider__slide {
+  width: calc((100vw - 2rem - (5 * var(--ncf-cat-gap))) / 6);
+  max-width: 12.5rem;
+}
+
+.ncf-category-slider--cols-5 .ncf-category-slider__slide {
+  width: calc((100vw - 2rem - (4 * var(--ncf-cat-gap))) / 5);
+  max-width: 15rem;
+}
+
+.ncf-category-slider--cols-4 .ncf-category-slider__slide {
+  width: calc((100vw - 2rem - (3 * var(--ncf-cat-gap))) / 4);
+  max-width: 18.75rem;
+}
+
+.ncf-category-slider--cols-3 .ncf-category-slider__slide {
+  width: calc((100vw - 2rem - (2 * var(--ncf-cat-gap))) / 3);
+  max-width: 25rem;
+}
+
+@media (max-width: 1023px) {
+  .ncf-category-slider__slide {
+    width: 14rem !important;
+    max-width: none !important;
+  }
+}
+
+@media (max-width: 639px) {
+  .ncf-category-slider__slide {
+    width: 11.5rem !important;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   3. CATEGORY CARD DESIGN
+   --------------------------------------------------------------------------- */
+.ncf-category-card {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 100%;
+  background-color: var(--ncf-cat-card-bg);
+  border: 1px solid var(--ncf-cat-card-border);
+  border-radius: var(--ncf-cat-card-radius);
+  box-shadow: var(--ncf-cat-shadow);
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.ncf-category-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--ncf-cat-shadow-hover);
+  border-color: var(--ncf-cat-accent);
+}
+
+.ncf-category-card:focus-visible {
+  outline: 2px solid var(--ncf-cat-accent);
+  outline-offset: 3px;
+}
+
+/* Media Box */
+.ncf-category-card__media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background-color: #f1f5f9;
+  overflow: hidden;
+}
+
+.ncf-category-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ncf-category-card:hover .ncf-category-card__image {
+  transform: scale(1.08);
+}
+
+.ncf-category-card__placeholder {
+  width: 100%;
+  height: 100%;
+  fill: #94a3b8;
+  background-color: #e2e8f0;
+}
+
+.ncf-category-card__badge {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 2;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  background-color: var(--ncf-cat-accent);
+  color: #ffffff;
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Card Content Details */
+.ncf-category-card__content {
+  padding: 1rem 1.25rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.ncf-category-card__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.ncf-category-card__subtitle {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+}
+
+.ncf-category-card__title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+  line-height: 1.3;
+  transition: color 0.2s;
+}
+
+.ncf-category-card:hover .ncf-category-card__title {
+  color: var(--ncf-cat-accent);
+}
+
+.ncf-category-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px dashed var(--ncf-cat-card-border);
+}
+
+.ncf-category-card__count {
+  font-size: 0.75rem;
+  font-family: monospace;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.ncf-category-card__cta {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--ncf-cat-accent);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: transform 0.2s;
+}
+
+.ncf-category-card:hover .ncf-category-card__cta {
+  transform: translateX(4px);
+}
+
+/* ---------------------------------------------------------------------------
+   4. PAGINATION DOTS
+   --------------------------------------------------------------------------- */
+.ncf-category-slider__dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.ncf-category-slider__dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  background-color: #cbd5e1;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.ncf-category-slider__dot.is-active {
+  width: 1.75rem;
+  background-color: var(--ncf-cat-accent);
+}
+
+/* ---------------------------------------------------------------------------
+   5. REDUCED MOTION ACCESSIBILITY
+   --------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .ncf-category-slider__viewport {
+    scroll-behavior: auto !important;
+  }
+  .ncf-category-card,
+  .ncf-category-card__image,
+  .ncf-category-card__cta {
+    transition: none !important;
+  }
+}

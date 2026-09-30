@@ -1,0 +1,331 @@
+/*
+  ==============================================================================
+  NOVA COMMERCE FRAMEWORK (NCF) - PREMIUM TESTIMONIALS STYLESHEET
+  File: assets/testimonials.css
+  Sprint: 2.9 – Premium Testimonials
+  Architecture: Mobile-First Social Proof Engine & Multi-Layout Grid/Carousel
+  ==============================================================================
+*/
+
+:root {
+  --ncf-testi-accent: #0284c7;
+  --ncf-testi-star: #f59e0b;
+  --ncf-testi-radius: 1rem;
+}
+
+/* ---------------------------------------------------------------------------
+   1. SECTION WRAPPER
+   --------------------------------------------------------------------------- */
+.ncf-testimonials-section {
+  position: relative;
+  width: 100%;
+}
+
+/* ---------------------------------------------------------------------------
+   2. LAYOUT ENGINE (GRID, CAROUSEL, EDITORIAL, SPLIT & FEATURED)
+   --------------------------------------------------------------------------- */
+.ncf-testimonials-container {
+  width: 100%;
+}
+
+/* 2.1 Grid Layout */
+.ncf-testimonials-grid {
+  display: grid;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.ncf-testimonials-grid--cols-1 { grid-template-columns: 1fr; }
+.ncf-testimonials-grid--cols-2 { grid-template-columns: 1fr; }
+.ncf-testimonials-grid--cols-3 { grid-template-columns: 1fr; }
+.ncf-testimonials-grid--cols-4 { grid-template-columns: 1fr; }
+
+@media (min-width: 640px) {
+  .ncf-testimonials-grid--cols-2 { grid-template-columns: repeat(2, 1fr); }
+  .ncf-testimonials-grid--cols-3 { grid-template-columns: repeat(2, 1fr); }
+  .ncf-testimonials-grid--cols-4 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 1024px) {
+  .ncf-testimonials-grid--cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .ncf-testimonials-grid--cols-4 { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* 2.2 Carousel Engine */
+.ncf-testimonials-carousel-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.ncf-testimonials-carousel-track {
+  display: flex;
+  gap: 1.25rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 0.75rem;
+  scrollbar-width: none;
+}
+
+.ncf-testimonials-carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+.ncf-testimonials-carousel-item {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+}
+
+@media (min-width: 640px) {
+  .ncf-testimonials-carousel-item {
+    flex: 0 0 calc(50% - 0.625rem);
+  }
+}
+
+@media (min-width: 1024px) {
+  .ncf-testimonials-carousel-item {
+    flex: 0 0 calc(33.333% - 0.833rem);
+  }
+}
+
+/* 2.3 Editorial Layout */
+.ncf-testimonials-editorial-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .ncf-testimonials-editorial-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* 2.4 Split Layout */
+.ncf-testimonials-split-layout {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: 1fr;
+  align-items: center;
+}
+
+@media (min-width: 1024px) {
+  .ncf-testimonials-split-layout {
+    grid-template-columns: 1fr 1.5fr;
+  }
+}
+
+/* 2.5 Featured Review Layout */
+.ncf-testimonials-featured-layout {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 1024px) {
+  .ncf-testimonials-featured-layout {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   3. TESTIMONIAL CARD COMPONENT
+   --------------------------------------------------------------------------- */
+.ncf-testimonial-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.5rem;
+  border-radius: var(--ncf-testi-radius);
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.04);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+}
+
+.ncf-testimonial-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px -6px rgba(15, 23, 42, 0.08);
+}
+
+/* Card Styles */
+.ncf-testimonial-card--classic {
+  background-color: #ffffff;
+  border-color: #e2e8f0;
+}
+
+.ncf-testimonial-card--minimal {
+  background-color: #f8fafc;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.ncf-testimonial-card--bordered {
+  background-color: #ffffff;
+  border: 2px solid #0f172a;
+  border-radius: 0;
+}
+
+.ncf-testimonial-card--luxury {
+  background-color: #0f172a;
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.ncf-testimonial-card--featured-hero {
+  padding: clamp(2rem, 4vw, 3.5rem);
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* ---------------------------------------------------------------------------
+   4. CARD INNER ELEMENTS (STARS, QUOTE, AUTHOR, PRODUCT CHIP)
+   --------------------------------------------------------------------------- */
+.ncf-testimonial-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.ncf-testimonial-card__rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  color: var(--ncf-testi-star);
+}
+
+.ncf-testimonial-card__verified {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 9999px;
+  background-color: rgba(2, 132, 199, 0.1);
+  color: var(--ncf-testi-accent);
+  font-size: 0.6875rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ncf-testimonial-card--luxury .ncf-testimonial-card__verified {
+  background-color: rgba(2, 132, 199, 0.25);
+  color: #38bdf8;
+}
+
+.ncf-testimonial-card__quote {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: inherit;
+  margin-bottom: 1.25rem;
+  font-style: normal;
+}
+
+.ncf-testimonial-card--featured-hero .ncf-testimonial-card__quote {
+  font-size: clamp(1.125rem, 2vw, 1.5rem);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.ncf-testimonial-card__author {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(226, 232, 240, 0.6);
+}
+
+.ncf-testimonial-card--luxury .ncf-testimonial-card__author {
+  border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+.ncf-testimonial-card__avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 9999px;
+  object-fit: cover;
+  flex-shrink: 0;
+  background-color: #e2e8f0;
+}
+
+.ncf-testimonial-card__avatar-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 9999px;
+  background-color: #0284c7;
+  color: #ffffff;
+  font-weight: 900;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.ncf-testimonial-card__author-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.ncf-testimonial-card__author-name {
+  font-size: 0.875rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.ncf-testimonial-card__author-location {
+  font-size: 0.75rem;
+  opacity: 0.7;
+  margin-top: 0.15rem;
+}
+
+/* Product Reference Chip */
+.ncf-testimonial-card__product-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding: 0.35rem 0.65rem;
+  border-radius: 0.5rem;
+  background-color: rgba(15, 23, 42, 0.05);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: inherit;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.ncf-testimonial-card__product-chip:hover {
+  background-color: rgba(15, 23, 42, 0.1);
+}
+
+.ncf-testimonial-card--luxury .ncf-testimonial-card__product-chip {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.ncf-testimonial-card--luxury .ncf-testimonial-card__product-chip:hover {
+  background-color: rgba(255, 255, 255, 0.18);
+}
+
+/* ---------------------------------------------------------------------------
+   5. ACCESSIBILITY & REDUCED MOTION
+   --------------------------------------------------------------------------- */
+.ncf-testimonial-card__product-chip:focus-visible {
+  outline: 2px solid var(--ncf-testi-accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ncf-testimonial-card,
+  .ncf-testimonials-carousel-track {
+    transition: none !important;
+    transform: none !important;
+  }
+}

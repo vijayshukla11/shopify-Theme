@@ -1,0 +1,85 @@
+{%- comment -%}
+  Nova Commerce Framework (NCF) - Snippet: Category Collection Card
+  File: snippets/category-card.liquid
+  Sprint: 2.2 - Premium Category Collection Slider
+{%- endcomment -%}
+
+{%- assign collection_ref = block.settings.collection -%}
+{%- assign card_title = block.settings.title | default: collection_ref.title | default: 'Collection Title' -%}
+{%- assign card_subtitle = block.settings.subtitle | default: 'EXPLORE COLLECTION' -%}
+{%- assign card_url = collection_ref.url | default: '/collections/all' -%}
+{%- assign card_badge = block.settings.badge -%}
+{%- assign card_cta = block.settings.cta_text | default: 'Shop Now' -%}
+
+{%- comment -%} Image Priority Resolution: Block Custom Image -> Collection Featured Image -> Placeholder {%- endcomment -%}
+{%- assign card_image = block.settings.image | default: collection_ref.featured_image -%}
+
+<a
+  href="{{ card_url }}"
+  class="ncf-category-card"
+  data-category-card
+  id="ncf-cat-card-{{ block.id }}"
+  {{ block.shopify_attributes }}
+>
+  {%- comment -%} 1. CATEGORY CARD MEDIA CONTAINER {%- endcomment -%}
+  <div class="ncf-category-card__media">
+    {%- if card_badge != blank -%}
+      <span class="ncf-category-card__badge">
+        {{ card_badge }}
+      </span>
+    {%- endif -%}
+
+    {%- if card_image != blank -%}
+      {{
+        card_image
+        | image_url: width: 800
+        | image_tag:
+          class: 'ncf-category-card__image',
+          widths: '240, 360, 480, 600, 800',
+          loading: 'lazy',
+          alt: card_title
+      }}
+    {%- else -%}
+      {%- comment -%} Merchant Placeholder SVG Graphic {%- endcomment -%}
+      {%- assign placeholder_index = forloop.index | default: 1 | modulo: 6 | plus: 1 -%}
+      {%- assign placeholder_name = 'collection-' | append: placeholder_index -%}
+      {{ placeholder_name | placeholder_svg_tag: 'ncf-category-card__placeholder' }}
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} 2. CATEGORY CARD CONTENT DETAILS {%- endcomment -%}
+  <div class="ncf-category-card__content">
+    <div class="ncf-category-card__header">
+      {%- if card_subtitle != blank -%}
+        <span class="ncf-category-card__subtitle">
+          {{ card_subtitle }}
+        </span>
+      {%- endif -%}
+
+      <h3 class="ncf-category-card__title">
+        {{ card_title }}
+      </h3>
+    </div>
+
+    <div class="ncf-category-card__footer">
+      {%- if block.settings.show_count and collection_ref != blank -%}
+        <span class="ncf-category-card__count">
+          {{ collection_ref.all_products_count | default: 0 }} {{ collection_ref.all_products_count | pluralize: 'Item', 'Items' }}
+        </span>
+      {%- elsif block.settings.custom_count_text != blank -%}
+        <span class="ncf-category-card__count">
+          {{ block.settings.custom_count_text }}
+        </span>
+      {%- else -%}
+        <span class="ncf-category-card__count">Shop Series</span>
+      {%- endif -%}
+
+      <span class="ncf-category-card__cta">
+        <span>{{ card_cta }}</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </span>
+    </div>
+  </div>
+</a>

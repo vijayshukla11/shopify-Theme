@@ -1,0 +1,73 @@
+{%- comment -%}
+  Nova Commerce Framework (NCF) - Snippet: Header Action Icons
+  File: snippets/header-icons.liquid
+  Sprint: 2.0 - Premium Announcement Bar & Enterprise Header
+{%- endcomment -%}
+
+<div class="ncf-header__actions">
+  
+  {%- comment -%} 1. Customer Account / Login Icon {%- endcomment -%}
+  {%- if section.settings.show_account_icon -%}
+    <a
+      href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}"
+      class="ncf-header__icon-btn"
+      aria-label="{% if customer %}{{ 'customer.account.title' | t | default: 'Account' }}{% else %}{{ 'customer.login.sign_in' | t | default: 'Log In' }}{% endif %}"
+    >
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+      </svg>
+      <span class="ncf-header__icon-label">Account</span>
+    </a>
+  {%- endif -%}
+
+  {%- comment -%} 2. Wishlist Icon {%- endcomment -%}
+  {%- if section.settings.show_wishlist_icon -%}
+    <a
+      href="/pages/wishlist"
+      class="ncf-header__icon-btn"
+      aria-label="Wishlist"
+    >
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+      </svg>
+      <span class="ncf-header__badge" data-wishlist-count>2</span>
+      <span class="ncf-header__icon-label">Wishlist</span>
+    </a>
+  {%- endif -%}
+
+  {%- comment -%} 3. Compare Products Icon {%- endcomment -%}
+  {%- if section.settings.show_compare_icon -%}
+    <a
+      href="/pages/compare"
+      class="ncf-header__icon-btn"
+      aria-label="Compare Products"
+    >
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="20" x2="18" y2="10"></line>
+        <line x1="12" y1="20" x2="12" y2="4"></line>
+        <line x1="6" y1="20" x2="6" y2="14"></line>
+      </svg>
+      <span class="ncf-header__icon-label">Compare</span>
+    </a>
+  {%- endif -%}
+
+  {%- comment -%} 4. Cart Drawer / Page Icon {%- endcomment -%}
+  {%- if section.settings.show_cart_icon -%}
+    <a
+      href="{{ routes.cart_url }}"
+      class="ncf-header__icon-btn"
+      aria-label="{{ 'templates.cart.cart' | t | default: 'Cart' }}"
+      data-cart-icon
+    >
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <path d="M16 10a4 4 0 0 1-8 0"></path>
+      </svg>
+      <span class="ncf-header__badge" data-cart-count>{{ cart.item_count | default: 1 }}</span>
+      <span class="ncf-header__icon-label">Cart</span>
+    </a>
+  {%- endif -%}
+
+</div>

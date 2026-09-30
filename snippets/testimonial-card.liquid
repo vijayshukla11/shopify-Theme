@@ -1,0 +1,95 @@
+{%- comment -%}
+  Nova Commerce Framework (NCF) - Snippet: Testimonial Card
+  File: snippets/testimonial-card.liquid
+  Sprint: 2.9 – Premium Testimonials
+  Architecture: Atomic Social Proof Testimonial Card Snippet
+{%- endcomment -%}
+
+{%- assign author_name = block.settings.author_name | default: 'Verified Customer' -%}
+{%- assign author_image = block.settings.author_image -%}
+{%- assign author_location = block.settings.author_location -%}
+{%- assign quote = block.settings.quote | default: 'Exceptional build quality and outstanding customer service. Exceeded all expectations!' -%}
+{%- assign rating = block.settings.rating | default: 5 | plus: 0 -%}
+{%- assign is_verified = block.settings.is_verified -%}
+{%- assign product_ref = block.settings.product_reference -%}
+{%- assign card_style = block.settings.card_style | default: section.settings.card_style | default: 'classic' -%}
+{%- assign is_featured = block.settings.is_featured -%}
+
+<article
+  class="
+    ncf-testimonial-card
+    ncf-testimonial-card--{{ card_style }}
+    {% if is_featured %}ncf-testimonial-card--featured-hero{% endif %}
+  "
+  {{ block.shopify_attributes }}
+>
+  <div>
+    {%- comment -%} CARD HEADER: RATING & VERIFIED BADGE {%- endcomment -%}
+    <div class="ncf-testimonial-card__header">
+      <div class="ncf-testimonial-card__rating" aria-label="Rating {{ rating }} out of 5 stars">
+        {%- for i in (1..5) -%}
+          {%- if i <= rating -%}
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+          {%- else -%}
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      {%- if is_verified -%}
+        <span class="ncf-testimonial-card__verified">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          <span>{{ 'sections.testimonials.verified_purchase' | t | default: 'Verified Purchase' }}</span>
+        </span>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} REVIEW QUOTE {%- endcomment -%}
+    <blockquote class="ncf-testimonial-card__quote">
+      “{{ quote }}”
+    </blockquote>
+  </div>
+
+  <div>
+    {%- comment -%} PRODUCT REFERENCE CHIP {%- endcomment -%}
+    {%- if product_ref != blank -%}
+      <a href="{{ product_ref.url }}" class="ncf-testimonial-card__product-chip">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+          <path d="M3 6h18"></path>
+        </svg>
+        <span>{{ product_ref.title }}</span>
+      </a>
+    {%- endif -%}
+
+    {%- comment -%} AUTHOR FOOTER {%- endcomment -%}
+    <div class="ncf-testimonial-card__author">
+      {%- if author_image != blank -%}
+        {{ author_image | image_url: width: 200 | image_tag:
+          loading: 'lazy',
+          sizes: '44px',
+          widths: '80, 120, 200',
+          class: 'ncf-testimonial-card__avatar',
+          alt: author_name | escape
+        }}
+      {%- else -%}
+        <div class="ncf-testimonial-card__avatar-placeholder" aria-hidden="true">
+          {{ author_name | slice: 0 | upcase }}
+        </div>
+      {%- endif -%}
+
+      <div class="ncf-testimonial-card__author-info">
+        <span class="ncf-testimonial-card__author-name">{{ author_name }}</span>
+        {%- if author_location != blank -%}
+          <span class="ncf-testimonial-card__author-location">{{ author_location }}</span>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</article>

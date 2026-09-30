@@ -1,0 +1,73 @@
+{%- comment -%}
+  Nova Commerce Framework (NCF) - Snippet: Product Card Swatches & Variant Preview
+  File: snippets/product-card-swatches.liquid
+  Sprint: 4.3 – Premium Product Cards & Shopping Experience
+{%- endcomment -%}
+
+{%- assign show_swatches = show_swatches | default: true -%}
+
+{%- if show_swatches -%}
+  {%- assign color_option_index = -1 -%}
+  {%- for option in product.options_with_values -%}
+    {%- assign downcased_name = option.name | downcase -%}
+    {%- if downcased_name contains 'color' or downcased_name contains 'colour' or downcased_name contains 'shade' -%}
+      {%- assign color_option_index = forloop.index0 -%}
+      {%- assign color_option = option -%}
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  <div class="ncf-card-swatches flex items-center gap-1.5 mt-2 overflow-hidden" data-product-swatches>
+    {%- if color_option != blank -%}
+      {%- for value in color_option.values limit: 4 -%}
+        {%- assign value_downcase = value | downcase | strip -%}
+        {%- assign swatch_color = '#cbd5e1' -%}
+        {%- if value_downcase contains 'black' or value_downcase contains 'midnight' -%}
+          {%- assign swatch_color = '#0f172a' -%}
+        {%- elsif value_downcase contains 'white' or value_downcase contains 'starlight' -%}
+          {%- assign swatch_color = '#f8fafc' -%}
+        {%- elsif value_downcase contains 'silver' or value_downcase contains 'grey' or value_downcase contains 'gray' -%}
+          {%- assign swatch_color = '#94a3b8' -%}
+        {%- elsif value_downcase contains 'red' or value_downcase contains 'crimson' -%}
+          {%- assign swatch_color = '#ef4444' -%}
+        {%- elsif value_downcase contains 'blue' or value_downcase contains 'navy' -%}
+          {%- assign swatch_color = '#3b82f6' -%}
+        {%- elsif value_downcase contains 'green' or value_downcase contains 'emerald' -%}
+          {%- assign swatch_color = '#10b981' -%}
+        {%- elsif value_downcase contains 'gold' or value_downcase contains 'yellow' -%}
+          {%- assign swatch_color = '#eab308' -%}
+        {%- elsif value_downcase contains 'purple' or value_downcase contains 'violet' -%}
+          {%- assign swatch_color = '#a855f7' -%}
+        {%- elsif value_downcase contains 'pink' or value_downcase contains 'rose' -%}
+          {%- assign swatch_color = '#ec4899' -%}
+        {%- endif -%}
+
+        <button
+          type="button"
+          class="ncf-swatch-btn w-4 h-4 rounded-full border border-slate-300 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-sky-500 transition-transform hover:scale-125 relative group/swatch {% if forloop.first %}ring-2 ring-sky-500 ring-offset-1 dark:ring-offset-slate-900{% endif %}"
+          style="background-color: {{ swatch_color }};"
+          data-swatch-value="{{ value | escape }}"
+          data-swatch-option-index="{{ color_option_index }}"
+          aria-label="Select color {{ value | escape }}"
+          title="{{ value | escape }}"
+        >
+          <span class="sr-only">{{ value }}</span>
+        </button>
+      {%- endfor -%}
+
+      {%- if color_option.values.size > 4 -%}
+        <span class="text-[10px] font-mono text-slate-400 font-semibold pl-1">
+          +{{ color_option.values.size | minus: 4 }}
+        </span>
+      {%- endif -%}
+    {%- else -%}
+      {%- comment -%} DEMO SWATCH FALLBACK FOR DEMO CARDS WITHOUT LIVE SHOPIFY VARIANTS {%- endcomment -%}
+      <div class="flex items-center gap-1.5">
+        <button type="button" class="w-3.5 h-3.5 rounded-full bg-slate-900 border border-slate-300 dark:border-slate-700 ring-2 ring-sky-500 ring-offset-1 dark:ring-offset-slate-900 hover:scale-110 transition-transform" aria-label="Black"></button>
+        <button type="button" class="w-3.5 h-3.5 rounded-full bg-slate-300 border border-slate-300 dark:border-slate-700 hover:scale-110 transition-transform" aria-label="Silver"></button>
+        <button type="button" class="w-3.5 h-3.5 rounded-full bg-sky-500 border border-slate-300 dark:border-slate-700 hover:scale-110 transition-transform" aria-label="Sky Blue"></button>
+        <span class="text-[10px] font-mono text-slate-400 font-semibold pl-0.5">+2</span>
+      </div>
+    {%- endif -%}
+  </div>
+{%- endif -%}

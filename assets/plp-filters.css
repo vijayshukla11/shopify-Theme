@@ -1,0 +1,597 @@
+/*
+  ==============================================================================
+  NOVA COMMERCE FRAMEWORK (NCF) - PLP FILTER SYSTEM STYLESHEET
+  File: assets/plp-filters.css
+  Sprint: 4.1 – Filter Sidebar & Mobile Filter Drawer
+  Architecture: Production-Ready Mobile Drawer & Desktop Sticky Sidebar Filter System
+  ==============================================================================
+*/
+
+/* ---------------------------------------------------------------------------
+   1. DESKTOP FILTER SIDEBAR
+   --------------------------------------------------------------------------- */
+.ncf-plp-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .ncf-plp-sidebar {
+    position: sticky;
+    top: 5rem;
+    max-height: calc(100vh - 6rem);
+    overflow-y: auto;
+    padding-right: 1rem;
+  }
+}
+
+.ncf-plp-sidebar__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.ncf-plp-sidebar__title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ncf-plp-sidebar__title {
+  font-size: 1.125rem;
+  font-weight: 800;
+  color: #0f172a;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.ncf-plp-sidebar__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.375rem;
+  height: 1.375rem;
+  border-radius: 9999px;
+  background-color: #0284c7;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.ncf-plp-sidebar__clear-all {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #ef4444;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s ease;
+}
+
+.ncf-plp-sidebar__clear-all:hover {
+  color: #b91c1c;
+}
+
+/* ---------------------------------------------------------------------------
+   2. ACTIVE FACET PILLS
+   --------------------------------------------------------------------------- */
+.ncf-plp-sidebar__active-facets,
+.ncf-filter-drawer__active-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.ncf-active-facet {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 9999px;
+  background-color: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  color: #0f172a;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.ncf-active-facet:hover {
+  background-color: #e2e8f0;
+  border-color: #94a3b8;
+}
+
+.ncf-active-facet:focus-visible {
+  outline: 2px solid #0284c7;
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------------------
+   3. FACET ACCORDION GROUP
+   --------------------------------------------------------------------------- */
+.ncf-filter-group {
+  border-bottom: 1px solid #e2e8f0;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.ncf-filter-group__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.25rem 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  color: #0f172a;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  transition: color 0.2s ease;
+}
+
+.ncf-filter-group__header:hover {
+  color: #0284c7;
+}
+
+.ncf-filter-group__header:focus-visible {
+  outline: 2px solid #0284c7;
+  outline-offset: 2px;
+  border-radius: 0.25rem;
+}
+
+.ncf-filter-group__chevron {
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  color: #64748b;
+}
+
+.ncf-filter-group__header[aria-expanded="true"] .ncf-filter-group__chevron {
+  transform: rotate(180deg);
+}
+
+.ncf-filter-group__body {
+  margin-top: 0.75rem;
+  transition: opacity 0.25s ease, max-height 0.25s ease;
+}
+
+.ncf-filter-group__body--collapsed {
+  display: none;
+}
+
+/* ---------------------------------------------------------------------------
+   4. CHECKBOXES & LIST ITEMS
+   --------------------------------------------------------------------------- */
+.ncf-filter-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.ncf-filter-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  cursor: pointer;
+  user-select: none;
+  font-size: 0.875rem;
+  color: #334155;
+  min-height: 44px; /* Mobile touch friendly target */
+  width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .ncf-filter-checkbox {
+    min-height: 28px;
+  }
+}
+
+.ncf-filter-checkbox__input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.ncf-filter-checkbox__custom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: 0.25rem;
+  border: 1.5px solid #94a3b8;
+  background-color: #ffffff;
+  color: #ffffff;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.ncf-filter-checkbox:hover .ncf-filter-checkbox__custom {
+  border-color: #0284c7;
+}
+
+.ncf-filter-checkbox__input:checked + .ncf-filter-checkbox__custom {
+  background-color: #0284c7;
+  border-color: #0284c7;
+}
+
+.ncf-filter-checkbox__input:focus-visible + .ncf-filter-checkbox__custom {
+  outline: 2px solid #0284c7;
+  outline-offset: 2px;
+}
+
+.ncf-filter-checkbox__label {
+  font-weight: 500;
+  color: #0f172a;
+}
+
+.ncf-filter-checkbox__count {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-left: auto;
+}
+
+.ncf-filter-checkbox--disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ---------------------------------------------------------------------------
+   5. COLOR SWATCHES & SIZE PILLS
+   --------------------------------------------------------------------------- */
+.ncf-filter-list--swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+}
+
+.ncf-filter-swatch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 9999px;
+  padding: 2px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.ncf-filter-swatch:hover {
+  transform: scale(1.1);
+}
+
+.ncf-filter-swatch--active {
+  border-color: #0284c7;
+}
+
+.ncf-filter-swatch__color {
+  width: 100%;
+  height: 100%;
+  border-radius: 9999px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.ncf-filter-list--pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.ncf-filter-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #cbd5e1;
+  background-color: #ffffff;
+  color: #0f172a;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  cursor: pointer;
+  min-height: 44px;
+  transition: all 0.2s ease;
+}
+
+.ncf-filter-pill:hover {
+  border-color: #0284c7;
+  color: #0284c7;
+}
+
+.ncf-filter-pill--active {
+  background-color: #0f172a;
+  color: #ffffff;
+  border-color: #0f172a;
+}
+
+/* ---------------------------------------------------------------------------
+   6. PRICE RANGE SLIDER & INPUTS
+   --------------------------------------------------------------------------- */
+.ncf-filter-price {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ncf-filter-price__visual-slider {
+  position: relative;
+  height: 4px;
+  background-color: #e2e8f0;
+  border-radius: 2px;
+  margin: 0.75rem 0;
+}
+
+.ncf-filter-price__bar {
+  position: absolute;
+  height: 100%;
+  background-color: #0284c7;
+  border-radius: 2px;
+}
+
+.ncf-filter-price__range-thumb {
+  position: absolute;
+  top: -6px;
+  width: 100%;
+  height: 16px;
+  background: none;
+  pointer-events: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.ncf-filter-price__range-thumb::-webkit-slider-thumb {
+  height: 18px;
+  width: 18px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid #0284c7;
+  pointer-events: auto;
+  -webkit-appearance: none;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.ncf-filter-price__inputs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ncf-filter-price__field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.ncf-filter-price__currency {
+  position: absolute;
+  left: 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #64748b;
+  pointer-events: none;
+}
+
+.ncf-filter-price__input {
+  width: 100%;
+  padding: 0.5rem 0.5rem 0.5rem 1.75rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.ncf-filter-price__input:focus {
+  border-color: #0284c7;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.2);
+}
+
+.ncf-filter-price__separator {
+  color: #94a3b8;
+  font-weight: 700;
+}
+
+/* ---------------------------------------------------------------------------
+   7. SEARCH INSIDE FILTER & SHOW MORE
+   --------------------------------------------------------------------------- */
+.ncf-filter-search {
+  position: relative;
+  margin-bottom: 0.75rem;
+}
+
+.ncf-filter-search__icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  pointer-events: none;
+}
+
+.ncf-filter-search__input {
+  width: 100%;
+  padding: 0.4375rem 0.75rem 0.4375rem 2.25rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.375rem;
+  font-size: 0.8125rem;
+  color: #0f172a;
+}
+
+.ncf-filter-search__input:focus {
+  border-color: #0284c7;
+  outline: none;
+}
+
+.ncf-filter-group__show-more {
+  background: transparent;
+  border: none;
+  padding: 0.5rem 0 0 0;
+  color: #0284c7;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.ncf-filter-group__show-more:hover {
+  color: #0369a1;
+  text-decoration: underline;
+}
+
+/* ---------------------------------------------------------------------------
+   8. MOBILE FILTER DRAWER & OVERLAY
+   --------------------------------------------------------------------------- */
+.ncf-filter-drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(2px);
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s ease;
+}
+
+.ncf-filter-drawer-overlay--active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.ncf-filter-drawer {
+  position: fixed;
+  inset: 0 0 0 auto;
+  width: 100%;
+  max-width: 26rem;
+  height: 100%;
+  background-color: #ffffff;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: -10px 0 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.ncf-filter-drawer--active {
+  transform: translateX(0);
+}
+
+.ncf-filter-drawer__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.ncf-filter-drawer__title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ncf-filter-drawer__title {
+  font-size: 1.125rem;
+  font-weight: 900;
+  color: #0f172a;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.ncf-filter-drawer__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 0.5rem;
+  background: transparent;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.ncf-filter-drawer__close:hover {
+  background-color: #f1f5f9;
+  color: #0f172a;
+}
+
+.ncf-filter-drawer__body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+}
+
+.ncf-filter-drawer__footer {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 0.75rem;
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid #e2e8f0;
+  background-color: #ffffff;
+}
+
+.ncf-filter-drawer__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ncf-filter-drawer__btn--secondary {
+  border: 1px solid #cbd5e1;
+  background-color: #ffffff;
+  color: #0f172a;
+}
+
+.ncf-filter-drawer__btn--secondary:hover {
+  background-color: #f8fafc;
+}
+
+.ncf-filter-drawer__btn--primary {
+  border: none;
+  background-color: #0f172a;
+  color: #ffffff;
+}
+
+.ncf-filter-drawer__btn--primary:hover {
+  background-color: #0284c7;
+}
+
+/* ---------------------------------------------------------------------------
+   9. ACCESSIBILITY & REDUCED MOTION
+   --------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .ncf-filter-drawer,
+  .ncf-filter-drawer-overlay,
+  .ncf-filter-group__chevron,
+  .ncf-filter-group__body {
+    transition: none !important;
+  }
+}

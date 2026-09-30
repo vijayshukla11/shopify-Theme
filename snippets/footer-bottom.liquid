@@ -1,0 +1,55 @@
+{%- comment -%}
+  Nova Commerce Framework (NCF) - Snippet: Footer Bottom Bar
+  File: snippets/footer-bottom.liquid
+  Sprint: 3.0 – Enterprise Footer System
+  Architecture: Bottom Footer Bar with Selectors & Version Tag
+{%- endcomment -%}
+
+<div class="ncf-footer__bottom">
+  <div class="ncf-footer__bottom-grid">
+    {%- comment -%} COPYRIGHT & POWERED BY {%- endcomment -%}
+    <div class="space-y-1">
+      <p>&copy; {{ 'now' | date: '%Y' }} {{ shop.name | default: 'Nova Commerce Framework' }}. All rights reserved.</p>
+    </div>
+
+    {%- comment -%} COUNTRY / CURRENCY / LANGUAGE SELECTORS {%- endcomment -%}
+    <div class="flex items-center gap-4 flex-wrap justify-center">
+      {%- if section.settings.enable_country_selector -%}
+        <div class="relative inline-block">
+          <select class="bg-slate-900 border border-slate-700 text-slate-300 text-xs rounded px-2.5 py-1.5 focus:outline-none focus:border-sky-500">
+            <option value="US">United States (USD $)</option>
+            <option value="UK">United Kingdom (GBP £)</option>
+            <option value="EU">European Union (EUR €)</option>
+            <option value="CA">Canada (CAD $)</option>
+            <option value="AU">Australia (AUD $)</option>
+            <option value="JP">Japan (JPY ¥)</option>
+          </select>
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.enable_language_selector -%}
+        <div class="relative inline-block">
+          <select class="bg-slate-900 border border-slate-700 text-slate-300 text-xs rounded px-2.5 py-1.5 focus:outline-none focus:border-sky-500">
+            <option value="en">English</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+            <option value="es">Español</option>
+            <option value="ja">日本語</option>
+          </select>
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} POLICY LINKS & THEME VERSION {%- endcomment -%}
+    <div class="ncf-footer__bottom-links">
+      <a href="#" class="ncf-footer__bottom-link">Privacy Policy</a>
+      <a href="#" class="ncf-footer__bottom-link">Terms of Service</a>
+      <a href="#" class="ncf-footer__bottom-link">Shipping Policy</a>
+      <a href="#" class="ncf-footer__bottom-link">Refund Policy</a>
+
+      {%- if section.settings.show_theme_version -%}
+        <span class="ncf-footer__version-tag">NCF v3.0.0</span>
+      {%- endif -%}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,223 @@
+{%- comment -%}
+  Nova Commerce Framework (NCF) - Snippet: PLP Filter Facet Group
+  File: snippets/plp-filter-facet-group.liquid
+  Sprint: 4.1 – Filter Sidebar & Mobile Filter Drawer
+  Architecture: Accordion Facet Group for Shopify Native Search & Discovery Filters
+{%- endcomment -%}
+
+{%- assign group_index = group_index | default: 0 -%}
+{%- assign filter_id = 'Filter-' | append: filter.param_name | default: group_index | handleize -%}
+{%- assign filter_label_lower = filter.label | downcase -%}
+{%- assign is_color = false -%}
+{%- assign is_size = false -%}
+
+{%- if filter_label_lower contains 'color' or filter_label_lower contains 'colour' -%}
+  {%- assign is_color = true -%}
+{%- elsif filter_label_lower contains 'size' -%}
+  {%- assign is_size = true -%}
+{%- endif -%}
+
+{%- assign is_expanded = false -%}
+{%- if group_index < default_expanded_count -%}
+  {%- assign is_expanded = true -%}
+{%- endif -%}
+
+<div class="ncf-filter-group" data-filter-group="{{ filter_id }}">
+  {%- comment -%} ACCORDION HEADER BUTTON {%- endcomment -%}
+  <button
+    type="button"
+    class="ncf-filter-group__header"
+    aria-expanded="{% if is_expanded %}true{% else %}false{% endif %}"
+    aria-controls="ncf-filter-body-{{ filter_id }}"
+    id="ncf-filter-header-{{ filter_id }}"
+  >
+    <span class="ncf-filter-group__title">
+      {{ filter.label | escape }}
+      {%- assign active_count = filter.active_values.size -%}
+      {%- if active_count > 0 -%}
+        <span class="ncf-filter-group__active-count">({{ active_count }})</span>
+      {%- endif -%}
+    </span>
+    <svg class="ncf-filter-group__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polyline points="6 9 12 15 18 9"></polyline>
+    </svg>
+  </button>
+
+  {%- comment -%} ACCORDION CONTENT BODY {%- endcomment -%}
+  <div
+    id="ncf-filter-body-{{ filter_id }}"
+    class="ncf-filter-group__body {% unless is_expanded %}ncf-filter-group__body--collapsed{% endunless %}"
+    role="region"
+    aria-labelledby="ncf-filter-header-{{ filter_id }}"
+  >
+    {%- case filter.type -%}
+      {%- when 'price_range' -%}
+        {%- comment -%} PRICE RANGE FILTER {%- endcomment -%}
+        <div class="ncf-filter-price">
+          <div class="ncf-filter-price__visual-slider">
+            <div class="ncf-filter-price__bar" style="left: 0%; right: 0%;"></div>
+            <input
+              type="range"
+              class="ncf-filter-price__range-thumb ncf-filter-price__range-thumb--min"
+              min="0"
+              max="{{ filter.range_max | divided_by: 100 | default: 1000 }}"
+              value="{{ filter.min_value.value | divided_by: 100 | default: 0 }}"
+              aria-label="{{ 'products.facets.price_min' | t | default: 'Minimum Price' }}"
+            >
+            <input
+              type="range"
+              class="ncf-filter-price__range-thumb ncf-filter-price__range-thumb--max"
+              min="0"
+              max="{{ filter.range_max | divided_by: 100 | default: 1000 }}"
+              value="{{ filter.max_value.value | divided_by: 100 | default: filter.range_max | divided_by: 100 | default: 1000 }}"
+              aria-label="{{ 'products.facets.price_max' | t | default: 'Maximum Price' }}"
+            >
+          </div>
+
+          <div class="ncf-filter-price__inputs">
+            <div class="ncf-filter-price__field">
+              <span class="ncf-filter-price__currency">{{ cart.currency.symbol | default: '$' }}</span>
+              <input
+                type="number"
+                name="{{ filter.min_value.param_name }}"
+                id="Filter-{{ filter.min_value.param_name }}"
+                class="ncf-filter-price__input"
+                placeholder="0"
+                min="0"
+                max="{{ filter.range_max | divided_by: 100 | default: 1000 }}"
+                value="{% if filter.min_value.value %}{{ filter.min_value.value | divided_by: 100 }}{% endif %}"
+              >
+            </div>
+            <span class="ncf-filter-price__separator">–</span>
+            <div class="ncf-filter-price__field">
+              <span class="ncf-filter-price__currency">{{ cart.currency.symbol | default: '$' }}</span>
+              <input
+                type="number"
+                name="{{ filter.max_value.param_name }}"
+                id="Filter-{{ filter.max_value.param_name }}"
+                class="ncf-filter-price__input"
+                placeholder="{{ filter.range_max | divided_by: 100 | default: 1000 }}"
+                min="0"
+                max="{{ filter.range_max | divided_by: 100 | default: 1000 }}"
+                value="{% if filter.max_value.value %}{{ filter.max_value.value | divided_by: 100 }}{% endif %}"
+              >
+            </div>
+          </div>
+        </div>
+
+      {%- when 'list', 'boolean' -%}
+        {%- comment -%} SEARCH INSIDE FILTER FOR LONG LISTS {%- endcomment -%}
+        {%- if show_search and filter.values.size > 7 -%}
+          <div class="ncf-filter-search">
+            <svg class="ncf-filter-search__icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input
+              type="text"
+              class="ncf-filter-search__input"
+              placeholder="{{ 'products.facets.search_options' | t | default: 'Search options...' }}"
+              aria-label="{{ 'products.facets.search_options' | t | default: 'Search filter options' }}"
+              data-filter-search-input
+            >
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} LIST OF VALUES (COLOR SWATCHES, SIZE PILLS, OR CHECKBOXES) {%- endcomment -%}
+        <ul
+          class="
+            ncf-filter-list
+            {% if is_color and show_color_swatches %}ncf-filter-list--swatches{% endif %}
+            {% if is_size %}ncf-filter-list--pills{% endif %}
+          "
+          role="list"
+        >
+          {%- for value in filter.values -%}
+            {%- assign value_id = 'Filter-' | append: filter.param_name | append: '-' | append: forloop.index -%}
+            
+            <li class="ncf-filter-item {% if forloop.index > 8 %}ncf-filter-item--overflow hidden{% endif %}" data-filter-value-label="{{ value.label | downcase | escape }}">
+              {%- if is_color and show_color_swatches -%}
+                {%- comment -%} COLOR SWATCH {%- endcomment -%}
+                <label
+                  for="{{ value_id }}"
+                  class="ncf-filter-swatch {% if value.active %}ncf-filter-swatch--active{% endif %} {% if value.count == 0 and value.active == false %}ncf-filter-swatch--disabled{% endif %}"
+                  title="{{ value.label | escape }} ({% if value.count %}{{ value.count }}{% else %}0{% endif %})"
+                >
+                  <input
+                    type="checkbox"
+                    name="{{ value.param_name }}"
+                    value="{{ value.value }}"
+                    id="{{ value_id }}"
+                    class="sr-only"
+                    {% if value.active %}checked{% endif %}
+                    {% if value.count == 0 and value.active == false %}disabled{% endif %}
+                  >
+                  <span
+                    class="ncf-filter-swatch__color"
+                    style="background-color: {{ value.value | handleize }};"
+                  ></span>
+                  <span class="sr-only">{{ value.label }}</span>
+                </label>
+
+              {%- elsif is_size -%}
+                {%- comment -%} SIZE PILL {%- endcomment -%}
+                <label
+                  for="{{ value_id }}"
+                  class="ncf-filter-pill {% if value.active %}ncf-filter-pill--active{% endif %} {% if value.count == 0 and value.active == false %}ncf-filter-pill--disabled{% endif %}"
+                >
+                  <input
+                    type="checkbox"
+                    name="{{ value.param_name }}"
+                    value="{{ value.value }}"
+                    id="{{ value_id }}"
+                    class="sr-only"
+                    {% if value.active %}checked{% endif %}
+                    {% if value.count == 0 and value.active == false %}disabled{% endif %}
+                  >
+                  <span class="ncf-filter-pill__label">{{ value.label }}</span>
+                </label>
+
+              {%- else -%}
+                {%- comment -%} STANDARD CHECKBOX LIST ITEM {%- endcomment -%}
+                <label
+                  for="{{ value_id }}"
+                  class="ncf-filter-checkbox {% if value.count == 0 and value.active == false %}ncf-filter-checkbox--disabled{% endif %}"
+                >
+                  <input
+                    type="checkbox"
+                    name="{{ value.param_name }}"
+                    value="{{ value.value }}"
+                    id="{{ value_id }}"
+                    class="ncf-filter-checkbox__input"
+                    {% if value.active %}checked{% endif %}
+                    {% if value.count == 0 and value.active == false %}disabled{% endif %}
+                  >
+                  <span class="ncf-filter-checkbox__custom">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </span>
+                  <span class="ncf-filter-checkbox__label">{{ value.label }}</span>
+                  {%- if show_product_count -%}
+                    <span class="ncf-filter-checkbox__count">({{ value.count }})</span>
+                  {%- endif -%}
+                </label>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+
+        {%- comment -%} SHOW MORE / SHOW LESS BUTTON {%- endcomment -%}
+        {%- if filter.values.size > 8 -%}
+          <button
+            type="button"
+            class="ncf-filter-group__show-more"
+            data-filter-show-more
+            aria-expanded="false"
+          >
+            <span class="ncf-filter-show-more__text">{{ 'products.facets.show_more' | t | default: '+ Show More' }}</span>
+          </button>
+        {%- endif -%}
+    {%- endcase -%}
+  </div>
+</div>

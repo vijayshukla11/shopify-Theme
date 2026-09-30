@@ -1,0 +1,507 @@
+/*
+  ==============================================================================
+  NOVA COMMERCE FRAMEWORK (NCF) - GENERAL UTILITIES SYSTEM
+  File: assets/utilities.css
+  Sprint: 1.3 - Core Layout System
+  Architecture: Native CSS Custom Properties & Atomic Utility Classes
+  Description:
+    Production-ready spacing, flexbox, dimensions, visibility, and responsive helper
+    utilities. Designed strictly with CSS Custom Variable bindings—zero hardcoded
+    pixel spacing values. Meets WCAG 2.1 AA screen-reader and touch-target standards.
+  ==============================================================================
+*/
+
+/* -----------------------------------------------------------------------------
+   0. ATOMIC SPACING SCALE VARIABLE REGISTRY
+   Central standardized scale used by all margin, padding, and gap utilities.
+   -------------------------------------------------------------------------- */
+:root {
+  --space-0: 0px;
+  --space-3xs: 2px;
+  --space-2xs: 4px;
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+  --space-4xl: 96px;
+  --space-auto: auto;
+}
+
+
+/* =============================================================================
+   1. SPACING SYSTEM (MARGIN, PADDING & GAP UTILITIES)
+   Purpose:
+     Provides predictable layout whitespace rhythms across components. Bound
+     directly to design system CSS variables to maintain theme-wide rhythm.
+   ========================================================================== */
+
+/* MARGIN UTILITIES */
+/* All Sides */
+.m-0    { margin: var(--space-0) !important; }
+.m-3xs  { margin: var(--space-3xs); }
+.m-2xs  { margin: var(--space-2xs); }
+.m-xs   { margin: var(--space-xs); }
+.m-sm   { margin: var(--space-sm); }
+.m-md   { margin: var(--space-md); }
+.m-lg   { margin: var(--space-lg); }
+.m-xl   { margin: var(--space-xl); }
+.m-2xl  { margin: var(--space-2xl); }
+.m-auto { margin: var(--space-auto); }
+
+/* Horizontal Margin (Left + Right) */
+.mx-0    { margin-left: var(--space-0) !important; margin-right: var(--space-0) !important; }
+.mx-3xs  { margin-left: var(--space-3xs); margin-right: var(--space-3xs); }
+.mx-2xs  { margin-left: var(--space-2xs); margin-right: var(--space-2xs); }
+.mx-xs   { margin-left: var(--space-xs); margin-right: var(--space-xs); }
+.mx-sm   { margin-left: var(--space-sm); margin-right: var(--space-sm); }
+.mx-md   { margin-left: var(--space-md); margin-right: var(--space-md); }
+.mx-lg   { margin-left: var(--space-lg); margin-right: var(--space-lg); }
+.mx-xl   { margin-left: var(--space-xl); margin-right: var(--space-xl); }
+.mx-auto { margin-left: var(--space-auto); margin-right: var(--space-auto); }
+
+/* Vertical Margin (Top + Bottom) */
+.my-0   { margin-top: var(--space-0) !important; margin-bottom: var(--space-0) !important; }
+.my-3xs { margin-top: var(--space-3xs); margin-bottom: var(--space-3xs); }
+.my-2xs { margin-top: var(--space-2xs); margin-bottom: var(--space-2xs); }
+.my-xs  { margin-top: var(--space-xs); margin-bottom: var(--space-xs); }
+.my-sm  { margin-top: var(--space-sm); margin-bottom: var(--space-sm); }
+.my-md  { margin-top: var(--space-md); margin-bottom: var(--space-md); }
+.my-lg  { margin-top: var(--space-lg); margin-bottom: var(--space-lg); }
+.my-xl  { margin-top: var(--space-xl); margin-bottom: var(--space-xl); }
+
+/* Margin Top */
+.mt-0   { margin-top: var(--space-0) !important; }
+.mt-3xs { margin-top: var(--space-3xs); }
+.mt-2xs { margin-top: var(--space-2xs); }
+.mt-xs  { margin-top: var(--space-xs); }
+.mt-sm  { margin-top: var(--space-sm); }
+.mt-md  { margin-top: var(--space-md); }
+.mt-lg  { margin-top: var(--space-lg); }
+.mt-xl  { margin-top: var(--space-xl); }
+.mt-2xl { margin-top: var(--space-2xl); }
+.mt-3xl { margin-top: var(--space-3xl); }
+.mt-auto { margin-top: var(--space-auto); }
+
+/* Margin Bottom */
+.mb-0   { margin-bottom: var(--space-0) !important; }
+.mb-3xs { margin-bottom: var(--space-3xs); }
+.mb-2xs { margin-bottom: var(--space-2xs); }
+.mb-xs  { margin-bottom: var(--space-xs); }
+.mb-sm  { margin-bottom: var(--space-sm); }
+.mb-md  { margin-bottom: var(--space-md); }
+.mb-lg  { margin-bottom: var(--space-lg); }
+.mb-xl  { margin-bottom: var(--space-xl); }
+.mb-2xl { margin-bottom: var(--space-2xl); }
+.mb-3xl { margin-bottom: var(--space-3xl); }
+.mb-auto { margin-bottom: var(--space-auto); }
+
+/* Margin Left */
+.ml-0   { margin-left: var(--space-0) !important; }
+.ml-xs  { margin-left: var(--space-xs); }
+.ml-sm  { margin-left: var(--space-sm); }
+.ml-md  { margin-left: var(--space-md); }
+.ml-lg  { margin-left: var(--space-lg); }
+.ml-xl  { margin-left: var(--space-xl); }
+.ml-auto { margin-left: var(--space-auto); }
+
+/* Margin Right */
+.mr-0   { margin-right: var(--space-0) !important; }
+.mr-xs  { margin-right: var(--space-xs); }
+.mr-sm  { margin-right: var(--space-sm); }
+.mr-md  { margin-right: var(--space-md); }
+.mr-lg  { margin-right: var(--space-lg); }
+.mr-xl  { margin-right: var(--space-xl); }
+.mr-auto { margin-right: var(--space-auto); }
+
+
+/* PADDING UTILITIES */
+/* All Sides */
+.p-0   { padding: var(--space-0) !important; }
+.p-3xs { padding: var(--space-3xs); }
+.p-2xs { padding: var(--space-2xs); }
+.p-xs  { padding: var(--space-xs); }
+.p-sm  { padding: var(--space-sm); }
+.p-md  { padding: var(--space-md); }
+.p-lg  { padding: var(--space-lg); }
+.p-xl  { padding: var(--space-xl); }
+.p-2xl { padding: var(--space-2xl); }
+
+/* Horizontal Padding (Left + Right) */
+.px-0   { padding-left: var(--space-0) !important; padding-right: var(--space-0) !important; }
+.px-3xs { padding-left: var(--space-3xs); padding-right: var(--space-3xs); }
+.px-2xs { padding-left: var(--space-2xs); padding-right: var(--space-2xs); }
+.px-xs  { padding-left: var(--space-xs); padding-right: var(--space-xs); }
+.px-sm  { padding-left: var(--space-sm); padding-right: var(--space-sm); }
+.px-md  { padding-left: var(--space-md); padding-right: var(--space-md); }
+.px-lg  { padding-left: var(--space-lg); padding-right: var(--space-lg); }
+.px-xl  { padding-left: var(--space-xl); padding-right: var(--space-xl); }
+
+/* Vertical Padding (Top + Bottom) */
+.py-0   { padding-top: var(--space-0) !important; padding-bottom: var(--space-0) !important; }
+.py-3xs { padding-top: var(--space-3xs); padding-bottom: var(--space-3xs); }
+.py-2xs { padding-top: var(--space-2xs); padding-bottom: var(--space-2xs); }
+.py-xs  { padding-top: var(--space-xs); padding-bottom: var(--space-xs); }
+.py-sm  { padding-top: var(--space-sm); padding-bottom: var(--space-sm); }
+.py-md  { padding-top: var(--space-md); padding-bottom: var(--space-md); }
+.py-lg  { padding-top: var(--space-lg); padding-bottom: var(--space-lg); }
+.py-xl  { padding-top: var(--space-xl); padding-bottom: var(--space-xl); }
+.py-2xl { padding-top: var(--space-2xl); padding-bottom: var(--space-2xl); }
+
+/* Padding Top */
+.pt-0   { padding-top: var(--space-0) !important; }
+.pt-3xs { padding-top: var(--space-3xs); }
+.pt-2xs { padding-top: var(--space-2xs); }
+.pt-xs  { padding-top: var(--space-xs); }
+.pt-sm  { padding-top: var(--space-sm); }
+.pt-md  { padding-top: var(--space-md); }
+.pt-lg  { padding-top: var(--space-lg); }
+.pt-xl  { padding-top: var(--space-xl); }
+.pt-2xl { padding-top: var(--space-2xl); }
+
+/* Padding Bottom */
+.pb-0   { padding-bottom: var(--space-0) !important; }
+.pb-3xs { padding-bottom: var(--space-3xs); }
+.pb-2xs { padding-bottom: var(--space-2xs); }
+.pb-xs  { padding-bottom: var(--space-xs); }
+.pb-sm  { padding-bottom: var(--space-sm); }
+.pb-md  { padding-bottom: var(--space-md); }
+.pb-lg  { padding-bottom: var(--space-lg); }
+.pb-xl  { padding-bottom: var(--space-xl); }
+.pb-2xl { padding-bottom: var(--space-2xl); }
+
+/* Padding Left */
+.pl-0  { padding-left: var(--space-0) !important; }
+.pl-xs { padding-left: var(--space-xs); }
+.pl-sm { padding-left: var(--space-sm); }
+.pl-md { padding-left: var(--space-md); }
+.pl-lg { padding-left: var(--space-lg); }
+.pl-xl { padding-left: var(--space-xl); }
+
+/* Padding Right */
+.pr-0  { padding-right: var(--space-0) !important; }
+.pr-xs { padding-right: var(--space-xs); }
+.pr-sm { padding-right: var(--space-sm); }
+.pr-md { padding-right: var(--space-md); }
+.pr-lg { padding-right: var(--space-lg); }
+.pr-xl { padding-right: var(--space-xl); }
+
+
+/* GAP UTILITIES (Flexbox & CSS Grid) */
+.gap-0   { gap: var(--space-0) !important; }
+.gap-3xs { gap: var(--space-3xs); }
+.gap-2xs { gap: var(--space-2xs); }
+.gap-xs  { gap: var(--space-xs); }
+.gap-sm  { gap: var(--space-sm); }
+.gap-md  { gap: var(--space-md); }
+.gap-lg  { gap: var(--space-lg); }
+.gap-xl  { gap: var(--space-xl); }
+.gap-2xl { gap: var(--space-2xl); }
+.gap-3xl { gap: var(--space-3xl); }
+
+/* Column / Horizontal Gap */
+.gap-x-0  { column-gap: var(--space-0) !important; }
+.gap-x-xs { column-gap: var(--space-xs); }
+.gap-x-sm { column-gap: var(--space-sm); }
+.gap-x-md { column-gap: var(--space-md); }
+.gap-x-lg { column-gap: var(--space-lg); }
+.gap-x-xl { column-gap: var(--space-xl); }
+
+/* Row / Vertical Gap */
+.gap-y-0  { row-gap: var(--space-0) !important; }
+.gap-y-xs { row-gap: var(--space-xs); }
+.gap-y-sm { row-gap: var(--space-sm); }
+.gap-y-md { row-gap: var(--space-md); }
+.gap-y-lg { row-gap: var(--space-lg); }
+.gap-y-xl { row-gap: var(--space-xl); }
+
+
+/* =============================================================================
+   2. FLEXBOX UTILITIES
+   Purpose:
+     Comprehensive flex container, alignment, justification, wrapping, and
+     item grow/shrink utilities for dynamic UI components.
+   ========================================================================== */
+
+/* Display Flex */
+.flex        { display: flex; }
+.inline-flex { display: inline-flex; }
+
+/* Flex Direction */
+.flex-row         { flex-direction: row; }
+.flex-row-reverse { flex-direction: row-reverse; }
+.flex-col         { flex-direction: column; }
+.flex-col-reverse { flex-direction: column-reverse; }
+
+/* Flex Wrap */
+.flex-wrap         { flex-wrap: wrap; }
+.flex-nowrap       { flex-wrap: nowrap; }
+.flex-wrap-reverse { flex-wrap: wrap-reverse; }
+
+/* Align Items (Cross Axis) */
+.items-start    { align-items: flex-start; }
+.items-center   { align-items: center; }
+.items-end      { align-items: flex-end; }
+.items-baseline { align-items: baseline; }
+.items-stretch  { align-items: stretch; }
+
+/* Justify Content (Main Axis) */
+.justify-start   { justify-content: flex-start; }
+.justify-center  { justify-content: center; }
+.justify-end     { justify-content: flex-end; }
+.justify-between { justify-content: space-between; }
+.justify-around  { justify-content: space-around; }
+.justify-evenly  { justify-content: space-evenly; }
+
+/* Align Self (Individual Flex Child Override) */
+.self-auto    { align-self: auto; }
+.self-start   { align-self: flex-start; }
+.self-center  { align-self: center; }
+.self-end     { align-self: flex-end; }
+.self-stretch { align-self: stretch; }
+
+/* Flex Sizing / Grow / Shrink */
+.flex-1       { flex: 1 1 0%; }
+.flex-auto    { flex: 1 1 auto; }
+.flex-initial { flex: 0 1 auto; }
+.flex-none    { flex: none; }
+
+.grow    { flex-grow: 1; }
+.grow-0  { flex-grow: 0; }
+.shrink   { flex-shrink: 1; }
+.shrink-0 { flex-shrink: 0; }
+
+
+/* =============================================================================
+   3. WIDTH UTILITIES
+   Purpose:
+     Standardized percentage, auto, fit-content, and max-width layout helpers.
+   ========================================================================== */
+
+.w-full   { width: 100%; }
+.w-auto   { width: auto; }
+.w-fit    { width: fit-content; }
+.w-max    { width: max-content; }
+.w-min    { width: min-content; }
+.w-screen { width: 100vw; }
+
+/* Fractional Widths */
+.w-1-2 { width: 50%; }
+.w-1-3 { width: 33.333333%; }
+.w-2-3 { width: 66.666667%; }
+.w-1-4 { width: 25%; }
+.w-2-4 { width: 50%; }
+.w-3-4 { width: 75%; }
+.w-1-5 { width: 20%; }
+.w-2-5 { width: 40%; }
+.w-3-5 { width: 60%; }
+.w-4-5 { width: 80%; }
+
+/* Max Width Helpers */
+.max-w-none  { max-width: none; }
+.max-w-xs    { max-width: 320px; }
+.max-w-sm    { max-width: 480px; }
+.max-w-md    { max-width: 640px; }
+.max-w-lg    { max-width: 768px; }
+.max-w-xl    { max-width: 1024px; }
+.max-w-2xl   { max-width: 1280px; }
+.max-w-full  { max-width: 100%; }
+.max-w-prose { max-width: 65ch; }
+
+
+/* =============================================================================
+   4. HEIGHT UTILITIES
+   Purpose:
+     Provides full-height, auto, viewport height (dvh/vh) and min-height helpers.
+   ========================================================================== */
+
+.h-auto   { height: auto; }
+.h-full   { height: 100%; }
+.h-screen { height: 100vh; height: 100dvh; }
+
+.min-h-0      { min-height: 0px; }
+.min-h-full   { min-height: 100%; }
+.min-h-screen { min-height: 100vh; min-height: 100dvh; }
+.min-h-25vh   { min-height: 25vh; }
+.min-h-50vh   { min-height: 50vh; }
+.min-h-75vh   { min-height: 75vh; }
+
+.max-h-full   { max-height: 100%; }
+.max-h-screen { max-height: 100vh; max-height: 100dvh; }
+
+
+/* =============================================================================
+   5. VISIBILITY & DISPLAY UTILITIES
+   Purpose:
+     Responsive display control, screen-reader accessibility hiding, and
+     device-targeted visibility toggles.
+   ========================================================================== */
+
+/* Display Primitives */
+.block        { display: block !important; }
+.inline-block { display: inline-block !important; }
+.inline       { display: inline !important; }
+.hidden       { display: none !important; }
+
+/* Screen Reader Accessible Hiding (WCAG 2.1 AA Compliant) */
+.sr-only,
+.screen-reader-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Device-Targeted Responsive Visibility */
+/* Mobile Only (Visible on screens < 768px, Hidden on >= 768px) */
+.mobile-only,
+.hide-desktop {
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .mobile-only,
+  .hide-desktop {
+    display: none !important;
+  }
+}
+
+/* Desktop Only (Hidden on screens < 768px, Visible on >= 768px) */
+.desktop-only,
+.hide-mobile {
+  display: none !important;
+}
+
+@media (min-width: 768px) {
+  .desktop-only,
+  .hide-mobile {
+    display: block !important;
+  }
+
+  .desktop-only-flex {
+    display: flex !important;
+  }
+
+  .desktop-only-grid {
+    display: grid !important;
+  }
+}
+
+/* Tablet Only (Visible between 768px and 1023px) */
+.tablet-only {
+  display: none !important;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .tablet-only {
+    display: block !important;
+  }
+}
+
+
+/* =============================================================================
+   6. RESPONSIVE UTILITY HELPER MODIFIERS
+   Responsive flexbox & display overrides for breakpoint-driven responsiveness.
+   ========================================================================== */
+
+/* Small Screens (sm: >= 640px) */
+@media (min-width: 640px) {
+  .sm\:flex       { display: flex !important; }
+  .sm\:hidden     { display: none !important; }
+  .sm\:flex-row   { flex-direction: row !important; }
+  .sm\:flex-col   { flex-direction: column !important; }
+  .sm\:w-auto     { width: auto !important; }
+  .sm\:w-full     { width: 100% !important; }
+  .sm\:w-1-2      { width: 50% !important; }
+}
+
+/* Medium Screens (md: >= 768px) */
+@media (min-width: 768px) {
+  .md\:flex       { display: flex !important; }
+  .md\:hidden     { display: none !important; }
+  .md\:flex-row   { flex-direction: row !important; }
+  .md\:flex-col   { flex-direction: column !important; }
+  .md\:w-auto     { width: auto !important; }
+  .md\:w-full     { width: 100% !important; }
+  .md\:w-1-2      { width: 50% !important; }
+  .md\:w-1-3      { width: 33.333333% !important; }
+  .md\:w-2-3      { width: 66.666667% !important; }
+}
+
+/* Large Screens (lg: >= 1024px) */
+@media (min-width: 1024px) {
+  .lg\:flex       { display: flex !important; }
+  .lg\:hidden     { display: none !important; }
+  .lg\:flex-row   { flex-direction: row !important; }
+  .lg\:flex-col   { flex-direction: column !important; }
+  .lg\:w-auto     { width: auto !important; }
+  .lg\:w-full     { width: 100% !important; }
+  .lg\:w-1-3      { width: 33.333333% !important; }
+  .lg\:w-1-4      { width: 25% !important; }
+  .lg\:w-3-4      { width: 75% !important; }
+}
+
+/* Wide Desktop Screens (xl: >= 1280px) */
+@media (min-width: 1280px) {
+  .xl\:flex       { display: flex !important; }
+  .xl\:hidden     { display: none !important; }
+  .xl\:flex-row   { flex-direction: row !important; }
+  .xl\:flex-col   { flex-direction: column !important; }
+}
+
+/* =============================================================================
+   7. CORE WEB VITALS & RENDERING PERFORMANCE HELPERS
+   Sprint 7.2 - CWV, CLS = 0, GPU Compositing & Content Visibility
+   ========================================================================== */
+
+/* Rendering Performance Optimization for Long Grids & Offscreen Sections */
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 400px;
+}
+
+/* GPU Hardware Acceleration for Smooth Transitions & Zero Repaint jank */
+.gpu-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Zero Cumulative Layout Shift (CLS) Media Aspect Ratio Preservation */
+.aspect-square {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.aspect-4-3 {
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.aspect-16-9 {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.aspect-3-4 {
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+}
+
+/* Reduced Motion Override for CWV Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+

@@ -1,0 +1,76 @@
+{%- comment -%}
+  Nova Commerce Framework (NCF)
+  File: snippets/typography-tokens.liquid
+  Description: Injects dynamic CSS variables for colors, typography scales, layout widths, and grid gaps into <head>.
+{%- endcomment -%}
+
+<style id="ncf-theme-tokens">
+  :root {
+    /* Color Palette Tokens */
+    --color-primary-bg: {{ settings.color_primary_bg | default: '#ffffff' }};
+    --color-secondary-bg: {{ settings.color_secondary_bg | default: '#f8fafc' }};
+    --color-surface: {{ settings.color_surface | default: '#ffffff' }};
+    --color-primary-text: {{ settings.color_primary_text | default: '#0f172a' }};
+    --color-muted-text: {{ settings.color_muted_text | default: '#64748b' }};
+    --color-brand-accent: {{ settings.color_brand_accent | default: '#0284c7' }};
+    --color-brand-accent-hover: {{ settings.color_brand_accent | default: '#0284c7' | color_darken: 10 }};
+    --color-border: {{ settings.color_border | default: '#e2e8f0' }};
+    --color-success: {{ settings.color_success | default: '#10b981' }};
+    --color-warning: {{ settings.color_warning | default: '#f59e0b' }};
+    --color-danger: {{ settings.color_danger | default: '#ef4444' }};
+
+    /* Typography Font Families */
+    --font-heading-family: {{ settings.type_heading_font.family | default: 'system-ui, -apple-system, blinkmacsystemfont, "Segoe UI", roboto, sans-serif' }};
+    --font-heading-style: {{ settings.type_heading_font.style | default: 'normal' }};
+    --font-heading-weight: {{ settings.type_heading_font.weight | default: '700' }};
+
+    --font-body-family: {{ settings.type_body_font.family | default: 'system-ui, -apple-system, blinkmacsystemfont, "Segoe UI", roboto, sans-serif' }};
+    --font-body-style: {{ settings.type_body_font.style | default: 'normal' }};
+    --font-body-weight: {{ settings.type_body_font.weight | default: '400' }};
+
+    --font-code-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+    /* Font Scale Multipliers */
+    --type-heading-scale: {{ settings.type_heading_size | default: 100 | divided_by: 100.0 }};
+    --type-body-scale: {{ settings.type_body_size | default: 100 | divided_by: 100.0 }};
+
+    /* Computed Fluid Typography Tokens */
+    --font-display-size: clamp(2.25rem, 5vw + 1rem, calc(3.75rem * var(--type-heading-scale)));
+    --font-h1-size: clamp(1.875rem, 3.5vw + 1rem, calc(2.75rem * var(--type-heading-scale)));
+    --font-h2-size: clamp(1.5rem, 2.5vw + 0.875rem, calc(2.25rem * var(--type-heading-scale)));
+    --font-h3-size: clamp(1.25rem, 1.8vw + 0.75rem, calc(1.75rem * var(--type-heading-scale)));
+    --font-h4-size: clamp(1.125rem, 1.2vw + 0.625rem, calc(1.375rem * var(--type-heading-scale)));
+    --font-h5-size: clamp(1rem, 0.8vw + 0.5rem, calc(1.125rem * var(--type-heading-scale)));
+    --font-h6-size: clamp(0.875rem, 0.5vw + 0.5rem, calc(1rem * var(--type-heading-scale)));
+    --font-body-size: calc(1rem * var(--type-body-scale));
+    --font-body-small-size: calc(0.875rem * var(--type-body-scale));
+    --font-caption-size: calc(0.75rem * var(--type-body-scale));
+
+    /* Layout & Container Grid System */
+    --page-width-max: {{ settings.layout_page_width | default: 1440 }}px;
+    --container-padding-desktop: {{ settings.layout_container_padding_desktop | default: 32 }}px;
+    --container-padding-mobile: {{ settings.layout_container_padding_mobile | default: 16 }}px;
+
+    /* Responsive Grid Gaps */
+    --grid-gap-desktop: {{ settings.layout_grid_gap_desktop | default: 24 }}px;
+    --grid-gap-tablet: {{ settings.layout_grid_gap_tablet | default: 20 }}px;
+    --grid-gap-mobile: {{ settings.layout_grid_gap_mobile | default: 16 }}px;
+
+    /* Component Border Radius Tokens */
+    --button-radius: {{ settings.button_border_radius | default: 6 }}px;
+    --input-radius: {{ settings.input_border_radius | default: 6 }}px;
+    --card-radius: {{ settings.card_border_radius | default: 10 }}px;
+    --badge-radius: {{ settings.badge_border_radius | default: 4 }}px;
+
+    /* Z-Index Hierarchy Layering */
+    --z-index-base: 1;
+    --z-index-dropdown: 100;
+    --z-index-sticky: 500;
+    --z-index-header: 800;
+    --z-index-overlay: 900;
+    --z-index-drawer: 1000;
+    --z-index-modal: 1100;
+    --z-index-toast: 1200;
+    --z-index-skip-link: 9999;
+  }
+</style>

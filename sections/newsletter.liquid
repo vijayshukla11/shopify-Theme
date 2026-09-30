@@ -1,0 +1,152 @@
+{%- comment -%}
+  Nova Commerce Framework (NCF) - Section: Newsletter
+  File: sections/newsletter.liquid
+  Sprint: 4.5 – Enterprise Newsletter Subscription Component
+  Design System: Matches TechNova Newsletter Section exactly (#F8FAFC card, #2563EB accent, #0F172A typography).
+{%- endcomment -%}
+
+<section
+  id="newsletter-section-{{ section.id }}"
+  aria-label="{{ section.settings.heading | default: 'Newsletter Subscription' }}"
+  class="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16"
+>
+  <div class="w-full bg-[#F8FAFC] border border-[#E5E7EB] rounded-2xl sm:rounded-3xl p-8 sm:p-12 lg:p-14 text-center max-w-3xl mx-auto shadow-2xs">
+    
+    {%- comment -%} Eyebrow {%- endcomment -%}
+    {%- if section.settings.eyebrow != blank -%}
+      <span class="text-xs font-bold tracking-widest text-[#2563EB] uppercase block mb-2">
+        {{ section.settings.eyebrow }}
+      </span>
+    {%- endif -%}
+
+    {%- comment -%} Heading {%- endcomment -%}
+    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#0F172A] tracking-tight">
+      {{ section.settings.heading | default: 'Get the latest from TechNova.' }}
+    </h2>
+
+    {%- comment -%} Subtitle {%- endcomment -%}
+    {%- if section.settings.subtitle != blank -%}
+      <p class="text-sm sm:text-base text-slate-500 mt-2.5 max-w-lg mx-auto leading-relaxed">
+        {{ section.settings.subtitle }}
+      </p>
+    {%- endif -%}
+
+    {%- comment -%} Newsletter Form {%- endcomment -%}
+    <div class="mt-8" aria-live="polite">
+      {%- form 'customer', class: 'ncf-newsletter-form max-w-md mx-auto', id: 'newsletter-form' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        
+        {%- if form.posted_successfully? -%}
+          <div class="p-4 sm:p-5 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800 text-sm font-semibold flex items-center justify-center gap-2.5 max-w-md mx-auto">
+            <svg class="w-5 h-5 text-emerald-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            <span>{{ section.settings.success_message | default: 'Thank you for subscribing! You will receive our latest updates.' }}</span>
+          </div>
+        {%- else -%}
+          {%- if form.errors -%}
+            <div class="p-3 bg-rose-50 border border-rose-200 rounded-xl text-rose-700 text-xs font-semibold mb-3">
+              {{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}
+            </div>
+          {%- endif -%}
+
+          <div class="flex flex-col sm:flex-row gap-3">
+            <label for="NewsletterEmail-{{ section.id }}" class="sr-only">
+              {{ 'general.newsletter_form.email_placeholder' | t | default: 'Email address' }}
+            </label>
+            <input
+              id="NewsletterEmail-{{ section.id }}"
+              type="email"
+              name="contact[email]"
+              value="{{ form.email }}"
+              aria-required="true"
+              autocorrect="off"
+              autocapitalize="off"
+              autocomplete="email"
+              placeholder="{{ section.settings.placeholder_text | default: 'Enter your email address' }}"
+              required
+              class="flex-1 h-[48px] px-4 py-3 bg-white border border-[#E5E7EB] rounded-xl text-sm text-[#0F172A] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB] transition-colors"
+            >
+            <button
+              type="submit"
+              name="commit"
+              id="Subscribe-{{ section.id }}"
+              class="h-[48px] px-7 bg-[#2563EB] hover:bg-blue-700 active:scale-98 text-white font-semibold text-sm rounded-xl transition-all duration-200 cursor-pointer shrink-0 shadow-2xs"
+            >
+              {{ section.settings.button_label | default: 'Subscribe' }}
+            </button>
+          </div>
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+
+    {%- comment -%} Disclaimer / Trust Note {%- endcomment -%}
+    <p class="text-xs text-slate-400 mt-4">
+      {{ section.settings.privacy_note | default: 'We respect your privacy. Unsubscribe anytime with zero hassle.' }}
+    </p>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "tag": "section",
+  "class": "ncf-section-newsletter",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "STAY IN THE LOOP"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Get the latest from TechNova."
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Be the first to discover new products, exclusive offers and smarter everyday tech."
+    },
+    {
+      "type": "text",
+      "id": "placeholder_text",
+      "label": "Input Placeholder",
+      "default": "Enter your email address"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "Subscribe"
+    },
+    {
+      "type": "text",
+      "id": "privacy_note",
+      "label": "Privacy Note",
+      "default": "We respect your privacy. Unsubscribe anytime with zero hassle."
+    },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Success Message",
+      "default": "Thank you for subscribing! You will receive our latest updates."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter",
+      "settings": {
+        "eyebrow": "STAY IN THE LOOP",
+        "heading": "Get the latest from TechNova.",
+        "subtitle": "Be the first to discover new products, exclusive offers and smarter everyday tech."
+      }
+    }
+  ]
+}
+{% endschema %}

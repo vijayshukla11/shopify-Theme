@@ -1,0 +1,8 @@
+{
+  "name": "CLINZA - Premium Men's Fashion",
+  "description": "CLINZA is an elevated menswear ecommerce brand offering premium European flax linen shirts, curated combos, Italian-tailored trousers, and refined essentials for modern everyday elegance.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
+

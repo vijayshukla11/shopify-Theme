@@ -1,0 +1,209 @@
+{%- comment -%}
+  Nova Commerce Framework (NCF) - Section: Premium Announcement Bar
+  File: sections/announcement-bar.liquid
+  Sprint: 2.0 - Premium Announcement Bar & Enterprise Header
+{%- endcomment -%}
+
+{%- if section.settings.enable_announcement_bar -%}
+  <div
+    class="ncf-announcement-bar"
+    data-ncf-announcement-bar
+    data-auto-rotate="{{ section.settings.auto_rotate }}"
+    data-rotation-speed="{{ section.settings.rotation_speed }}"
+    style="
+      --ncf-announcement-bg: {{ section.settings.bg_color | default: '#0f172a' }};
+      --ncf-announcement-text: {{ section.settings.text_color | default: '#f8fafc' }};
+      --ncf-header-accent: {{ section.settings.accent_color | default: '#0284c7' }};
+    "
+    role="region"
+    aria-label="Announcement Bar"
+  >
+    <div class="ncf-announcement-bar__container max-w-7xl">
+      
+      {%- comment -%} Left Secondary Contact / Currency Helper {%- endcomment -%}
+      <div class="hidden md:flex items-center gap-3 text-[11px] font-mono text-slate-400">
+        {%- if section.settings.secondary_text != blank -%}
+          <span>{{ section.settings.secondary_text }}</span>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} Center Message Carousel Slider {%- endcomment -%}
+      <div class="ncf-announcement-bar__slider">
+        {%- if section.blocks.size > 0 -%}
+          {%- for block in section.blocks -%}
+            <div
+              class="ncf-announcement-bar__item {% if forloop.first %}is-active{% endif %}"
+              data-announcement-item
+              {{ block.shopify_attributes }}
+              aria-hidden="{% if forloop.first %}false{% else %}true{% endif %}"
+            >
+              {%- if block.settings.badge_text != blank -%}
+                <span class="ncf-announcement-bar__badge">{{ block.settings.badge_text }}</span>
+              {%- endif -%}
+
+              <span class="ncf-announcement-bar__text">
+                {{ block.settings.text }}
+              </span>
+
+              {%- if block.settings.link_text != blank and block.settings.link_url != blank -%}
+                <a href="{{ block.settings.link_url }}" class="ncf-announcement-bar__link">
+                  {{ block.settings.link_text }}
+                </a>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        {%- else -%}
+          {%- comment -%} Default Fallback Announcement Block {%- endcomment -%}
+          <div class="ncf-announcement-bar__item is-active" data-announcement-item>
+            <span class="ncf-announcement-bar__badge">COMPLIMENTARY SHIPPING</span>
+            <span class="ncf-announcement-bar__text">
+              Complimentary Shipping on Orders Over ₹999 • Easy 7-Day Doorstep Exchanges
+            </span>
+            <a href="{{ routes.all_products_collection_url }}" class="ncf-announcement-bar__link">Shop Now</a>
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} Right Controls & Close Button {%- endcomment -%}
+      <div class="ncf-announcement-bar__controls">
+        {%- if section.blocks.size > 1 -%}
+          <button type="button" class="ncf-announcement-bar__btn" data-announcement-prev aria-label="Previous announcement">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <button type="button" class="ncf-announcement-bar__btn" data-announcement-next aria-label="Next announcement">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        {%- endif -%}
+
+        {%- if section.settings.show_close_button -%}
+          <button type="button" class="ncf-announcement-bar__btn" data-announcement-close aria-label="Dismiss announcement bar">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        {%- endif -%}
+      </div>
+
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Announcement Bar",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_announcement_bar",
+      "label": "Enable Announcement Bar",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "auto_rotate",
+      "label": "Auto-rotate Announcements",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "rotation_speed",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "label": "Auto-rotate Delay (Seconds)",
+      "default": 5
+    },
+    {
+      "type": "checkbox",
+      "id": "show_close_button",
+      "label": "Show Close/Dismiss Button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "secondary_text",
+      "label": "Secondary Support Text",
+      "default": "Support: 1-800-NOVA-TECH | Currency: USD ($)"
+    },
+    {
+      "type": "header",
+      "content": "Color Customization"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#0f172a"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#f8fafc"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Badge Accent Color",
+      "default": "#0284c7"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "announcement",
+      "name": "Announcement Message",
+      "settings": [
+        {
+          "type": "text",
+          "id": "badge_text",
+          "label": "Badge Tag",
+          "default": "LIMITED DEAL"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Announcement Text",
+          "default": "Free Express Shipping on Orders Over $99"
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Link Text",
+          "default": "Shop Now"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Link Target URL"
+        }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      {
+        "type": "announcement",
+        "settings": {
+          "badge_text": "SUMMER TECH SALE",
+          "text": "Free Express Shipping on Orders Over $99 • 2-Year Warranty",
+          "link_text": "Shop Deals"
+        }
+      },
+      {
+        "type": "announcement",
+        "settings": {
+          "badge_text": "NEW RELEASE",
+          "text": "NovaBook Ultra 16\" OLED M3 Max is now available!",
+          "link_text": "Explore Laptop"
+        }
+      }
+    ]
+  }
+}
+{% endschema %}

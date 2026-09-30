@@ -1,0 +1,54 @@
+{%- comment -%}
+  Nova Commerce Framework (NCF) - Snippet: Product Badges
+  File: snippets/product-badges.liquid
+  Sprint: 2.4 - Enterprise Product Card System
+{%- endcomment -%}
+
+{%- assign show_badges = show_badges | default: true -%}
+
+{%- if show_badges and product != blank -%}
+  <div class="ncf-product-badges" aria-label="Product tags and statuses">
+    {%- comment -%} 1. SOLD OUT BADGE {%- endcomment -%}
+    {%- if product.available == false -%}
+      <span class="ncf-badge ncf-badge--sold-out">
+        {{ 'products.product.sold_out' | t | default: 'Sold Out' }}
+      </span>
+
+    {%- comment -%} 2. SALE & DISCOUNT BADGE {%- endcomment -%}
+    {%- elsif product.compare_at_price > product.price -%}
+      {%- assign discount_amount = product.compare_at_price | minus: product.price -%}
+      {%- assign discount_percent = discount_amount | times: 100.0 | divided_by: product.compare_at_price | round -%}
+
+      <span class="ncf-badge ncf-badge--sale">
+        {%- if show_discount_percent and discount_percent > 0 -%}
+          -{{ discount_percent }}%
+        {%- else -%}
+          {{ 'products.product.on_sale' | t | default: 'Sale' }}
+        {%- endif -%}
+      </span>
+    {%- endif -%}
+
+    {%- comment -%} 3. NEW ARRIVAL BADGE {%- endcomment -%}
+    {%- assign is_new = false -%}
+    {%- if product.tags contains 'new' or product.tags contains 'New' or product.tags contains 'new-arrival' -%}
+      {%- assign is_new = true -%}
+    {%- endif -%}
+
+    {%- if is_new and product.available -%}
+      <span class="ncf-badge ncf-badge--new">
+        {{ 'products.product.new' | t | default: 'New' }}
+      </span>
+    {%- endif -%}
+
+    {%- comment -%} 4. CUSTOM TAG BADGES (PRE-ORDER, BESTSELLER) {%- endcomment -%}
+    {%- if product.tags contains 'pre-order' or product.tags contains 'Pre-Order' -%}
+      <span class="ncf-badge ncf-badge--custom">
+        Pre-Order
+      </span>
+    {%- elsif product.tags contains 'bestseller' or product.tags contains 'Bestseller' -%}
+      <span class="ncf-badge ncf-badge--custom bg-amber-500 text-slate-950">
+        Bestseller
+      </span>
+    {%- endif -%}
+  </div>
+{%- endif -%}

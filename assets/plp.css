@@ -1,0 +1,163 @@
+/* ==========================================================================
+   Nova Commerce Framework (NCF) - Stylesheet: PLP Collection & Filter System
+   File: assets/plp.css
+   Sprint: 4.1 – Premium Collection Filters & Product Listing Experience
+   Architecture: High-performance, responsive PLP Toolbar, Sticky Accordion Sidebar & Mobile Drawer
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. STICKY TOOLBAR & GRID CONTROLS
+   -------------------------------------------------------------------------- */
+.ncf-plp-toolbar {
+  position: relative;
+  z-index: 20;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.ncf-plp-toolbar[data-sticky-toolbar="true"] {
+  position: sticky;
+  top: 1rem;
+}
+
+/* --------------------------------------------------------------------------
+   2. DESKTOP FILTER SIDEBAR & ACCORDIONS
+   -------------------------------------------------------------------------- */
+.ncf-plp-sidebar {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ncf-filter-group {
+  transition: border-color 0.15s ease;
+}
+
+.ncf-filter-group [data-accordion-trigger] {
+  cursor: pointer;
+  user-select: none;
+}
+
+.ncf-filter-group [data-accordion-chevron] {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* --------------------------------------------------------------------------
+   3. COLOR SWATCHES & SIZE PILLS
+   -------------------------------------------------------------------------- */
+.ncf-filter-swatch-input:checked + span {
+  box-shadow: 0 0 0 2px var(--color-brand-accent, #0284c7), 0 0 0 4px rgba(2, 132, 199, 0.2);
+}
+
+.ncf-filter-pill-input:checked + span {
+  background-color: var(--color-brand-accent, #0284c7);
+  color: #ffffff;
+  border-color: var(--color-brand-accent, #0284c7);
+}
+
+/* --------------------------------------------------------------------------
+   4. DUAL PRICE RANGE SLIDER
+   -------------------------------------------------------------------------- */
+.ncf-filter-price-range input[type="range"]::-webkit-slider-thumb {
+  pointer-events: auto;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  border: 2px solid #0284c7;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  appearance: none;
+}
+
+.ncf-filter-price-range input[type="range"]::-moz-range-thumb {
+  pointer-events: auto;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  border: 2px solid #0284c7;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+}
+
+/* --------------------------------------------------------------------------
+   5. MOBILE OFF-CANVAS FILTER DRAWER
+   -------------------------------------------------------------------------- */
+#ncf-plp-filter-drawer:not(.hidden) {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#ncf-plp-filter-drawer:not(.hidden) #ncf-filter-drawer-panel {
+  transform: translateX(0);
+}
+
+/* --------------------------------------------------------------------------
+   6. SKELETON LOADING & ANIMATED SHIMMER STATES
+   -------------------------------------------------------------------------- */
+.ncf-skeleton-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1rem;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  background-color: #ffffff;
+  padding: 0.75rem;
+}
+
+.dark .ncf-skeleton-card {
+  border-color: rgba(30, 41, 59, 0.8);
+  background-color: #0f172a;
+}
+
+.ncf-skeleton-media {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: 0.75rem;
+  background-color: #e2e8f0;
+  margin-bottom: 0.75rem;
+}
+
+.dark .ncf-skeleton-media {
+  background-color: #1e293b;
+}
+
+.ncf-skeleton-text {
+  height: 0.875rem;
+  border-radius: 0.375rem;
+  background-color: #e2e8f0;
+  margin-bottom: 0.5rem;
+}
+
+.dark .ncf-skeleton-text {
+  background-color: #1e293b;
+}
+
+.ncf-skeleton-pulse {
+  animation: ncfSkeletonPulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes ncfSkeletonPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+.ncf-grid-loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   7. ACCESSIBILITY & REDUCED MOTION
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .ncf-plp-toolbar,
+  .ncf-plp-sidebar,
+  .ncf-filter-group [data-accordion-chevron],
+  #ncf-filter-drawer-panel,
+  #ncf-plp-filter-drawer {
+    transition: none !important;
+    animation: none !important;
+  }
+}

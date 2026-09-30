@@ -1,0 +1,135 @@
+{%- comment -%}
+  Nova Commerce Framework (NCF) - Snippet: Enterprise Product Card System
+  File: snippets/product-card.liquid
+  Sprint: 4.3 – Premium Product Cards & Shopping Experience
+  Architecture: High-Performance Reusable E-commerce Product Card with Quick Add, Quick View,
+  Color Swatches, Hover Image Swap, Stock Badges, and Delivery Badges.
+{%- endcomment -%}
+
+{%- assign show_vendor = show_vendor | default: true -%}
+{%- assign show_rating = show_rating | default: true -%}
+{%- assign show_badges = show_badges | default: true -%}
+{%- assign show_quick_view = show_quick_view | default: true -%}
+{%- assign show_quick_add = show_quick_add | default: true -%}
+{%- assign show_swatches = show_swatches | default: true -%}
+{%- assign show_stock = show_stock | default: true -%}
+{%- assign show_delivery = show_delivery | default: true -%}
+
+{%- assign demo_titles = "Nova Pro Wireless Headphones,Apex Soundbar System 5.1,Aura Studio Reference Speakers,Pulse Ergonomic Audio Earbuds,Sonic Portable Bluetooth Speaker,Horizon High-Res DAC Amplifier,Omni Noise Cancelling Pods,Vibe Retro Turntable System" | split: "," -%}
+{%- assign demo_vendors = "Nova Audio,Apex Tech,Aura Acoustic,Pulse Audio,Sonic Lab,Horizon HiFi,Omni Audio,Vibe Sound" | split: "," -%}
+{%- assign demo_prices = "₹14,999,₹29,999,₹45,000,₹8,499,₹11,200,₹32,500,₹18,999,₹24,000" | split: "," -%}
+{%- assign demo_compare_prices = "₹19,999,₹34,999,₹52,000,₹10,999,₹14,000,₹38,000,₹22,999,₹29,999" | split: "," -%}
+{%- assign demo_images = "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80,https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=800&q=80,https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800&q=80,https://images.unsplash.com/photo-1572536147248-ac59a8abfa4b?w=800&q=80,https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=800&q=80,https://images.unsplash.com/photo-1558089687-f282ffcbc126?w=800&q=80,https://images.unsplash.com/photo-1583394838336-acd977736f90?w=800&q=80,https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=800&q=80" | split: "," -%}
+{%- assign demo_secondary_images = "https://images.unsplash.com/photo-1484704849700-f032a568e944?w=800&q=80,https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?w=800&q=80,https://images.unsplash.com/photo-1545454675-3531b543be5d?w=800&q=80,https://images.unsplash.com/photo-1590658006821-04f4008d5717?w=800&q=80,https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=800&q=80,https://images.unsplash.com/photo-1524678606370-a47ad25cb82a?w=800&q=80,https://images.unsplash.com/photo-1578319439584-104c94d37305?w=800&q=80,https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&q=80" | split: "," -%}
+
+{%- assign idx = index | default: 1 | minus: 1 | modulo: 8 -%}
+{%- assign card_title = product.title | default: demo_titles[idx] -%}
+{%- assign card_vendor = product.vendor | default: demo_vendors[idx] -%}
+{%- assign card_price = product.price | money | default: demo_prices[idx] -%}
+{%- assign card_compare_price = product.compare_at_price | money | default: demo_compare_prices[idx] -%}
+{%- assign card_img = product.featured_media | image_url: width: 800 | default: demo_images[idx] -%}
+{%- assign card_secondary_img = product.media[1] | image_url: width: 800 | default: demo_secondary_images[idx] -%}
+
+<div
+  class="ncf-product-card group relative"
+  data-product-card
+  data-product-id="{{ product.id | default: idx }}"
+  data-product-handle="{{ product.handle | default: 'demo-product' }}"
+>
+  {%- comment -%} 1. MEDIA CONTAINER & FLOATING ACTIONS {%- endcomment -%}
+  <div class="ncf-card-media-wrapper aspect-[3/4]">
+    
+    {%- comment -%} Status Badges {%- endcomment -%}
+    {%- if show_badges -%}
+      <div class="absolute top-2.5 left-2.5 z-10 flex flex-col gap-1">
+        {%- if product.compare_at_price > product.price or card_compare_price != blank -%}
+          <span class="px-2 py-0.5 rounded-md bg-rose-600 text-white text-[10px] font-extrabold uppercase tracking-wider shadow-xs">
+            Sale
+          </span>
+        {%- endif -%}
+        {%- if idx == 0 or idx == 3 -%}
+          <span class="px-2 py-0.5 rounded-md bg-sky-600 text-white text-[10px] font-extrabold uppercase tracking-wider shadow-xs">
+            New
+          </span>
+        {%- elsif idx == 1 -%}
+          <span class="px-2 py-0.5 rounded-md bg-amber-500 text-white text-[10px] font-extrabold uppercase tracking-wider shadow-xs">
+            Best Seller
+          </span>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} Quick Actions (Wishlist, Compare, Quick View, Quick Add) {%- endcomment -%}
+    {% render 'product-card-actions', product: product, show_quick_view: show_quick_view, show_quick_add: show_quick_add, show_wishlist: true, show_compare: true %}
+
+    {%- comment -%} Product Image Link & Hover Secondary Image {%- endcomment -%}
+    <a href="{{ product.url | default: '#' }}" class="block w-full h-full" tabindex="-1">
+      <img
+        src="{{ card_img }}"
+        alt="{{ card_title | escape }}"
+        loading="lazy"
+        width="600"
+        height="800"
+        class="ncf-card-img-primary object-cover w-full h-full group-hover:opacity-0 transition-opacity duration-300"
+      />
+      <img
+        src="{{ card_secondary_img }}"
+        alt="{{ card_title | escape }} Hover"
+        loading="lazy"
+        width="600"
+        height="800"
+        class="ncf-card-img-secondary object-cover w-full h-full absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+      />
+    </a>
+  </div>
+
+  {%- comment -%} 2. DETAILS AREA {%- endcomment -%}
+  <div class="flex flex-col flex-1 pt-3">
+    
+    {%- if show_vendor and card_vendor != blank -%}
+      <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-sky-600 dark:text-sky-400 mb-1">
+        {{ card_vendor }}
+      </span>
+    {%- endif -%}
+
+    <h3 class="text-sm font-bold text-slate-900 dark:text-slate-100 leading-snug line-clamp-2 hover:text-sky-600 dark:hover:text-sky-400 transition-colors">
+      <a href="{{ product.url | default: '#' }}">
+        {{ card_title }}
+      </a>
+    </h3>
+
+    {%- comment -%} Rating & Reviews {%- endcomment -%}
+    {%- if show_rating -%}
+      <div class="flex items-center gap-1.5 mt-1 text-xs text-amber-500">
+        <div class="flex items-center">
+          {%- for i in (1..5) -%}
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+          {%- endfor -%}
+        </div>
+        <span class="text-[11px] font-mono text-slate-500 dark:text-slate-400 font-semibold">(4.9)</span>
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} Pricing {%- endcomment -%}
+    <div class="flex items-center gap-2 mt-2">
+      <span class="text-base font-extrabold text-slate-900 dark:text-slate-100 font-mono">
+        {{ card_price }}
+      </span>
+      {%- if card_compare_price != blank -%}
+        <span class="text-xs font-mono text-slate-400 line-through">
+          {{ card_compare_price }}
+        </span>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Color Swatches {%- endcomment -%}
+    {% render 'product-card-swatches', product: product, show_swatches: show_swatches %}
+
+    {%- comment -%} Stock Status {%- endcomment -%}
+    {% render 'product-card-stock', product: product, show_stock: show_stock %}
+
+    {%- comment -%} Delivery Trust Badges {%- endcomment -%}
+    {% render 'product-card-delivery', product: product, show_delivery: show_delivery %}
+
+  </div>
+</div>

@@ -1,0 +1,484 @@
+/*
+  ==============================================================================
+  NOVA COMMERCE FRAMEWORK (NCF) - ENTERPRISE FOOTER SYSTEM STYLESHEET
+  File: assets/footer.css
+  Sprint: 3.0 – Enterprise Footer System
+  Architecture: Mobile-First Collapsible Navigation & Enterprise Footer Layout
+  ==============================================================================
+*/
+
+:root {
+  --ncf-footer-bg: #0f172a;
+  --ncf-footer-text: #94a3b8;
+  --ncf-footer-heading: #ffffff;
+  --ncf-footer-border: #1e293b;
+  --ncf-footer-accent: #0284c7;
+  --ncf-footer-radius: 0.5rem;
+}
+
+/* ---------------------------------------------------------------------------
+   1. FOOTER MAIN CONTAINER
+   --------------------------------------------------------------------------- */
+.ncf-footer {
+  position: relative;
+  width: 100%;
+  background-color: var(--ncf-footer-bg);
+  color: var(--ncf-footer-text);
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+/* ---------------------------------------------------------------------------
+   2. TOP FOOTER / BRAND & NEWSLETTER BAND
+   --------------------------------------------------------------------------- */
+.ncf-footer__top {
+  padding-bottom: 2.5rem;
+  border-bottom: 1px solid var(--ncf-footer-border);
+}
+
+.ncf-footer__top-grid {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 1024px) {
+  .ncf-footer__top-grid {
+    grid-template-columns: 1.2fr 1.8fr;
+    align-items: center;
+  }
+}
+
+.ncf-footer__brand-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.ncf-footer__logo-img {
+  max-width: 180px;
+  height: auto;
+  object-fit: contain;
+}
+
+.ncf-footer__brand-desc {
+  font-size: 0.875rem;
+  color: var(--ncf-footer-text);
+  max-width: 28rem;
+}
+
+/* Newsletter Form */
+.ncf-footer__newsletter {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--ncf-footer-border);
+  border-radius: var(--ncf-footer-radius);
+}
+
+.ncf-footer__newsletter-heading {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--ncf-footer-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.ncf-footer__newsletter-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+@media (min-width: 640px) {
+  .ncf-footer__newsletter-form {
+    flex-direction: row;
+  }
+}
+
+.ncf-footer__newsletter-input {
+  min-height: 44px;
+  padding: 0.75rem 1rem;
+  border-radius: var(--ncf-footer-radius);
+  border: 1px solid var(--ncf-footer-border);
+  background-color: rgba(15, 23, 42, 0.8);
+  color: #ffffff;
+  font-size: 0.875rem;
+  width: 100%;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ncf-footer__newsletter-input::placeholder {
+  color: #64748b;
+}
+
+.ncf-footer__newsletter-input:focus-visible {
+  outline: none;
+  border-color: var(--ncf-footer-accent);
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.25);
+}
+
+.ncf-footer__newsletter-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--ncf-footer-radius);
+  background-color: var(--ncf-footer-accent);
+  color: #ffffff;
+  font-size: 0.8125rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.ncf-footer__newsletter-btn:hover {
+  background-color: #0369a1;
+  transform: translateY(-1px);
+}
+
+.ncf-footer__newsletter-btn:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------------------
+   3. NAVIGATION COLUMNS & MOBILE COLLAPSIBLE ACCORDION
+   --------------------------------------------------------------------------- */
+.ncf-footer__navigation {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+  border-bottom: 1px solid var(--ncf-footer-border);
+}
+
+.ncf-footer__columns-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .ncf-footer__columns-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .ncf-footer__columns-grid {
+    grid-template-columns: repeat(var(--ncf-footer-cols, 5), 1fr);
+  }
+}
+
+/* Footer Column Styling */
+.ncf-footer-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.ncf-footer-col__title-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.75rem 0;
+  background: none;
+  border: none;
+  color: var(--ncf-footer-heading);
+  font-size: 0.9375rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-align: left;
+  cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .ncf-footer-col__title-btn {
+    padding: 0;
+    margin-bottom: 1rem;
+    cursor: default;
+    pointer-events: none;
+  }
+}
+
+.ncf-footer-col__icon {
+  transition: transform 0.3s ease;
+}
+
+@media (min-width: 768px) {
+  .ncf-footer-col__icon {
+    display: none;
+  }
+}
+
+.ncf-footer-col[aria-expanded="true"] .ncf-footer-col__icon {
+  transform: rotate(180deg);
+}
+
+/* Content Collapsible Wrapper */
+.ncf-footer-col__content {
+  display: none;
+  padding-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+  .ncf-footer-col__content {
+    display: block !important;
+    padding-bottom: 0;
+  }
+}
+
+.ncf-footer-col[aria-expanded="true"] .ncf-footer-col__content {
+  display: block;
+}
+
+/* Links List */
+.ncf-footer-col__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ncf-footer-col__link {
+  color: var(--ncf-footer-text);
+  text-decoration: none;
+  transition: color 0.2s ease, transform 0.2s ease;
+  display: inline-block;
+  min-height: 32px;
+  line-height: 32px;
+}
+
+.ncf-footer-col__link:hover {
+  color: var(--ncf-footer-heading);
+  transform: translateX(2px);
+}
+
+.ncf-footer-col__link:focus-visible {
+  outline: 2px solid var(--ncf-footer-accent);
+  outline-offset: 2px;
+}
+
+/* Contact Info List */
+.ncf-footer-contact__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  color: var(--ncf-footer-text);
+  margin-bottom: 0.625rem;
+}
+
+.ncf-footer-contact__icon {
+  color: var(--ncf-footer-accent);
+  flex-shrink: 0;
+  margin-top: 0.25rem;
+}
+
+/* ---------------------------------------------------------------------------
+   4. TRUST BADGES BAND
+   --------------------------------------------------------------------------- */
+.ncf-footer__trust {
+  padding-top: 1.75rem;
+  padding-bottom: 1.75rem;
+  border-bottom: 1px solid var(--ncf-footer-border);
+}
+
+.ncf-footer__trust-grid {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (min-width: 640px) {
+  .ncf-footer__trust-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .ncf-footer__trust-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+.ncf-footer-trust-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-radius: var(--ncf-footer-radius);
+  background-color: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--ncf-footer-border);
+}
+
+.ncf-footer-trust-item__icon {
+  color: var(--ncf-footer-accent);
+  flex-shrink: 0;
+}
+
+.ncf-footer-trust-item__title {
+  font-size: 0.8125rem;
+  font-weight: 800;
+  color: var(--ncf-footer-heading);
+  line-height: 1.2;
+}
+
+.ncf-footer-trust-item__subtitle {
+  font-size: 0.6875rem;
+  color: var(--ncf-footer-text);
+}
+
+/* ---------------------------------------------------------------------------
+   5. SOCIAL ICONS & PAYMENT BADGES
+   --------------------------------------------------------------------------- */
+.ncf-footer__middle {
+  padding-top: 1.75rem;
+  padding-bottom: 1.75rem;
+  border-bottom: 1px solid var(--ncf-footer-border);
+}
+
+.ncf-footer__middle-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .ncf-footer__middle-grid {
+    flex-direction: row;
+  }
+}
+
+.ncf-footer-socials {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+}
+
+.ncf-footer-social-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--ncf-footer-heading);
+  border: 1px solid var(--ncf-footer-border);
+  transition: all 0.2s ease;
+}
+
+.ncf-footer-social-btn:hover {
+  background-color: var(--ncf-footer-accent);
+  color: #ffffff;
+  border-color: var(--ncf-footer-accent);
+  transform: translateY(-2px);
+}
+
+.ncf-footer-social-btn:focus-visible {
+  outline: 2px solid var(--ncf-footer-accent);
+  outline-offset: 2px;
+}
+
+.ncf-footer-payments {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.ncf-footer-payment-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem 0.625rem;
+  min-height: 28px;
+  border-radius: 0.25rem;
+  background-color: #ffffff;
+  color: #0f172a;
+  font-size: 0.6875rem;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* ---------------------------------------------------------------------------
+   6. BOTTOM FOOTER & SELECTORS
+   --------------------------------------------------------------------------- */
+.ncf-footer__bottom {
+  padding-top: 1.75rem;
+  padding-bottom: 1.75rem;
+  font-size: 0.75rem;
+}
+
+.ncf-footer__bottom-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .ncf-footer__bottom-grid {
+    flex-direction: row;
+    text-align: left;
+  }
+}
+
+.ncf-footer__bottom-links {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.ncf-footer__bottom-link {
+  color: var(--ncf-footer-text);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.ncf-footer__bottom-link:hover {
+  color: var(--ncf-footer-heading);
+}
+
+.ncf-footer__version-tag {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 0.06);
+  color: #64748b;
+  font-family: monospace;
+  font-weight: 700;
+  font-size: 0.6875rem;
+}
+
+/* ---------------------------------------------------------------------------
+   7. REDUCED MOTION & ACCESSIBILITY
+   --------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .ncf-footer-col__icon,
+  .ncf-footer-social-btn,
+  .ncf-footer-col__link,
+  .ncf-footer__newsletter-btn {
+    transition: none !important;
+    transform: none !important;
+  }
+}

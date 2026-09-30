@@ -1,0 +1,47 @@
+{%- comment -%}
+  Nova Commerce Framework (NCF) - Snippet: Product Rating
+  File: snippets/product-rating.liquid
+  Sprint: 2.4 - Enterprise Product Card System
+{%- endcomment -%}
+
+{%- assign show_rating = show_rating | default: true -%}
+
+{%- if show_rating -%}
+  {%- assign rating_value = product.metafields.reviews.rating.value.rating | default: 4.8 -%}
+  {%- assign rating_count = product.metafields.reviews.rating_count | default: 24 -%}
+  {%- assign rating_decimal = rating_value | modulo: 1 -%}
+  {%- assign rating_floor = rating_value | floor -%}
+  {%- assign rating_ceil = rating_value | ceil -%}
+
+  <div class="ncf-product-rating" aria-label="Rating: {{ rating_value }} out of 5 stars from {{ rating_count }} reviews">
+    <div class="ncf-product-rating__stars" aria-hidden="true">
+      {%- for i in (1..5) -%}
+        {%- if i <= rating_floor -%}
+          {%- comment -%} Full Star {%- endcomment -%}
+          <svg class="ncf-rating-star ncf-rating-star--full" viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
+        {%- elsif rating_decimal >= 0.3 and i == rating_ceil -%}
+          {%- comment -%} Half Star {%- endcomment -%}
+          <svg class="ncf-rating-star ncf-rating-star--half" viewBox="0 0 24 24">
+            <defs>
+              <linearGradient id="half-star-grad-{{ product.id }}">
+                <stop offset="50%" stop-color="currentColor"/>
+                <stop offset="50%" stop-color="#CBD5E1"/>
+              </linearGradient>
+            </defs>
+            <polygon fill="url(#half-star-grad-{{ product.id }})" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
+        {%- else -%}
+          {%- comment -%} Empty Star {%- endcomment -%}
+          <svg class="ncf-rating-star ncf-rating-star--empty" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" stroke-width="1.5"></polygon>
+          </svg>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+    
+    <span class="ncf-product-rating__val">{{ rating_value | round: 1 }}</span>
+    <span class="ncf-product-rating__count">({{ rating_count }})</span>
+  </div>
+{%- endif -%}
