@@ -24,12 +24,17 @@
 >
   {%- comment -%} MEDIA BACKGROUND LAYER {%- endcomment -%}
   <div class="ncf-collection-card__media">
+    {%- assign desktop_img_class = 'ncf-collection-card__img ncf-collection-card__img--desktop' -%}
+    {%- if mobile_img != blank -%}
+      {%- assign desktop_img_class = desktop_img_class | append: ' has-mobile-img' -%}
+    {%- endif -%}
+
     {%- if desktop_img != blank -%}
       {{ desktop_img | image_url: width: 1800 | image_tag:
         loading: 'lazy',
         sizes: '(min-width: 1024px) 50vw, 100vw',
         widths: '375, 640, 750, 1024, 1280, 1500, 1800',
-        class: 'ncf-collection-card__img ncf-collection-card__img--desktop {% if mobile_img != blank %}has-mobile-img{% endif %}',
+        class: desktop_img_class,
         alt: card_heading | escape
       }}
     {%- else -%}

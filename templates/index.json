@@ -217,6 +217,7 @@
     "best_sellers": {
       "type": "featured-products",
       "settings": {
+        "heading": "BEST SELLERS",
         "title": "BEST SELLERS",
         "eyebrow": "CURATED FAVORITES",
         "subtitle": "The most coveted silhouettes and timeless essentials from our atelier.",
@@ -311,6 +312,7 @@
     "new_arrivals": {
       "type": "featured-products",
       "settings": {
+        "heading": "NEW ARRIVALS",
         "title": "NEW ARRIVALS",
         "eyebrow": "JUST IN",
         "subtitle": "Fresh cuts, refined textures, and the latest seasonal color palette.",

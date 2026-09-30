@@ -1,0 +1,16 @@
+# Shopify CLI Theme Ignore
+# Exclude development-only AI Studio metadata and tooling from theme push
+assets/.aistudio/
+assets/.aistudio/**
+.aistudio/
+.aistudio/**
+
+# Development files and build configurations
+node_modules/
+node_modules/**
+src/
+src/**
+package.json
+package-lock.json
+tsconfig.json
+vite.config.ts

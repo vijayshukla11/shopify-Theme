@@ -1,0 +1,58 @@
+{% layout none %}
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="canonical" href="{{ canonical_url }}">
+
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    {%- endif -%}
+
+    {%- assign formatted_balance = gift_card.balance | money_with_currency -%}
+    <title>{{ 'gift_cards.issued.title' | t: value: formatted_balance, shop: shop.name | default: 'Your Gift Card - CLINZA' }}</title>
+
+    <meta name="description" content="{{ 'gift_cards.issued.subtext' | t | default: 'Here is your gift card!' }}">
+
+    {{ content_for_header }}
+
+    <link rel="stylesheet" href="{{ 'theme.css' | asset_url }}">
+    <link rel="stylesheet" href="{{ 'components.css' | asset_url }}">
+  </head>
+  <body class="bg-slate-50 text-slate-900 font-sans min-h-screen flex flex-col items-center justify-center p-4">
+    <main class="max-w-md w-full bg-white rounded-2xl shadow-xl border border-slate-100 p-8 text-center space-y-6">
+      <header class="space-y-2">
+        <h1 class="text-xl font-bold tracking-tight uppercase text-slate-900">{{ shop.name }}</h1>
+        <p class="text-xs text-slate-500 font-mono tracking-wider uppercase">{{ 'gift_cards.issued.subtext' | t | default: 'Gift Card' }}</p>
+      </header>
+
+      <div class="p-6 rounded-xl bg-gradient-to-br from-slate-900 to-slate-800 text-white shadow-inner space-y-4">
+        <div class="flex justify-between items-center text-xs text-slate-400 font-mono">
+          <span>ATELIER GIFT CARD</span>
+          <span>{% if gift_card.expired %}EXPIRED{% else %}ACTIVE{% endif %}</span>
+        </div>
+        <div class="text-3xl font-extrabold tracking-tight font-mono text-sky-400">
+          {{ formatted_balance }}
+        </div>
+        <div class="pt-2 text-xs font-mono tracking-widest text-slate-300 select-all bg-black/30 py-2 rounded-lg">
+          {{ gift_card.code | format_code }}
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        {%- if gift_card.pass_url -%}
+          <a href="{{ gift_card.pass_url }}" class="inline-block">
+            <img id="apple-wallet-badge" src="{{ 'gift-card/add-to-apple-wallet.svg' | shopify_asset_url }}" width="120" height="40" alt="Add to Apple Wallet" loading="lazy">
+          </a>
+        {%- endif -%}
+        <div>
+          <a href="{{ shop.url }}" class="inline-flex items-center justify-center px-6 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold uppercase tracking-wider transition-colors shadow-sm" target="_blank" rel="noopener">
+            Start Shopping
+          </a>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

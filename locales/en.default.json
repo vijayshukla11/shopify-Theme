@@ -54,6 +54,12 @@
       "empty": "Your cart is currently empty"
     }
   },
+  "gift_cards": {
+    "issued": {
+      "title": "Here's your {{ value }} gift card for {{ shop }}!",
+      "subtext": "Here's your gift card!"
+    }
+  },
   "announcement": {
     "next": "Next Announcement",
     "previous": "Previous Announcement",
