@@ -1,0 +1,182 @@
+{%- comment -%}
+  Nova Commerce Framework (NCF) - Snippet: Premium Refined Hero Slide
+  File: snippets/hero-slide.liquid
+  Sprint: 2.2A - Premium UI Refinement
+  Architecture: 2-Column Split Composition (Content Left / Media Right)
+{%- endcomment -%}
+
+{%- assign slide_id = block.id | default: forloop.index -%}
+{%- assign align_class = block.settings.content_alignment | default: 'left' -%}
+
+<div
+  class="ncf-hero-slide {% if forloop.first %}is-active{% endif %}"
+  data-hero-slide
+  data-slide-index="{{ forloop.index0 }}"
+  id="ncf-slide-{{ slide_id }}"
+  role="group"
+  aria-roledescription="slide"
+  aria-label="{{ forloop.index }} of {{ total_slides | default: 1 }}"
+  aria-hidden="{% if forloop.first %}false{% else %}true{% endif %}"
+  {{ block.shopify_attributes }}
+>
+  {%- comment -%} 1. BACKGROUND MEDIA LAYER & OVERLAY {%- endcomment -%}
+  <div class="ncf-hero-slide__media-wrapper">
+    {%- if block.settings.video != blank -%}
+      {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: 'ncf-hero-slide__video' }}
+    {%- elsif block.settings.desktop_image != blank -%}
+      {%- assign loading_strategy = 'lazy' -%}
+      {%- assign fetch_priority = 'auto' -%}
+      {%- if forloop.first -%}
+        {%- assign loading_strategy = 'eager' -%}
+        {%- assign fetch_priority = 'high' -%}
+      {%- endif -%}
+
+      {{
+        block.settings.desktop_image
+        | image_url: width: 3840
+        | image_tag:
+          class: 'ncf-hero-slide__image ncf-hero-slide__image--desktop',
+          widths: '750, 1100, 1500, 1780, 2000, 3000, 3840',
+          loading: loading_strategy,
+          fetchpriority: fetch_priority,
+          alt: block.settings.heading | default: 'Hero Banner Image'
+      }}
+
+      {%- if block.settings.mobile_image != blank -%}
+        {{
+          block.settings.mobile_image
+          | image_url: width: 1500
+          | image_tag:
+            class: 'ncf-hero-slide__image ncf-hero-slide__image--mobile',
+            widths: '375, 550, 750, 1100, 1500',
+            loading: loading_strategy,
+            alt: block.settings.heading | default: 'Hero Mobile Image'
+        }}
+      {%- endif -%}
+    {%- else -%}
+      {{ 'lifestyle-1' | placeholder_svg_tag: 'ncf-hero-slide__placeholder' }}
+    {%- endif -%}
+
+    {%- comment -%} Overlay Gradient Control {%- endcomment -%}
+    {%- assign overlay_setting = block.settings.overlay_preset | default: 'medium' -%}
+    <div class="ncf-hero-slide__overlay ncf-hero-slide__overlay--{{ overlay_setting }}"></div>
+  </div>
+
+  {%- comment -%} 2. BALANCED 2-COLUMN SLIDE CONTENT CONTAINER {%- endcomment -%}
+  <div class="ncf-hero-slide__container max-w-7xl">
+    <div class="ncf-hero-slide__grid">
+      
+      {%- comment -%} LEFT COLUMN: TYPOGRAPHY, SPECS & ACTIONS {%- endcomment -%}
+      <div class="ncf-hero-slide__content ncf-hero-slide__content--{{ align_class }}">
+        
+        {%- comment -%} Badge & Eyebrow Header {%- endcomment -%}
+        {%- if block.settings.badge_text != blank or block.settings.eyebrow_text != blank -%}
+          <div class="ncf-hero-slide__tag-row">
+            {%- if block.settings.badge_text != blank -%}
+              <span class="ncf-hero-slide__badge">
+                {{ block.settings.badge_text }}
+              </span>
+            {%- endif -%}
+
+            {%- if block.settings.eyebrow_text != blank -%}
+              <span class="ncf-hero-slide__eyebrow">
+                {{ block.settings.eyebrow_text }}
+              </span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} Main Heading {%- endcomment -%}
+        {%- if block.settings.heading != blank -%}
+          {%- if forloop.first -%}
+            <h1 class="ncf-hero-slide__heading">
+              {{ block.settings.heading }}
+            </h1>
+          {%- else -%}
+            <h2 class="ncf-hero-slide__heading">
+              {{ block.settings.heading }}
+            </h2>
+          {%- endif -%}
+        {%- endif -%}
+
+        {%- comment -%} Description Copy {%- endcomment -%}
+        {%- if block.settings.description != blank -%}
+          <p class="ncf-hero-slide__description">
+            {{ block.settings.description }}
+          </p>
+        {%- endif -%}
+
+        {%- comment -%} Price Display Box {%- endcomment -%}
+        {%- if block.settings.price_text != blank -%}
+          <div class="ncf-hero-slide__price-box">
+            <span class="ncf-hero-slide__price">{{ block.settings.price_text }}</span>
+            {%- if block.settings.compare_price_text != blank -%}
+              <span class="ncf-hero-slide__original-price">{{ block.settings.compare_price_text }}</span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} Spec Feature Pills {%- endcomment -%}
+        {%- if block.settings.feature_list != blank -%}
+          {%- assign features = block.settings.feature_list | split: ',' -%}
+          <div class="ncf-hero-slide__features">
+            {%- for feat in features -%}
+              <span class="ncf-hero-slide__feature-tag">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <span>{{ feat | strip }}</span>
+              </span>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} Action Buttons {%- endcomment -%}
+        {%- if block.settings.primary_button_label != blank or block.settings.secondary_button_label != blank -%}
+          <div class="ncf-hero-slide__actions">
+            {%- if block.settings.primary_button_label != blank -%}
+              <a
+                href="{{ block.settings.primary_button_link | default: '/collections/all' }}"
+                class="ncf-btn ncf-btn--primary"
+              >
+                <span>{{ block.settings.primary_button_label }}</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </a>
+            {%- endif -%}
+
+            {%- if block.settings.secondary_button_label != blank -%}
+              <a
+                href="{{ block.settings.secondary_button_link | default: '/collections/all' }}"
+                class="ncf-btn ncf-btn--secondary"
+              >
+                <span>{{ block.settings.secondary_button_label }}</span>
+              </a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+      </div>
+
+      {%- comment -%} RIGHT COLUMN: MERCHANT PRODUCT FEATURED SHOWCASE IMAGE {%- endcomment -%}
+      {%- if block.settings.featured_product_image != blank -%}
+        <div class="ncf-hero-slide__showcase">
+          <div class="ncf-hero-slide__showcase-media">
+            {{
+              block.settings.featured_product_image
+              | image_url: width: 1200
+              | image_tag:
+                class: 'ncf-hero-slide__showcase-img',
+                widths: '360, 540, 720, 960, 1200',
+                loading: 'lazy',
+                alt: block.settings.heading | default: 'Featured Product Image'
+            }}
+          </div>
+        </div>
+      {%- endif -%}
+
+    </div>
+  </div>
+</div>

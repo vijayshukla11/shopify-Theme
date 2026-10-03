@@ -1,0 +1,370 @@
+{%- comment -%}
+  Nova Commerce Framework (NCF) - Section: Enterprise Header
+  File: sections/header.liquid
+  Sprint: 2.0 - Premium Announcement Bar & Enterprise Header
+{%- endcomment -%}
+
+<div
+  class="ncf-header-wrapper {% if section.settings.enable_sticky_header %}ncf-header-wrapper--sticky{% endif %} {% if section.settings.enable_transparent_header %}ncf-header-wrapper--transparent{% endif %}"
+  data-ncf-header
+  data-sticky="{{ section.settings.enable_sticky_header }}"
+  style="
+    --ncf-header-bg: {{ section.settings.bg_color | default: '#ffffff' }};
+    --ncf-header-text: {{ section.settings.text_color | default: '#0f172a' }};
+    --ncf-header-border: {{ section.settings.border_color | default: '#e2e8f0' }};
+    --ncf-header-accent: {{ section.settings.accent_color | default: '#0284c7' }};
+  "
+>
+  <header class="ncf-header max-w-7xl">
+    
+    {%- comment -%} Main Header Top Row: Logo, Search Bar, Action Icons {%- endcomment -%}
+    <div class="ncf-header__top-row">
+      
+      {%- comment -%} Mobile Menu Toggle Button {%- endcomment -%}
+      <button
+        type="button"
+        class="ncf-mobile-toggle"
+        data-mobile-menu-toggle
+        aria-expanded="false"
+        aria-label="Open navigation menu"
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+
+      {%- comment -%} Brand Logo {%- endcomment -%}
+      <div class="ncf-header__logo-container">
+        <a href="{{ routes.root_url }}" class="ncf-header__logo">
+          {%- if section.settings.logo != blank -%}
+            {%- assign logo_height = section.settings.logo_width | divided_by: section.settings.logo.aspect_ratio -%}
+            {{
+              section.settings.logo
+              | image_url: width: 600
+              | image_tag:
+                class: 'ncf-header__logo-img',
+                widths: '100, 200, 300, 400, 600',
+                height: logo_height,
+                width: section.settings.logo_width,
+                alt: shop.name
+            }}
+          {%- else -%}
+            <span class="ncf-header__logo-text" style="font-weight: 900; letter-spacing: 0.25em; text-transform: uppercase; font-size: 1.5rem; color: #111111;">
+              <span>CLINZA</span>
+            </span>
+          {%- endif -%}
+        </a>
+      </div>
+
+      {%- comment -%} Center Search Bar {%- endcomment -%}
+      <div class="ncf-header__search-container">
+        {% render 'header-search' %}
+      </div>
+
+      {%- comment -%} Right Quick Action Icons {%- endcomment -%}
+      {% render 'header-icons' %}
+
+    </div>
+
+    {%- comment -%} Navigation Row: Desktop Navigation Menu with Dropdowns & Mega Menu {%- endcomment -%}
+    <div class="ncf-header__nav-row">
+      <nav class="ncf-nav" aria-label="{{ 'general.navigation.main_navigation' | t | default: 'Main Navigation' }}">
+        <ul class="ncf-nav__list">
+          
+          {%- assign main_linklist = section.settings.main_menu | default: 'main-menu' -%}
+          {%- if linklists[main_linklist].links.size > 0 -%}
+            {%- for link in linklists[main_linklist].links -%}
+              {%- assign has_dropdown = false -%}
+              {%- if link.links.size > 0 -%}
+                {%- assign has_dropdown = true -%}
+              {%- endif -%}
+
+              <li class="ncf-nav__item {% if has_dropdown %}ncf-nav__item--has-dropdown{% endif %}">
+                <a
+                  href="{{ link.url }}"
+                  class="ncf-nav__link"
+                  {% if has_dropdown %}
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                  {% endif %}
+                >
+                  <span>{{ link.title }}</span>
+                  {%- if has_dropdown -%}
+                    <svg class="ncf-nav__caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                      <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                  {%- endif -%}
+                </a>
+
+                {%- if has_dropdown -%}
+                  <ul class="ncf-dropdown" role="menu">
+                    {%- for child_link in link.links -%}
+                      <li role="none">
+                        <a href="{{ child_link.url }}" class="ncf-dropdown__link" role="menuitem">
+                          {{ child_link.title }}
+                        </a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          {%- else -%}
+            {%- comment -%} Default Fallback Navigation Items for CLINZA Electronics Storefront {%- endcomment -%}
+            <li class="ncf-nav__item ncf-nav__item--mega">
+              <a href="{{ routes.all_products_collection_url }}" class="ncf-nav__link" aria-expanded="false" aria-haspopup="true">
+                <span>All Categories</span>
+                <svg class="ncf-nav__caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </a>
+
+              {%- comment -%} Mega Menu Dropdown Panel {%- endcomment -%}
+              <div class="ncf-mega-menu">
+                <div class="ncf-mega-menu__grid">
+                  <div>
+                    <h4 class="ncf-mega-menu__title">Wearables</h4>
+                    <ul class="ncf-mega-menu__list">
+                      <li><a href="{{ routes.collections_url }}/smartwatches" class="ncf-mega-menu__link">Bluetooth Calling Watches</a></li>
+                      <li><a href="{{ routes.collections_url }}/smartwatches" class="ncf-mega-menu__link">AMOLED Display Smartwatches</a></li>
+                      <li><a href="{{ routes.collections_url }}/smart-bands" class="ncf-mega-menu__link">Fitness Smart Bands</a></li>
+                      <li><a href="{{ routes.collections_url }}/analog-watches" class="ncf-mega-menu__link">Analog & Chronograph Watches</a></li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h4 class="ncf-mega-menu__title">Audio & Sound</h4>
+                    <ul class="ncf-mega-menu__list">
+                      <li><a href="{{ routes.collections_url }}/tws-earbuds" class="ncf-mega-menu__link">TWS ANC Earbuds</a></li>
+                      <li><a href="{{ routes.collections_url }}/headphones" class="ncf-mega-menu__link">Wireless Over-Ear Headphones</a></li>
+                      <li><a href="{{ routes.collections_url }}/earphones" class="ncf-mega-menu__link">Bluetooth Neckbands</a></li>
+                      <li><a href="{{ routes.collections_url }}/speakers" class="ncf-mega-menu__link">Portable Bluetooth Speakers</a></li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h4 class="ncf-mega-menu__title">Power & Accessories</h4>
+                    <ul class="ncf-mega-menu__list">
+                      <li><a href="{{ routes.collections_url }}/chargers-power-banks" class="ncf-mega-menu__link">Fast GaN Wall Chargers</a></li>
+                      <li><a href="{{ routes.collections_url }}/chargers-power-banks" class="ncf-mega-menu__link">20000mAh Power Banks</a></li>
+                      <li><a href="{{ routes.collections_url }}/accessories" class="ncf-mega-menu__link">Braided Fast Charging Cables</a></li>
+                      <li><a href="{{ routes.collections_url }}/accessories" class="ncf-mega-menu__link">Mobile Stands & Mounts</a></li>
+                    </ul>
+                  </div>
+
+                  <div class="ncf-mega-menu__banner">
+                    <div>
+                      <span class="badge badge--sale text-[10px] mb-2 inline-block" style="background:#2563eb; color:#fff; padding:2px 6px; border-radius:3px; font-weight:700;">TOP RATED</span>
+                      <h4 style="font-weight: 800; font-size: 1rem; margin-bottom: 0.5rem; color:#fff;">CLINZA Pulse ANC Earbuds</h4>
+                      <p style="font-size: 0.75rem; color: #94a3b8; line-height: 1.4;">
+                        40dB Active Noise Cancellation, 50-hour battery & gaming low-latency mode.
+                      </p>
+                    </div>
+                    <a href="{{ routes.all_products_collection_url }}" class="btn btn-primary btn-sm font-bold mt-4" style="background:#2563eb; color:#fff; padding:6px 12px; border-radius:4px; text-decoration:none; display:inline-block; font-size:12px;">
+                      Shop Now – ₹1,499
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </li>
+
+            <li class="ncf-nav__item">
+              <a href="{{ routes.collections_url }}/smartwatches" class="ncf-nav__link">
+                <span>Smartwatches</span>
+              </a>
+            </li>
+
+            <li class="ncf-nav__item">
+              <a href="{{ routes.collections_url }}/tws-earbuds" class="ncf-nav__link">
+                <span>Earbuds</span>
+              </a>
+            </li>
+
+            <li class="ncf-nav__item">
+              <a href="{{ routes.collections_url }}/headphones" class="ncf-nav__link">
+                <span>Headphones</span>
+              </a>
+            </li>
+
+            <li class="ncf-nav__item">
+              <a href="{{ routes.collections_url }}/analog-watches" class="ncf-nav__link">
+                <span>Watches</span>
+              </a>
+            </li>
+
+            <li class="ncf-nav__item">
+              <a href="{{ routes.collections_url }}/speakers" class="ncf-nav__link">
+                <span>Audio</span>
+              </a>
+            </li>
+
+            <li class="ncf-nav__item">
+              <a href="{{ routes.collections_url }}/accessories" class="ncf-nav__link">
+                <span>Accessories</span>
+              </a>
+            </li>
+
+            <li class="ncf-nav__item">
+              <a href="{{ routes.all_products_collection_url }}" class="ncf-nav__link" style="color: var(--color-accent, #2563eb);">
+                <span>Deals</span>
+              </a>
+            </li>
+          {%- endif -%}
+
+        </ul>
+
+        {%- comment -%} Right Nav Badge / Quick Link {%- endcomment -%}
+        <div class="hidden xl:flex items-center gap-2 text-xs font-mono font-medium tracking-widest uppercase text-neutral-600">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+          <span>Free Shipping ₹999+</span>
+        </div>
+      </nav>
+    </div>
+
+  </header>
+</div>
+
+{%- comment -%} Mobile Drawer Snippet Render {%- endcomment -%}
+{% render 'mobile-menu' %}
+
+{% schema %}
+{
+  "name": "Enterprise Header",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Brand Logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Merchant Brand Logo"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 80,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "Logo Max Width",
+      "default": 160
+    },
+    {
+      "type": "header",
+      "content": "Header Layout & Behavior"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_header",
+      "label": "Enable Sticky Header on Scroll",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_transparent_header",
+      "label": "Enable Transparent Header (Homepage)",
+      "default": false
+    },
+    {
+      "type": "link_list",
+      "id": "main_menu",
+      "label": "Main Navigation Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "header",
+      "content": "Search Bar Options"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search_categories",
+      "label": "Show Category Filter Select in Search",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Search Placeholder Text",
+      "default": "Search smartwatches, earbuds, headphones, accessories..."
+    },
+    {
+      "type": "header",
+      "content": "Quick Action Icons"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_account_icon",
+      "label": "Show Customer Account Link",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_wishlist_icon",
+      "label": "Show Wishlist Icon & Badge",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_compare_icon",
+      "label": "Show Compare Icon",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cart_icon",
+      "label": "Show Cart Icon & Badge",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Header Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text & Icon Color",
+      "default": "#0f172a"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Divider Border Color",
+      "default": "#e2e8f0"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color",
+      "default": "#0284c7"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "mega_menu_column",
+      "name": "Mega Menu Category",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Column Title",
+          "default": "Category"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Column Linklist"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

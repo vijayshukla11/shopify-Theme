@@ -1,0 +1,397 @@
+{
+  "sections": {
+    "announcement_bar": {
+      "type": "announcement-bar",
+      "blocks": {
+        "announcement_1": {
+          "type": "announcement",
+          "settings": {
+            "badge_text": "FREE DELIVERY",
+            "text": "Complimentary Express Delivery on Orders Over ₹999 • 1-Year Replacement Warranty",
+            "link_text": "Shop Deals",
+            "link_url": "/collections/all"
+          }
+        },
+        "announcement_2": {
+          "type": "announcement",
+          "settings": {
+            "badge_text": "NEW LAUNCH",
+            "text": "Apex Ultra AMOLED Smartwatch & Echo Pro 42dB Hybrid ANC Earbuds are now live!",
+            "link_text": "Explore New Arrivals",
+            "link_url": "/collections/smartwatches"
+          }
+        }
+      },
+      "block_order": [
+        "announcement_1",
+        "announcement_2"
+      ],
+      "settings": {
+        "enable_section": true,
+        "show_marquee": false,
+        "bg_color": "#111827",
+        "text_color": "#ffffff",
+        "accent_color": "#2563EB"
+      }
+    },
+    "header": {
+      "type": "header",
+      "settings": {
+        "enable_sticky_header": true,
+        "enable_transparent_header": false,
+        "main_menu": "main-menu",
+        "show_search_categories": true,
+        "search_placeholder": "Search smartwatches, earbuds, headphones, chargers, cables...",
+        "show_account_icon": true,
+        "show_wishlist_icon": true,
+        "show_compare_icon": false,
+        "show_cart_icon": true,
+        "bg_color": "#ffffff",
+        "text_color": "#111827",
+        "border_color": "#e5e7eb",
+        "accent_color": "#2563EB"
+      }
+    },
+    "hero_banner": {
+      "type": "hero-banner",
+      "blocks": {
+        "hero_slide_1": {
+          "type": "slide",
+          "settings": {
+            "badge_text": "NEXT-GEN AUDIO & SMARTWEAR",
+            "eyebrow_text": "FLAGSHIP WIRELESS FREEDOM",
+            "heading": "ELEVATE YOUR TECH LIFE",
+            "description": "Engineered with 42dB hybrid active noise cancellation, AMOLED precision displays, and ultra-durable GaN fast charging for everyday performance.",
+            "price_text": "₹2,299",
+            "compare_price_text": "₹4,999",
+            "feature_list": "42dB Hybrid ANC, 1.96\" AMOLED Display, 65W GaN Fast Charging",
+            "primary_button_label": "SHOP BEST SELLERS",
+            "primary_button_link": "/collections/all",
+            "secondary_button_label": "EXPLORE SMARTWATCHES",
+            "secondary_button_link": "/collections/smartwatches",
+            "overlay_preset": "medium",
+            "content_alignment": "center"
+          }
+        }
+      },
+      "block_order": [
+        "hero_slide_1"
+      ],
+      "settings": {
+        "banner_height": "large",
+        "enable_autoplay": false,
+        "show_arrows": false,
+        "show_dots": false
+      }
+    },
+    "service_features": {
+      "type": "service-features",
+      "blocks": {
+        "feature_1": {
+          "type": "service_card",
+          "settings": {
+            "icon_preset": "shield",
+            "title": "1-YEAR WARRANTY",
+            "description": "Guaranteed replacement coverage on all electronics."
+          }
+        },
+        "feature_2": {
+          "type": "service_card",
+          "settings": {
+            "icon_preset": "returns",
+            "title": "7-DAY REPLACEMENT",
+            "description": "Hassle-free doorstep exchange and returns."
+          }
+        },
+        "feature_3": {
+          "type": "service_card",
+          "settings": {
+            "icon_preset": "shipping",
+            "title": "FREE EXPRESS SHIPPING",
+            "description": "Complimentary delivery across India on orders over ₹999."
+          }
+        },
+        "feature_4": {
+          "type": "service_card",
+          "settings": {
+            "icon_preset": "lock",
+            "title": "SECURE CHECKOUT",
+            "description": "UPI, Credit Cards, NetBanking & COD available."
+          }
+        }
+      },
+      "block_order": [
+        "feature_1",
+        "feature_2",
+        "feature_3",
+        "feature_4"
+      ],
+      "settings": {
+        "eyebrow": "THE CLINZA ADVANTAGE",
+        "heading": "Engineered For Reliability & Trust",
+        "subtitle": "Certified electronics built to power your everyday digital life.",
+        "header_alignment": "center",
+        "columns_desktop": 4,
+        "columns_mobile": 2,
+        "card_style": "classic",
+        "card_alignment": "left",
+        "bg_color": "#ffffff"
+      }
+    },
+    "category_slider": {
+      "type": "category-slider",
+      "blocks": {
+        "cat_1": {
+          "type": "category_card",
+          "settings": {
+            "badge": "FLAGSHIP",
+            "subtitle": "AMOLED & BT CALLING",
+            "title": "SMARTWATCHES",
+            "show_count": true,
+            "custom_count_text": "AMOLED & GPS",
+            "cta_text": "Shop Smartwatches"
+          }
+        },
+        "cat_2": {
+          "type": "category_card",
+          "settings": {
+            "badge": "BEST SELLER",
+            "subtitle": "42DB HYBRID ANC",
+            "title": "TWS EARBUDS",
+            "show_count": true,
+            "custom_count_text": "ANC & Low Latency",
+            "cta_text": "Shop Earbuds"
+          }
+        },
+        "cat_3": {
+          "type": "category_card",
+          "settings": {
+            "badge": "HI-RES",
+            "subtitle": "OVER-EAR STUDIO",
+            "title": "HEADPHONES",
+            "show_count": true,
+            "custom_count_text": "Studio Max ANC",
+            "cta_text": "Shop Headphones"
+          }
+        },
+        "cat_4": {
+          "type": "category_card",
+          "settings": {
+            "badge": "FAST CHARGE",
+            "subtitle": "GAN III & 20,000MAH",
+            "title": "POWER & CHARGERS",
+            "show_count": true,
+            "custom_count_text": "65W GaN & PD",
+            "cta_text": "Shop Chargers"
+          }
+        },
+        "cat_5": {
+          "type": "category_card",
+          "settings": {
+            "badge": "ESSENTIAL",
+            "subtitle": "CABLES & STANDS",
+            "title": "ACCESSORIES",
+            "show_count": true,
+            "custom_count_text": "MagSafe & Stands",
+            "cta_text": "Shop Accessories"
+          }
+        }
+      },
+      "block_order": [
+        "cat_1",
+        "cat_2",
+        "cat_3",
+        "cat_4",
+        "cat_5"
+      ],
+      "settings": {
+        "title": "EXPLORE POPULAR CATEGORIES",
+        "subtitle": "Discover certified smartwatches, wireless audio, high-speed charging, and mobile gear.",
+        "desktop_columns": "5",
+        "card_radius": 6,
+        "bg_color": "#ffffff",
+        "show_arrows": true,
+        "show_dots": true
+      }
+    },
+    "best_sellers": {
+      "type": "featured-products",
+      "settings": {
+        "heading": "BEST SELLERS",
+        "title": "BEST SELLERS",
+        "eyebrow": "TRENDING NOW",
+        "subtitle": "Top-rated smartwatches, wireless earbuds, and everyday tech essentials.",
+        "products_to_show": 5,
+        "columns_desktop": 5,
+        "columns_mobile": "2",
+        "card_style": "classic",
+        "media_aspect_ratio": "square",
+        "hover_animation": "zoom",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": true,
+        "show_badges": true
+      }
+    },
+    "featured_collections": {
+      "type": "featured-collections",
+      "blocks": {
+        "col_1": {
+          "type": "collection_card",
+          "settings": {
+            "badge_text": "AUDIO",
+            "show_product_count": true,
+            "heading": "WIRELESS AUDIO",
+            "description": "Studio-grade ANC headphones, earbuds, and waterproof Bluetooth speakers."
+          }
+        },
+        "col_2": {
+          "type": "collection_card",
+          "settings": {
+            "badge_text": "SMARTWEAR",
+            "show_product_count": true,
+            "heading": "SMARTWATCHES & BANDS",
+            "description": "Vivid AMOLED touchscreens with all-day health and fitness intelligence."
+          }
+        },
+        "col_3": {
+          "type": "collection_card",
+          "settings": {
+            "badge_text": "POWER",
+            "show_product_count": true,
+            "heading": "POWER & CHARGING",
+            "description": "Ultra-compact 65W GaN wall adapters, 20,000mAh power banks, and braided cables."
+          }
+        }
+      },
+      "block_order": [
+        "col_1",
+        "col_2",
+        "col_3"
+      ],
+      "settings": {
+        "heading": "FEATURED CATEGORIES",
+        "eyebrow": "CURATED TECH",
+        "subtitle": "Engineered for uncompromising daily durability, high speeds, and audio clarity.",
+        "card_height": "medium",
+        "bg_color": "#ffffff"
+      }
+    },
+    "promo_banner": {
+      "type": "promo-banner",
+      "blocks": {
+        "promo_1": {
+          "type": "banner_card",
+          "settings": {
+            "badge_text": "UP TO 50% OFF",
+            "eyebrow": "DAILY TECH DEALS",
+            "heading": "FLAGSHIP AUDIO & CHARGING",
+            "description": "Upgrade your desk and on-the-go lifestyle with high-definition wireless earbuds, 65W GaN adapters, and heavy-duty braided cables."
+          }
+        },
+        "promo_2": {
+          "type": "banner_card",
+          "settings": {
+            "badge_text": "EXECUTIVE PACK",
+            "eyebrow": "SMART PRODUCTIVITY",
+            "heading": "CURATED TECH COMBO",
+            "description": "Save over ₹5,500 on our all-in-one Executive Tech Bundle featuring the Apex Ultra Watch, Echo Pro ANC Buds, and 65W GaN Wall Adapter."
+          }
+        }
+      },
+      "block_order": [
+        "promo_1",
+        "promo_2"
+      ],
+      "settings": {
+        "grid_layout": "split_2",
+        "banner_height": "medium",
+        "bg_color": "#f8fafc"
+      }
+    },
+    "new_arrivals": {
+      "type": "featured-products",
+      "settings": {
+        "heading": "NEW ARRIVALS",
+        "title": "NEW ARRIVALS",
+        "eyebrow": "JUST LAUNCHED",
+        "subtitle": "Discover the latest cutting-edge consumer electronics and accessories.",
+        "products_to_show": 5,
+        "columns_desktop": 5,
+        "columns_mobile": "2",
+        "card_style": "classic",
+        "media_aspect_ratio": "square",
+        "hover_animation": "zoom",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": true,
+        "show_badges": true
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "eyebrow": "STAY AHEAD",
+        "heading": "SUBSCRIBE FOR VIP TECH DEALS",
+        "subtitle": "Get early access to flash sales, launch discounts, and special tech bundle offers.",
+        "placeholder_text": "ENTER YOUR EMAIL ADDRESS",
+        "button_label": "GET OFFERS",
+        "privacy_note": "No spam ever. Unsubscribe with a single click anytime.",
+        "success_message": "Thank you for subscribing! Your exclusive welcome discount code is CLINZA10."
+      }
+    },
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "col_shop": {
+          "type": "link_list",
+          "settings": {
+            "heading": "POPULAR CATEGORIES"
+          }
+        },
+        "col_support": {
+          "type": "link_list",
+          "settings": {
+            "heading": "CUSTOMER SUPPORT"
+          }
+        },
+        "col_about": {
+          "type": "link_list",
+          "settings": {
+            "heading": "ABOUT CLINZA"
+          }
+        }
+      },
+      "block_order": [
+        "col_shop",
+        "col_support",
+        "col_about"
+      ],
+      "settings": {
+        "show_newsletter": true,
+        "newsletter_heading": "Get Exclusive Tech Offers",
+        "newsletter_text": "Subscribe to receive launch notifications, flash discount alerts, and warranty updates.",
+        "show_trust_badges": true,
+        "show_social_icons": true,
+        "show_payment_icons": true,
+        "show_contact_info": true,
+        "contact_phone": "+91 800-CLINZA (254692)",
+        "contact_email": "support@clinza.com",
+        "contact_address": "CLINZA Electronics Pvt Ltd, Bengaluru / Mumbai, India"
+      }
+    }
+  },
+  "order": [
+    "announcement_bar",
+    "header",
+    "hero_banner",
+    "category_slider",
+    "best_sellers",
+    "promo_banner",
+    "featured_collections",
+    "new_arrivals",
+    "service_features",
+    "newsletter",
+    "footer"
+  ]
+}

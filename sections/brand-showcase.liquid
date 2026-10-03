@@ -1,0 +1,372 @@
+{%- comment -%}
+  Nova Commerce Framework (NCF) - Section: Premium Brand Showcase
+  File: sections/brand-showcase.liquid
+  Sprint: 2.8 – Premium Brand Showcase
+  Architecture: Mobile-First Multi-Layout Brand Showcase Engine
+{%- endcomment -%}
+
+{%- assign layout_variant = section.settings.layout_variant | default: 'logo_grid' -%}
+{%- assign container_type = section.settings.container_type | default: 'container' -%}
+{%- assign desktop_cols = section.settings.columns_desktop | default: 5 -%}
+
+<section
+  class="ncf-brand-showcase-section {% if container_type == 'full' %}ncf-brand-showcase-section--full-width{% endif %}"
+  id="ncf-brand-showcase-{{ section.id }}"
+  data-brand-showcase-section
+  data-autoplay="{{ section.settings.enable_autoplay }}"
+  data-autoplay-speed="{{ section.settings.autoplay_speed }}"
+  style="
+    background-color: {{ section.settings.bg_color | default: '#ffffff' }};
+    padding-top: {{ section.settings.padding_top | default: 64 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | default: 64 }}px;
+  "
+  aria-label="{{ section.settings.heading | default: 'Our Brands' }}"
+>
+  <div class="ncf-brand-container {% if container_type == 'container' %}max-w-7xl mx-auto px-6 lg:px-8{% else %}w-full px-4{% endif %}">
+
+    {%- comment -%} SECTION HEADER {%- endcomment -%}
+    {%- if section.settings.heading != blank or section.settings.eyebrow != blank -%}
+      <div class="ncf-brand-showcase__header text-{{ section.settings.header_alignment | default: 'center' }} mb-10">
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="inline-block text-xs font-mono font-extrabold uppercase tracking-widest text-sky-600 mb-2">
+            {{ section.settings.eyebrow }}
+          </span>
+        {%- endif -%}
+
+        {%- if section.settings.heading != blank -%}
+          <h2 class="text-3xl sm:text-4xl font-black tracking-tight text-slate-900 uppercase">
+            {{ section.settings.heading }}
+          </h2>
+        {%- endif -%}
+
+        {%- if section.settings.subtitle != blank -%}
+          <p class="text-slate-600 text-sm sm:text-base max-w-2xl mt-2 {% if section.settings.header_alignment == 'center' %}mx-auto{% endif %}">
+            {{ section.settings.subtitle }}
+          </p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} LAYOUT SWITCHER {%- endcomment -%}
+    {%- if layout_variant == 'logo_grid' -%}
+      <div class="ncf-brand-grid ncf-brand-grid--cols-{{ desktop_cols }}">
+        {%- if section.blocks.size > 0 -%}
+          {%- for block in section.blocks -%}
+            {% render 'brand-card', block: block, section: section %}
+          {%- endfor -%}
+        {%- else -%}
+          {%- for i in (1..6) -%}
+            <a href="#" class="ncf-brand-card">
+              <div class="font-extrabold text-slate-700 tracking-wider uppercase text-sm">Brand {{ i }}</div>
+            </a>
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+
+    {%- elsif layout_variant == 'logo_carousel' -%}
+      <div class="ncf-brand-carousel-wrapper">
+        <div class="ncf-brand-carousel-track" data-brand-carousel-track>
+          {%- if section.blocks.size > 0 -%}
+            {%- for block in section.blocks -%}
+              <div class="ncf-brand-carousel-item">
+                {% render 'brand-card', block: block, section: section %}
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+            {%- for i in (1..8) -%}
+              <div class="ncf-brand-carousel-item">
+                <a href="#" class="ncf-brand-card">
+                  <div class="font-extrabold text-slate-700 tracking-wider uppercase text-sm">Brand {{ i }}</div>
+                </a>
+              </div>
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+      </div>
+
+    {%- elsif layout_variant == 'editorial_cards' -%}
+      <div class="ncf-brand-editorial-grid">
+        {%- if section.blocks.size > 0 -%}
+          {%- for block in section.blocks -%}
+            {% render 'brand-card', block: block, section: section %}
+          {%- endfor -%}
+        {%- else -%}
+          {%- for i in (1..3) -%}
+            <a href="#" class="ncf-brand-card ncf-brand-card--editorial">
+              <div class="ncf-brand-card__badge">Authorized</div>
+              <div class="font-black text-slate-900 text-xl tracking-wider uppercase mb-2">Partner Brand {{ i }}</div>
+              <p class="ncf-brand-card__description">Engineered for extreme performance with aerospace grade durability and industry-leading standard warranty.</p>
+              <span class="ncf-brand-card__link-text"><span>Explore Lineup</span> →</span>
+            </a>
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+
+    {%- elsif layout_variant == 'featured_banner' -%}
+      <div class="ncf-brand-banner-layout">
+        {%- if section.blocks.size > 0 -%}
+          {%- for block in section.blocks -%}
+            {% render 'brand-card', block: block, section: section %}
+          {%- endfor -%}
+        {%- else -%}
+          <a href="#" class="ncf-brand-card ncf-brand-card--banner">
+            <span class="ncf-brand-card__badge">Featured Partner</span>
+            <div>
+              <div class="font-black text-white text-2xl tracking-wider uppercase mb-3">Apex Engineering Co.</div>
+              <p class="ncf-brand-card__description">Exclusive global distributor for ultra-high performance acoustic components and tactical gear.</p>
+            </div>
+            <span class="ncf-brand-card__link-text"><span>View Brand Showcase</span> →</span>
+          </a>
+          <div class="ncf-brand-grid ncf-brand-grid--cols-2">
+            <a href="#" class="ncf-brand-card"><div class="font-bold text-slate-700">Sub-Brand 1</div></a>
+            <a href="#" class="ncf-brand-card"><div class="font-bold text-slate-700">Sub-Brand 2</div></a>
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Brand Showcase",
+  "tag": "section",
+  "class": "section-brand-showcase",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Label",
+      "default": "TRUSTED PARTNERS"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "Featured Brands"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Section Subtitle",
+      "default": "We collaborate exclusively with industry-defining manufacturers and innovators."
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "Header Alignment",
+      "options": [
+        { "value": "left", "label": "Left Aligned" },
+        { "value": "center", "label": "Center Aligned" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Layout & Appearance"
+    },
+    {
+      "type": "select",
+      "id": "layout_variant",
+      "label": "Showcase Layout Style",
+      "options": [
+        { "value": "logo_grid", "label": "Logo Grid (Clean Responsive)" },
+        { "value": "logo_carousel", "label": "Logo Carousel (Horizontal Scroll / Autoplay)" },
+        { "value": "editorial_cards", "label": "Editorial Brand Cards (With Descriptions)" },
+        { "value": "featured_banner", "label": "Featured Brand Banner (Hero + Side Grid)" }
+      ],
+      "default": "logo_grid"
+    },
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container Width",
+      "options": [
+        { "value": "container", "label": "Standard Boxed Container (Max 1280px)" },
+        { "value": "full", "label": "Full Width Edge-to-Edge" }
+      ],
+      "default": "container"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "label": "Desktop Grid Columns",
+      "default": 5
+    },
+    {
+      "type": "range",
+      "id": "logo_max_height",
+      "min": 30,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Logo Max Height",
+      "default": 60
+    },
+    {
+      "type": "checkbox",
+      "id": "show_brand_names",
+      "label": "Show Brand Names under Logos",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_grayscale",
+      "label": "Grayscale Logos (Color on Hover)",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "hover_animation",
+      "label": "Logo Hover Effect",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "zoom", "label": "Scale Zoom" },
+        { "value": "lift", "label": "Card Lift" },
+        { "value": "glow", "label": "Accent Glow" }
+      ],
+      "default": "lift"
+    },
+    {
+      "type": "header",
+      "content": "Carousel Settings (Carousel Layout Only)"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_autoplay",
+      "label": "Enable Autoplay",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "min": 2000,
+      "max": 8000,
+      "step": 500,
+      "unit": "ms",
+      "label": "Autoplay Speed",
+      "default": 4000
+    },
+    {
+      "type": "header",
+      "content": "Colors & Spacing"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 8,
+      "unit": "px",
+      "label": "Top Padding",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 8,
+      "unit": "px",
+      "label": "Bottom Padding",
+      "default": 64
+    }
+  ],
+  "blocks": [
+    {
+      "type": "brand",
+      "name": "Brand",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Brand Logo"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Brand Name",
+          "default": "Brand Name"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Brand Description (For Editorial Cards)"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Brand Collection or External Link"
+        },
+        {
+          "type": "text",
+          "id": "badge_text",
+          "label": "Badge Text",
+          "placeholder": "e.g. Authorized, New, Official"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_featured",
+          "label": "Set as Featured Hero Brand (For Banner Layout)",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Brand Showcase",
+      "blocks": [
+        {
+          "type": "brand",
+          "settings": {
+            "name": "Apex Audio",
+            "badge_text": "AUTHORIZED"
+          }
+        },
+        {
+          "type": "brand",
+          "settings": {
+            "name": "Vanguard Wearables",
+            "badge_text": "OFFICIAL"
+          }
+        },
+        {
+          "type": "brand",
+          "settings": {
+            "name": "Kinetix Gear",
+            "badge_text": "NEW"
+          }
+        },
+        {
+          "type": "brand",
+          "settings": {
+            "name": "Aero Design"
+          }
+        },
+        {
+          "type": "brand",
+          "settings": {
+            "name": "CLINZA Labs"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

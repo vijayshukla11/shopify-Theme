@@ -1,0 +1,83 @@
+/* ==========================================================================
+   Nova Commerce Framework (NCF) - CSS: Product Detail Page (PDP) Architecture
+   File: assets/product-page.css
+   Sprint: 4.4 – Product Detail Page Foundation (Phase 1)
+   ========================================================================== */
+
+/* Gallery Viewport & Transitions */
+.ncf-pdp-gallery-container {
+  contain: layout style;
+}
+
+.ncf-pdp-media-item {
+  will-change: opacity, transform;
+}
+
+.ncf-pdp-thumb-btn {
+  touch-action: manipulation;
+}
+
+.ncf-pdp-thumb-btn[aria-selected="true"] {
+  transform: scale(1.02);
+}
+
+/* Variant Swatches & Pills */
+.ncf-pdp-swatch-btn,
+.ncf-pdp-pill-btn {
+  touch-action: manipulation;
+  user-select: none;
+}
+
+.ncf-pdp-swatch-btn:hover,
+.ncf-pdp-pill-btn:hover {
+  transform: translateY(-1px);
+}
+
+/* Quantity Input Clean Display */
+input[data-qty-input]::-webkit-outer-spin-button,
+input[data-qty-input]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Sticky Mobile Add-To-Cart Bar */
+#ncf-mobile-sticky-atc-bar.is-visible {
+  transform: translateY(0);
+}
+
+/* Accessibility Focus Ring Standards */
+.ncf-pdp-buybox button:focus-visible,
+.ncf-pdp-gallery-container button:focus-visible,
+.ncf-pdp-highlights a:focus-visible {
+  outline: 2px solid #0284c7;
+  outline-offset: 2px;
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .ncf-pdp-media-item,
+  #ncf-mobile-sticky-atc-bar,
+  .ncf-pdp-thumb-btn,
+  .ncf-pdp-swatch-btn,
+  .ncf-pdp-pill-btn {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+/* Sprint 4.5 - Tabs & Specifications Extensions */
+.ncf-pdp-tabs-container {
+  contain: layout style;
+}
+
+.ncf-pdp-spec-table-wrapper table th,
+.ncf-pdp-spec-table-wrapper table td {
+  border-bottom-width: 1px;
+}
+
+.ncf-pdp-accordion-item button:focus-visible {
+  outline: 2px solid #0284c7;
+  outline-offset: -2px;
+}
+

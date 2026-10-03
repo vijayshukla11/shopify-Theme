@@ -1,0 +1,870 @@
+/*
+  ==============================================================================
+  NOVA COMMERCE FRAMEWORK (NCF) - FORM SYSTEM & INTERACTIVE CONTROLS
+  File: assets/forms.css
+  Sprint: 1.5 - Form System & Interactive Controls
+  Architecture: Native CSS Component Architecture / Framework-Agnostic
+  Description:
+    Production-ready, highly accessible, and modular form primitives for Shopify
+    Online Store 2.0 themes. Includes text inputs, textareas, selects, checkboxes,
+    radios, toggle switches, input groups, floating labels, validation states,
+    layout helpers, help text, error feedback, and character counters.
+  ==============================================================================
+*/
+
+/* -----------------------------------------------------------------------------
+   0. FORM SYSTEM DESIGN TOKENS
+   Defines dynamic form custom properties with fallbacks consuming NCF foundation.
+   -------------------------------------------------------------------------- */
+:root {
+  /* Form Input Colors & Borders */
+  --form-input-bg: var(--color-surface, #ffffff);
+  --form-input-color: var(--color-primary-text, #0f172a);
+  --form-input-border: var(--color-border, #cbd5e1);
+  --form-input-border-hover: #94a3b8;
+  --form-input-border-focus: var(--color-brand-accent, #0284c7);
+  --form-input-radius: var(--input-border-radius, 6px);
+  --form-input-shadow-focus: 0 0 0 3px rgba(2, 132, 199, 0.15);
+
+  /* Dimensions & Typography */
+  --form-input-font-family: var(--font-body-family, system-ui, -apple-system, sans-serif);
+  --form-input-font-size: 0.875rem;
+  --form-input-height: 44px; /* WCAG Touch Target Minimum Height */
+  --form-input-height-sm: 36px;
+  --form-input-height-lg: 52px;
+  --form-input-padding-x: 0.875rem;
+  --form-input-padding-y: 0.625rem;
+
+  /* Labels & Helper Text */
+  --form-label-color: var(--color-primary-text, #0f172a);
+  --form-label-font-weight: 600;
+  --form-help-color: var(--color-muted-text, #64748b);
+
+  /* Validation Colors */
+  --form-success-color: #10b981;
+  --form-warning-color: #f59e0b;
+  --form-error-color: #ef4444;
+  --form-disabled-bg: #f1f5f9;
+  --form-disabled-color: #94a3b8;
+
+  /* Transitions */
+  --form-transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+}
+
+
+/* =============================================================================
+   1. FORM GROUP & LABEL PRIMITIVES
+   Purpose:
+     Wrapper containers aligning input elements, field labels, required badges,
+     and descriptive help text into structured form units.
+   ========================================================================== */
+
+/* Form Group Container */
+.form-group,
+.ncf-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  margin-bottom: 1.25rem;
+  position: relative;
+  width: 100%;
+}
+
+.form-group:last-child,
+.ncf-form-group:last-child {
+  margin-bottom: 0;
+}
+
+/* Field Label */
+.form-label,
+.ncf-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--form-input-font-family);
+  font-size: 0.875rem;
+  font-weight: var(--form-label-font-weight);
+  color: var(--form-label-color);
+  line-height: 1.4;
+  user-select: none;
+}
+
+/* Required Indicator */
+.form-label--required::after,
+.form-label[data-required="true"]::after {
+  content: " *";
+  color: var(--form-error-color);
+  font-weight: 700;
+  margin-left: 0.125rem;
+}
+
+/* Optional Field Sub-label */
+.form-label-optional {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--form-help-color);
+}
+
+
+/* =============================================================================
+   2. CORE INPUT CONTROL PRIMITIVES
+   Purpose:
+     Base input styles for Text, Email, Password, Search, Number, and Textarea inputs.
+   ========================================================================== */
+
+/* Standard Input Control */
+.form-control,
+.form-input,
+.ncf-input {
+  display: block;
+  width: 100%;
+  min-height: var(--form-input-height);
+  padding: var(--form-input-padding-y) var(--form-input-padding-x);
+  font-family: var(--form-input-font-family);
+  font-size: var(--form-input-font-size);
+  line-height: 1.5;
+  color: var(--form-input-color);
+  background-color: var(--form-input-bg);
+  background-clip: padding-box;
+  border: 1px solid var(--form-input-border);
+  border-radius: var(--form-input-radius);
+  transition: var(--form-transition);
+  appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+}
+
+/* Mobile viewport zoom prevention (ensures 16px min size on small screens) */
+@media (max-width: 640px) {
+  .form-control,
+  .form-input,
+  .ncf-input {
+    font-size: 1rem;
+  }
+}
+
+/* Hover & Focus Interactive States */
+.form-control:hover,
+.form-input:hover,
+.ncf-input:hover {
+  border-color: var(--form-input-border-hover);
+}
+
+.form-control:focus,
+.form-input:focus,
+.ncf-input:focus {
+  border-color: var(--form-input-border-focus);
+  box-shadow: var(--form-input-shadow-focus);
+}
+
+/* Placeholder Styling */
+.form-control::placeholder,
+.form-input::placeholder,
+.ncf-input::placeholder {
+  color: #94a3b8;
+  opacity: 1;
+}
+
+/* Input Size Modifiers */
+.form-control-sm,
+.form-input--sm,
+.ncf-input--sm {
+  min-height: var(--form-input-height-sm);
+  padding: 0.375rem 0.625rem;
+  font-size: 0.8125rem;
+}
+
+.form-control-lg,
+.form-input--lg,
+.ncf-input--lg {
+  min-height: var(--form-input-height-lg);
+  padding: 0.75rem 1.125rem;
+  font-size: 1rem;
+}
+
+/* 2.1 Textarea Control */
+.form-textarea,
+.ncf-textarea {
+  min-height: 110px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+/* 2.2 Password Input with Visibility Toggle Wrapper */
+.form-input-password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.form-input-password-wrapper .form-control {
+  padding-right: 2.75rem;
+}
+
+.form-password-toggle {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: var(--form-help-color);
+  padding: 0.375rem;
+  cursor: pointer;
+  border-radius: var(--form-input-radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+}
+
+.form-password-toggle:hover {
+  color: var(--form-input-color);
+}
+
+.form-password-toggle:focus-visible {
+  outline: 2px solid var(--form-input-border-focus);
+}
+
+/* 2.3 Search Input Styling */
+.form-input-search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.form-input-search-wrapper .form-control {
+  padding-left: 2.5rem;
+}
+
+.form-search-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--form-help-color);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+}
+
+/* Reset default webkit search input extra buttons */
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+}
+
+/* 2.4 Number Input with Custom Steppers */
+.form-input-number-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 160px;
+}
+
+.form-input-number-wrapper .form-control {
+  text-align: center;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  -moz-appearance: textfield;
+}
+
+.form-input-number-wrapper .form-control::-webkit-outer-spin-button,
+.form-input-number-wrapper .form-control::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.form-number-btn {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  width: 32px;
+  background: var(--form-disabled-bg);
+  border: 1px solid var(--form-input-border);
+  border-radius: var(--form-input-radius);
+  color: var(--form-input-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  font-weight: bold;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.form-number-btn:hover {
+  background-color: #e2e8f0;
+}
+
+.form-number-btn--minus {
+  left: 4px;
+}
+
+.form-number-btn--plus {
+  right: 4px;
+}
+
+
+/* =============================================================================
+   3. SELECT DROPDOWN PRIMITIVE
+   Purpose:
+     Custom styled dropdown controls with SVG arrow indicator, support for
+     multiple select, option groups, and placeholder text states.
+   ========================================================================== */
+
+.form-select,
+.ncf-select {
+  display: block;
+  width: 100%;
+  min-height: var(--form-input-height);
+  padding: var(--form-input-padding-y) 2.5rem var(--form-input-padding-y) var(--form-input-padding-x);
+  font-family: var(--form-input-font-family);
+  font-size: var(--form-input-font-size);
+  line-height: 1.5;
+  color: var(--form-input-color);
+  background-color: var(--form-input-bg);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2064748b' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1.125rem 1.125rem;
+  border: 1px solid var(--form-input-border);
+  border-radius: var(--form-input-radius);
+  transition: var(--form-transition);
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+
+.form-select:hover,
+.ncf-select:hover {
+  border-color: var(--form-input-border-hover);
+}
+
+.form-select:focus,
+.ncf-select:focus {
+  border-color: var(--form-input-border-focus);
+  box-shadow: var(--form-input-shadow-focus);
+  outline: none;
+}
+
+/* Multiple Select Modifier */
+.form-select[multiple],
+.form-select[size]:not([size="1"]) {
+  padding-right: var(--form-input-padding-x);
+  background-image: none;
+  height: auto;
+  min-height: 120px;
+}
+
+
+/* =============================================================================
+   4. CHECKBOX & RADIO BUTTON PRIMITIVES
+   Purpose:
+     Accessible, custom-styled checkbox and radio controls replacing default browser controls.
+   ========================================================================== */
+
+.form-check-group,
+.ncf-check-group {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  min-height: 24px;
+}
+
+/* Hide Default Native Inputs Visually but maintain Accessibility */
+.form-checkbox,
+.form-radio,
+.ncf-checkbox,
+.ncf-radio {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-top: 0.125rem;
+  border: 1px solid var(--form-input-border);
+  background-color: var(--form-input-bg);
+  border-radius: 4px;
+  display: grid;
+  place-content: center;
+  cursor: pointer;
+  transition: var(--form-transition);
+  flex-shrink: 0;
+  outline: none;
+}
+
+/* Checkbox Custom Icon Indicator */
+.form-checkbox::before,
+.ncf-checkbox::before {
+  content: "";
+  width: 0.75rem;
+  height: 0.75rem;
+  transform: scale(0);
+  transition: transform 0.15s ease-in-out;
+  background-color: #ffffff;
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
+
+.form-checkbox:checked,
+.ncf-checkbox:checked {
+  background-color: var(--form-input-border-focus);
+  border-color: var(--form-input-border-focus);
+}
+
+.form-checkbox:checked::before,
+.ncf-checkbox:checked::before {
+  transform: scale(1);
+}
+
+/* Indeterminate State */
+.form-checkbox:indeterminate,
+.ncf-checkbox:indeterminate {
+  background-color: var(--form-input-border-focus);
+  border-color: var(--form-input-border-focus);
+}
+
+.form-checkbox:indeterminate::before,
+.ncf-checkbox:indeterminate::before {
+  content: "";
+  width: 0.625rem;
+  height: 2px;
+  background-color: #ffffff;
+  clip-path: none;
+  transform: scale(1);
+}
+
+/* Radio Button Circular Modifier */
+.form-radio,
+.ncf-radio {
+  border-radius: 50%;
+}
+
+.form-radio::before,
+.ncf-radio::before {
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  transform: scale(0);
+  transition: transform 0.15s ease-in-out;
+  background-color: #ffffff;
+  clip-path: none;
+}
+
+.form-radio:checked,
+.ncf-radio:checked {
+  background-color: var(--form-input-border-focus);
+  border-color: var(--form-input-border-focus);
+}
+
+.form-radio:checked::before,
+.ncf-radio:checked::before {
+  transform: scale(1);
+}
+
+/* Keyboard Focus States for Checkbox/Radio */
+.form-checkbox:focus-visible,
+.form-radio:focus-visible,
+.ncf-checkbox:focus-visible,
+.ncf-radio:focus-visible {
+  box-shadow: var(--form-input-shadow-focus);
+  border-color: var(--form-input-border-focus);
+}
+
+/* Checkbox/Radio Text Label */
+.form-check-label,
+.ncf-check-label {
+  font-family: var(--form-input-font-family);
+  font-size: 0.875rem;
+  color: var(--form-label-color);
+  line-height: 1.4;
+  cursor: pointer;
+}
+
+
+/* =============================================================================
+   5. TOGGLE SWITCH PRIMITIVE
+   Purpose:
+     Accessible sliding toggle switch for boolean preferences or binary settings.
+   ========================================================================== */
+
+.form-switch-wrapper,
+.ncf-switch-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.form-switch-input,
+.ncf-switch-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.form-switch-track,
+.ncf-switch-track {
+  position: relative;
+  display: inline-block;
+  width: 2.75rem;
+  height: 1.5rem;
+  background-color: #cbd5e1;
+  border-radius: 9999px;
+  transition: background-color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.form-switch-thumb,
+.ncf-switch-thumb {
+  position: absolute;
+  top: 0.125rem;
+  left: 0.125rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  background-color: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Checked Switch State */
+.form-switch-input:checked + .form-switch-track,
+.form-switch-input[aria-checked="true"] + .form-switch-track {
+  background-color: var(--form-input-border-focus);
+}
+
+.form-switch-input:checked + .form-switch-track .form-switch-thumb,
+.form-switch-input[aria-checked="true"] + .form-switch-track .form-switch-thumb {
+  transform: translateX(1.25rem);
+}
+
+/* Switch Focus Visible */
+.form-switch-input:focus-visible + .form-switch-track {
+  box-shadow: var(--form-input-shadow-focus);
+}
+
+
+/* =============================================================================
+   6. INPUT GROUP & ADDON SYSTEM
+   Purpose:
+     Merges text inputs with prefix/suffix labels or action buttons into unified UI elements.
+   ========================================================================== */
+
+.input-group,
+.ncf-input-group {
+  position: relative;
+  display: flex;
+  width: 100%;
+  align-items: stretch;
+}
+
+.input-group .form-control,
+.input-group .form-select {
+  position: relative;
+  flex: 1 1 auto;
+  width: 1%;
+  min-width: 0;
+}
+
+/* Input Group Addon Text Label */
+.input-group-text {
+  display: flex;
+  align-items: center;
+  padding: var(--form-input-padding-y) 0.875rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--form-help-color);
+  text-align: center;
+  white-space: nowrap;
+  background-color: var(--form-disabled-bg);
+  border: 1px solid var(--form-input-border);
+}
+
+/* Seamless Border Radius Alignment */
+.input-group > :first-child,
+.input-group > .input-group-text:first-child {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.input-group > :last-child,
+.input-group > .input-group-text:last-child {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.input-group > :not(:first-child):not(:last-child) {
+  border-radius: 0;
+}
+
+.input-group > :not(:first-child) {
+  margin-left: -1px;
+}
+
+
+/* =============================================================================
+   7. FLOATING LABEL PATTERN
+   Purpose:
+     Modern floating label pattern transitioning dynamically when inputs are focused or filled.
+   ========================================================================== */
+
+.form-floating,
+.ncf-floating {
+  position: relative;
+  width: 100%;
+}
+
+.form-floating .form-control,
+.form-floating .form-select {
+  height: 56px;
+  min-height: 56px;
+  padding: 1.25rem 0.875rem 0.375rem 0.875rem;
+}
+
+.form-floating label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 1rem 0.875rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  pointer-events: none;
+  border: 1px solid transparent;
+  transform-origin: 0 0;
+  transition: opacity 0.15s ease-in-out, transform 0.15s ease-in-out, color 0.15s ease-in-out;
+  color: var(--form-help-color);
+  font-size: 0.875rem;
+}
+
+/* Floating Animation States */
+.form-floating .form-control:focus ~ label,
+.form-floating .form-control:not(:placeholder-shown) ~ label,
+.form-floating .form-select ~ label {
+  opacity: 0.85;
+  transform: scale(0.75) translateY(-0.5rem) translateX(0.15rem);
+  color: var(--form-input-border-focus);
+  font-weight: 600;
+}
+
+
+/* =============================================================================
+   8. FIELD VALIDATION STATES & MESSAGES
+   Purpose:
+     Standardized visual indicators for Success, Warning, Error, Disabled, and Required states.
+   ========================================================================== */
+
+/* 8.1 Success State */
+.is-valid,
+.form-control.is-valid,
+.form-control[aria-invalid="false"] {
+  border-color: var(--form-success-color) !important;
+}
+
+.is-valid:focus,
+.form-control.is-valid:focus {
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2) !important;
+}
+
+.valid-feedback,
+.ncf-valid-text {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  color: var(--form-success-color);
+  font-weight: 500;
+  margin-top: 0.25rem;
+}
+
+/* 8.2 Warning State */
+.is-warning,
+.form-control.is-warning {
+  border-color: var(--form-warning-color) !important;
+}
+
+.is-warning:focus,
+.form-control.is-warning:focus {
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2) !important;
+}
+
+.warning-feedback,
+.ncf-warning-text {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  color: var(--form-warning-color);
+  font-weight: 500;
+  margin-top: 0.25rem;
+}
+
+/* 8.3 Error State */
+.is-invalid,
+.form-control.is-invalid,
+.form-control[aria-invalid="true"] {
+  border-color: var(--form-error-color) !important;
+}
+
+.is-invalid:focus,
+.form-control.is-invalid:focus {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2) !important;
+}
+
+.invalid-feedback,
+.form-error-message,
+.ncf-error-text {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  color: var(--form-error-color);
+  font-weight: 500;
+  margin-top: 0.25rem;
+}
+
+/* 8.4 Disabled & Readonly States */
+.form-control:disabled,
+.form-control[aria-disabled="true"],
+.form-select:disabled,
+.form-checkbox:disabled,
+.form-radio:disabled,
+.form-switch-input:disabled + .form-switch-track {
+  background-color: var(--form-disabled-bg) !important;
+  color: var(--form-disabled-color) !important;
+  border-color: var(--form-input-border) !important;
+  cursor: not-allowed !important;
+  opacity: 0.7;
+}
+
+.form-control[readonly] {
+  background-color: var(--form-disabled-bg);
+  cursor: default;
+}
+
+/* 8.5 Help Text */
+.form-help-text,
+.form-text,
+.ncf-help-text {
+  font-size: 0.75rem;
+  color: var(--form-help-color);
+  line-height: 1.4;
+  margin-top: 0.25rem;
+}
+
+
+/* =============================================================================
+   9. FORM LAYOUT HELPERS
+   Purpose:
+     Responsive grid, inline, stacked, and horizontal form structure wrappers.
+   ========================================================================== */
+
+/* Stacked Layout (Default) */
+.form-stacked {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Inline Layout */
+.form-inline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+
+.form-inline .form-group {
+  flex: 0 0 auto;
+  margin-bottom: 0;
+}
+
+/* Horizontal Layout */
+.form-horizontal .form-group {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+}
+
+@media (min-width: 640px) {
+  .form-horizontal .form-group {
+    grid-template-columns: 180px 1fr;
+    align-items: center;
+    gap: 1.25rem;
+  }
+}
+
+/* Responsive Grid Form Layout */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .form-grid--2col {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .form-grid--3col {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+
+/* =============================================================================
+   10. CHARACTER COUNTER
+   Purpose:
+     Live character count indicator for length-restricted text input fields.
+   ========================================================================== */
+
+.form-char-counter,
+.ncf-char-counter {
+  font-size: 0.75rem;
+  color: var(--form-help-color);
+  text-align: right;
+  margin-top: 0.25rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.form-char-counter--limit {
+  color: var(--form-error-color);
+  font-weight: 600;
+}
+
+
+/* =============================================================================
+   11. ACCESSIBILITY & REDUCED MOTION
+   Purpose:
+     WCAG 2.1 AA focus rings, screen reader announcements, and reduced motion handles.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .form-control,
+  .form-select,
+  .form-checkbox,
+  .form-radio,
+  .form-switch-thumb,
+  .form-floating label {
+    transition: none !important;
+  }
+}

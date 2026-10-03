@@ -1,0 +1,41 @@
+{%- comment -%}
+  CLINZA Commerce - Snippet: Header Search
+  File: snippets/header-search.liquid
+  Architecture: Fast, Compact Predictive Search Input
+{%- endcomment -%}
+
+<div class="ncf-header-search" data-header-search>
+  <form action="{{ routes.search_url }}" method="get" role="search" class="ncf-header-search__form">
+    
+    {%- comment -%} Search Icon {%- endcomment -%}
+    <span class="ncf-header-search__icon" aria-hidden="true">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+    </span>
+
+    {%- comment -%} Search Input {%- endcomment -%}
+    <input
+      type="search"
+      name="q"
+      value="{{ search.terms | escape }}"
+      placeholder="{{ section.settings.search_placeholder | default: 'Search smartwatches, earbuds, headphones, accessories...' | escape }}"
+      class="ncf-header-search__input"
+      aria-label="{{ 'general.search.search' | t | default: 'Search Store' }}"
+      autocomplete="off"
+      autocorrect="off"
+      capitalize="off"
+      spellcheck="false"
+    >
+
+    <input type="hidden" name="type" value="product">
+    <input type="hidden" name="options[prefix]" value="last">
+
+    {%- comment -%} Submit Button {%- endcomment -%}
+    <button type="submit" class="ncf-header-search__submit" aria-label="{{ 'general.search.submit' | t | default: 'Search' }}">
+      Search
+    </button>
+  </form>
+</div>
+

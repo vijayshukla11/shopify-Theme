@@ -1,0 +1,8 @@
+{
+  "name": "CLINZA - Trending Electronics & Accessories",
+  "description": "CLINZA is an Indian ecommerce brand offering trending electronics and everyday technology products including smartwatches, TWS earbuds, headphones, speakers, chargers, power banks, and accessories.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
+

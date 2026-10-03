@@ -1,0 +1,115 @@
+{%- comment -%}
+  Nova Commerce Framework (NCF) - Snippet: Product Card Action Bar (Quick View, Quick Add, Wishlist, Compare)
+  File: snippets/product-card-actions.liquid
+  Sprint: 4.3 – Premium Product Cards & Shopping Experience
+{%- endcomment -%}
+
+{%- assign show_quick_view = show_quick_view | default: true -%}
+{%- assign show_quick_add = show_quick_add | default: true -%}
+{%- assign show_wishlist = show_wishlist | default: true -%}
+{%- assign show_compare = show_compare | default: true -%}
+
+<div class="ncf-card-actions-wrapper" data-card-actions>
+  {%- comment -%} Top Right Floating Actions (Wishlist, Compare, Quick View) {%- endcomment -%}
+  <div class="absolute top-2.5 right-2.5 z-10 flex flex-col gap-1.5 opacity-0 group-hover:opacity-100 transition-all duration-200 translate-x-2 group-hover:translate-x-0">
+    {%- if show_wishlist -%}
+      <button
+        type="button"
+        class="w-8 h-8 rounded-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-md text-slate-700 dark:text-slate-200 flex items-center justify-center shadow-md hover:bg-sky-500 hover:text-white dark:hover:bg-sky-500 transition-all hover:scale-110 focus:outline-none"
+        data-wishlist-toggle
+        data-product-id="{{ product.id }}"
+        aria-label="Add to Wishlist"
+        title="Add to Wishlist"
+      >
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+        </svg>
+      </button>
+    {%- endif -%}
+
+    {%- if show_compare -%}
+      <button
+        type="button"
+        class="w-8 h-8 rounded-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-md text-slate-700 dark:text-slate-200 flex items-center justify-center shadow-md hover:bg-sky-500 hover:text-white dark:hover:bg-sky-500 transition-all hover:scale-110 focus:outline-none"
+        data-compare-toggle
+        data-product-id="{{ product.id }}"
+        aria-label="Compare Product"
+        title="Compare Product"
+      >
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="16 3 21 3 21 8"></polyline>
+          <line x1="4" y1="20" x2="21" y2="3"></line>
+          <polyline points="8 21 3 21 3 16"></polyline>
+          <line x1="15" y1="15" x2="3" y2="21"></line>
+        </svg>
+      </button>
+    {%- endif -%}
+
+    {%- if show_quick_view -%}
+      <button
+        type="button"
+        class="w-8 h-8 rounded-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-md text-slate-700 dark:text-slate-200 flex items-center justify-center shadow-md hover:bg-sky-500 hover:text-white dark:hover:bg-sky-500 transition-all hover:scale-110 focus:outline-none"
+        data-quickview-trigger
+        data-product-handle="{{ product.handle | default: 'demo-product' }}"
+        data-product-title="{{ product.title | escape | default: 'CLINZA Apex Ultra GPS Smartwatch' }}"
+        data-product-price="{{ product.price | money | default: '₹14,999' }}"
+        data-product-compare-price="{{ product.compare_at_price | money | default: '₹19,999' }}"
+        data-product-image="{{ product.featured_media | image_url: width: 600 }}"
+        data-product-vendor="{{ product.vendor | escape | default: 'CLINZA' }}"
+        aria-label="Quick View"
+        title="Quick View"
+      >
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+          <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+      </button>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} Bottom Quick Add Bar (Appears on Hover) {%- endcomment -%}
+  {%- if show_quick_add -%}
+    <div class="absolute bottom-2 left-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-all duration-200 translate-y-2 group-hover:translate-y-0">
+      {%- if product.available == false -%}
+        <button
+          type="button"
+          disabled
+          class="w-full py-2.5 px-4 rounded-xl bg-slate-200/90 dark:bg-slate-800/90 backdrop-blur-md text-slate-500 dark:text-slate-400 text-xs font-bold shadow-md cursor-not-allowed"
+        >
+          Sold Out
+        </button>
+      {%- elsif product.variants.size > 1 -%}
+        <button
+          type="button"
+          class="w-full py-2.5 px-4 rounded-xl bg-slate-900/90 dark:bg-slate-100/90 hover:bg-sky-600 dark:hover:bg-sky-500 backdrop-blur-md text-white dark:text-slate-900 hover:text-white text-xs font-bold shadow-lg transition-all flex items-center justify-center gap-2"
+          data-quickview-trigger
+          data-product-handle="{{ product.handle | default: 'demo-product' }}"
+          data-product-title="{{ product.title | escape | default: 'CLINZA Apex Ultra GPS Smartwatch' }}"
+          data-product-price="{{ product.price | money | default: '₹14,999' }}"
+          data-product-compare-price="{{ product.compare_at_price | money | default: '₹19,999' }}"
+          data-product-image="{{ product.featured_media | image_url: width: 600 }}"
+          data-product-vendor="{{ product.vendor | escape | default: 'CLINZA' }}"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span>Select Options</span>
+        </button>
+      {%- else -%}
+        <button
+          type="button"
+          class="w-full py-2.5 px-4 rounded-xl bg-sky-600 dark:bg-sky-500 hover:bg-sky-500 dark:hover:bg-sky-400 text-white text-xs font-bold shadow-lg transition-all flex items-center justify-center gap-2 group/atc"
+          data-ajax-quick-add
+          data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="transition-transform group-hover/atc:scale-110" data-atc-icon>
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+          <span data-atc-text>Quick Add</span>
+        </button>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+</div>

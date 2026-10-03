@@ -1,0 +1,613 @@
+/*
+  ==============================================================================
+  NOVA COMMERCE FRAMEWORK (NCF) - COMPONENT PRIMITIVES & BASE UI ELEMENTS
+  File: assets/components.css
+  Sprint: 1.4 - Component Primitives & Base UI Elements
+  Architecture: Native CSS Component Architecture / Framework-Agnostic
+  Description:
+    Production-ready, highly accessible, and modular UI primitives for Shopify
+    Online Store 2.0 themes. Includes button systems, badges, structural card
+    foundations, dividers, loading spinners, skeleton loaders, and reduced motion
+    accessibility handles.
+  ==============================================================================
+*/
+
+/* -----------------------------------------------------------------------------
+   0. COMPONENT SYSTEM DESIGN TOKENS
+   Defines dynamic component custom properties fallback variables.
+   -------------------------------------------------------------------------- */
+:root {
+  /* Button Component Defaults */
+  --btn-font-family: var(--font-body-family, system-ui, -apple-system, sans-serif);
+  --btn-font-weight: 600;
+  --btn-letter-spacing: 0.02em;
+  --btn-radius: var(--button-radius, 6px);
+  --btn-transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
+
+  /* Card Component Defaults */
+  --card-bg: var(--color-surface, #ffffff);
+  --card-border-color: var(--color-border, #e2e8f0);
+  --card-radius: var(--card-border-radius, 10px);
+
+  /* Badge Component Defaults */
+  --badge-radius: var(--badge-border-radius, 4px);
+  --badge-font-weight: 700;
+
+  /* Spinner & Skeleton Defaults */
+  --spinner-color: var(--color-brand-accent, #0284c7);
+  --skeleton-bg-start: #e2e8f0;
+  --skeleton-bg-end: #f1f5f9;
+}
+
+
+/* =============================================================================
+   1. BUTTON SYSTEM
+   Purpose:
+     Standardized, accessible button controls supporting primary, secondary,
+     outline, ghost, link, and icon variants across small, medium, and large sizes.
+     Includes interactive states (hover, active, disabled, loading, focus-visible).
+   ========================================================================== */
+
+/* Base Button Component */
+.btn,
+.ncf-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  font-family: var(--btn-font-family);
+  font-weight: var(--btn-font-weight);
+  letter-spacing: var(--btn-letter-spacing);
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  vertical-align: middle;
+  border-radius: var(--btn-radius);
+  border: 1px solid transparent;
+  cursor: pointer;
+  user-select: none;
+  transition: var(--btn-transition);
+  outline: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Button Size Scale */
+/* Small Button (32px min-height) */
+.btn-sm,
+.ncf-btn--sm {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.8125rem;
+  line-height: 1.25;
+  min-height: 32px;
+  gap: 0.375rem;
+}
+
+/* Medium / Default Button (44px min-height for WCAG Touch Target Compliance) */
+.btn-md,
+.btn,
+.ncf-btn {
+  padding: 0.625rem 1.25rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  min-height: 44px;
+  gap: 0.5rem;
+}
+
+/* Large Button (52px min-height) */
+.btn-lg,
+.ncf-btn--lg {
+  padding: 0.875rem 1.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  min-height: 52px;
+  gap: 0.625rem;
+}
+
+/* Full Width Button Modifier */
+.btn-block,
+.btn--full,
+.ncf-btn--full {
+  display: flex;
+  width: 100%;
+}
+
+/* Button Visual Variants */
+
+/* 1.1 Primary Button */
+.btn-primary,
+.btn--primary,
+.ncf-btn--primary {
+  background-color: var(--color-brand-accent, #0284c7);
+  color: #ffffff;
+  border-color: var(--color-brand-accent, #0284c7);
+}
+
+.btn-primary:hover,
+.btn--primary:hover,
+.ncf-btn--primary:hover {
+  background-color: var(--color-brand-accent-hover, #0369a1);
+  border-color: var(--color-brand-accent-hover, #0369a1);
+  color: #ffffff;
+}
+
+.btn-primary:active,
+.btn--primary:active,
+.ncf-btn--primary:active {
+  transform: translateY(1px);
+}
+
+/* 1.2 Secondary Button */
+.btn-secondary,
+.btn--secondary,
+.ncf-btn--secondary {
+  background-color: var(--color-primary-text, #0f172a);
+  color: #ffffff;
+  border-color: var(--color-primary-text, #0f172a);
+}
+
+.btn-secondary:hover,
+.btn--secondary:hover,
+.ncf-btn--secondary:hover {
+  background-color: #1e293b;
+  border-color: #1e293b;
+  color: #ffffff;
+}
+
+/* 1.3 Outline Button */
+.btn-outline,
+.btn--outline,
+.ncf-btn--outline {
+  background-color: transparent;
+  color: var(--color-primary-text, #0f172a);
+  border-color: var(--color-border, #cbd5e1);
+}
+
+.btn-outline:hover,
+.btn--outline:hover,
+.ncf-btn--outline:hover {
+  background-color: var(--color-secondary-bg, #f8fafc);
+  border-color: var(--color-primary-text, #0f172a);
+  color: var(--color-primary-text, #0f172a);
+}
+
+/* 1.4 Ghost Button */
+.btn-ghost,
+.btn--ghost,
+.ncf-btn--ghost {
+  background-color: transparent;
+  color: var(--color-primary-text, #0f172a);
+  border-color: transparent;
+}
+
+.btn-ghost:hover,
+.btn--ghost:hover,
+.ncf-btn--ghost:hover {
+  background-color: var(--color-secondary-bg, #f8fafc);
+  color: var(--color-primary-text, #0f172a);
+}
+
+/* 1.5 Link Button */
+.btn-link,
+.btn--link,
+.ncf-btn--link {
+  background-color: transparent;
+  color: var(--color-brand-accent, #0284c7);
+  border-color: transparent;
+  padding: 0;
+  min-height: auto;
+  border-radius: 0;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.btn-link:hover,
+.btn--link:hover,
+.ncf-btn--link:hover {
+  color: var(--color-brand-accent-hover, #0369a1);
+}
+
+/* 1.6 Icon-Only Button */
+.btn-icon,
+.btn--icon,
+.ncf-btn--icon {
+  padding: 0;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--btn-radius);
+}
+
+.btn-icon.btn-sm { width: 32px; height: 32px; min-height: 32px; }
+.btn-icon.btn-md, .btn-icon { width: 44px; height: 44px; min-height: 44px; }
+.btn-icon.btn-lg { width: 52px; height: 52px; min-height: 52px; }
+
+/* Disabled Button State */
+.btn:disabled,
+.btn[aria-disabled="true"],
+.btn--disabled,
+.ncf-btn--disabled {
+  opacity: 0.5;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+/* Focus State (WCAG 2.1 AA Keyboard Navigation Accessibility) */
+.btn:focus-visible {
+  outline: 3px solid var(--color-brand-accent, #0284c7);
+  outline-offset: 2px;
+}
+
+/* Loading Button State */
+.btn--loading {
+  color: transparent !important;
+  pointer-events: none;
+  position: relative;
+}
+
+.btn--loading::after {
+  content: "";
+  position: absolute;
+  width: 1.125rem;
+  height: 1.125rem;
+  top: 50%;
+  left: 50%;
+  margin-top: -0.5625rem;
+  margin-left: -0.5625rem;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  border-top-color: currentColor;
+  animation: ncf-spinner-rotate 0.75s linear infinite;
+}
+
+.btn-outline.btn--loading::after,
+.btn-ghost.btn--loading::after,
+.btn-link.btn--loading::after {
+  border-color: rgba(15, 23, 42, 0.2);
+  border-top-color: var(--color-primary-text, #0f172a);
+}
+
+
+/* =============================================================================
+   2. BADGE SYSTEM
+   Purpose:
+     Status indicators, product condition tags, inventory stock labels, and promotional badges.
+   ========================================================================== */
+
+.badge,
+.ncf-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: var(--badge-font-weight);
+  line-height: 1;
+  border-radius: var(--badge-radius);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  width: fit-content;
+  border: 1px solid transparent;
+}
+
+/* Badge Color Modifiers */
+.badge--success,
+.badge-success {
+  background-color: #d1fae5;
+  color: #065f46;
+  border-color: #a7f3d0;
+}
+
+.badge--warning,
+.badge-warning {
+  background-color: #fef3c7;
+  color: #92400e;
+  border-color: #fde68a;
+}
+
+.badge--error,
+.badge--danger,
+.badge-danger {
+  background-color: #fee2e2;
+  color: #991b1b;
+  border-color: #fca5a5;
+}
+
+.badge--info,
+.badge-info {
+  background-color: #e0f2fe;
+  color: #075985;
+  border-color: #bae6fd;
+}
+
+.badge--sale,
+.badge-sale {
+  background-color: #ef4444;
+  color: #ffffff;
+}
+
+.badge--new,
+.badge-new {
+  background-color: var(--color-brand-accent, #0284c7);
+  color: #ffffff;
+}
+
+.badge--out-of-stock,
+.badge-out-of-stock {
+  background-color: #f1f5f9;
+  color: #64748b;
+  border-color: #e2e8f0;
+}
+
+.badge--outline {
+  background-color: transparent;
+  color: var(--color-muted-text, #64748b);
+  border-color: var(--color-border, #e2e8f0);
+}
+
+
+/* =============================================================================
+   3. CARD FOUNDATION SYSTEM
+   Purpose:
+     Generic container card structure providing header, body, footer, and actions wrappers.
+     Supports hover elevation transitions and modular layering without domain assumptions.
+   ========================================================================== */
+
+.card,
+.ncf-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border-color);
+  border-radius: var(--card-radius);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+/* Card Section Sub-wrappers */
+.card-header,
+.ncf-card-header {
+  padding: 1.25rem 1.5rem 0.75rem 1.5rem;
+  border-bottom: 1px solid var(--color-border, #e2e8f0);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-header--unstyled {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.card-body,
+.ncf-card-body {
+  padding: 1.25rem 1.5rem;
+  flex: 1 1 auto;
+}
+
+.card-footer,
+.ncf-card-footer {
+  padding: 0.75rem 1.5rem 1.25rem 1.5rem;
+  border-top: 1px solid var(--color-border, #e2e8f0);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-footer--unstyled {
+  border-top: none;
+  padding-top: 0;
+}
+
+.card-actions,
+.ncf-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Card Interactive Hover Modifier */
+.card--hoverable:hover,
+.card-hover:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-brand-accent, #0284c7);
+  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.08);
+}
+
+/* Card Elevation Levels */
+.card--flat {
+  box-shadow: none;
+}
+
+.card--elevated-1 {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+}
+
+.card--elevated-2 {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+}
+
+.card--elevated-3 {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+
+/* =============================================================================
+   4. DIVIDER PRIMITIVES
+   Purpose:
+     Horizontal and vertical structural separators for layout sections and menus.
+   ========================================================================== */
+
+/* Horizontal Divider */
+.divider,
+.divider-hr,
+.ncf-divider {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background-color: var(--color-border, #e2e8f0);
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  border: none;
+}
+
+.divider--compact {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.divider--spacious {
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
+/* Vertical Divider */
+.divider-vertical,
+.ncf-divider-v {
+  display: inline-block;
+  width: 1px;
+  height: 100%;
+  min-height: 1.25rem;
+  background-color: var(--color-border, #e2e8f0);
+  margin-left: 0.75rem;
+  margin-right: 0.75rem;
+  vertical-align: middle;
+}
+
+
+/* =============================================================================
+   5. SPINNER PRIMITIVE
+   Purpose:
+     CSS-only accessible loading spinner indicator across small, medium, and large sizes.
+   ========================================================================== */
+
+.spinner,
+.ncf-spinner {
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  border: 3px solid rgba(2, 132, 199, 0.15);
+  border-radius: 50%;
+  border-top-color: var(--spinner-color);
+  animation: ncf-spinner-rotate 0.75s linear infinite;
+  vertical-align: middle;
+}
+
+/* Spinner Sizes */
+.spinner--sm,
+.spinner-sm {
+  width: 1.25rem;
+  height: 1.25rem;
+  border-width: 2px;
+}
+
+.spinner--md,
+.spinner-md {
+  width: 2rem;
+  height: 2rem;
+  border-width: 3px;
+}
+
+.spinner--lg,
+.spinner-lg {
+  width: 3rem;
+  height: 3rem;
+  border-width: 4px;
+}
+
+@keyframes ncf-spinner-rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+/* =============================================================================
+   6. SKELETON LOADER SYSTEM
+   Purpose:
+     Placeholder content loader primitives matching layout block dimensions.
+     Provides smooth visual feedback during data fetching or client-side hydration.
+   ========================================================================== */
+
+.skeleton,
+.ncf-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--skeleton-bg-start) 25%,
+    var(--skeleton-bg-end) 50%,
+    var(--skeleton-bg-start) 75%
+  );
+  background-size: 200% 100%;
+  animation: ncf-skeleton-shimmer 1.5s infinite;
+  border-radius: var(--badge-radius, 4px);
+  display: block;
+}
+
+/* Skeleton Variant Types */
+.skeleton-text {
+  height: 1rem;
+  margin-bottom: 0.5rem;
+  width: 100%;
+}
+
+.skeleton-text--short {
+  width: 40%;
+}
+
+.skeleton-text--medium {
+  width: 70%;
+}
+
+.skeleton-image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--card-radius, 8px);
+}
+
+.skeleton-button {
+  height: 44px;
+  width: 120px;
+  border-radius: var(--btn-radius, 6px);
+}
+
+.skeleton-card {
+  width: 100%;
+  height: 260px;
+  border-radius: var(--card-radius, 10px);
+}
+
+@keyframes ncf-skeleton-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+
+/* =============================================================================
+   7. ACCESSIBILITY & REDUCED MOTION SUPPORT
+   Purpose:
+     Ensures full compliance with WCAG 2.1 AA keyboard focus standards and
+     respects user preferences for reduced motion animation sensitivities.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .spinner,
+  .btn--loading::after {
+    animation: none !important;
+    border-style: dotted !important;
+  }
+
+  .skeleton {
+    animation: none !important;
+    background: var(--skeleton-bg-start) !important;
+  }
+}

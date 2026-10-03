@@ -1,0 +1,328 @@
+/*
+  ==============================================================================
+  NOVA COMMERCE FRAMEWORK (NCF) - PREMIUM PROMOTIONAL BANNER STYLESHEET
+  File: assets/promo-banner.css
+  Sprint: 2.6 – Premium Promotional Banner System
+  Architecture: Grid Banner Engine, Multi-Layout Variants & Countdown System
+  ==============================================================================
+*/
+
+:root {
+  --ncf-promo-overlay: rgba(15, 23, 42, 0.45);
+  --ncf-promo-accent: #0284c7;
+  --ncf-promo-radius: 1rem;
+}
+
+/* ---------------------------------------------------------------------------
+   1. SECTION CONTAINER
+   --------------------------------------------------------------------------- */
+.ncf-promo-section {
+  position: relative;
+  width: 100%;
+}
+
+/* ---------------------------------------------------------------------------
+   2. LAYOUT ENGINE (GRID VARIANTS)
+   --------------------------------------------------------------------------- */
+.ncf-promo-grid {
+  display: grid;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+/* Single Banner Layout */
+.ncf-promo-grid--single {
+  grid-template-columns: 1fr;
+}
+
+/* Two Column Equal Layout */
+.ncf-promo-grid--two-column {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+/* Three Column Equal Layout */
+.ncf-promo-grid--three-column {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* Full Width Unconstrained Layout */
+.ncf-promo-grid--full-width {
+  grid-template-columns: 1fr;
+}
+
+/* Split Banner Layout (Asymmetric 2:1) */
+.ncf-promo-grid--split {
+  grid-template-columns: 2fr 1fr;
+}
+
+/* Editorial Layout (Asymmetric 1:2) */
+.ncf-promo-grid--editorial {
+  grid-template-columns: 1fr 2fr;
+}
+
+@media (max-width: 1023px) {
+  .ncf-promo-grid--three-column,
+  .ncf-promo-grid--split,
+  .ncf-promo-grid--editorial {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .ncf-promo-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   3. BANNER CARD ITEM & BACKGROUND MEDIA
+   --------------------------------------------------------------------------- */
+.ncf-promo-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-radius: var(--ncf-promo-radius);
+  overflow: hidden;
+  color: #ffffff;
+  background-color: #0f172a;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+  isolation: isolate;
+}
+
+.ncf-promo-section--full-width .ncf-promo-card {
+  border-radius: 0;
+}
+
+.ncf-promo-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 35px -10px rgba(15, 23, 42, 0.3);
+}
+
+/* Banner Height Options */
+.ncf-promo-card--height-small { min-height: 280px; }
+.ncf-promo-card--height-medium { min-height: 380px; }
+.ncf-promo-card--height-large { min-height: 500px; }
+.ncf-promo-card--height-full { min-height: 650px; }
+
+/* Media Container */
+.ncf-promo-card__media {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.ncf-promo-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ncf-promo-card:hover .ncf-promo-card__img {
+  transform: scale(1.05);
+}
+
+.ncf-promo-card__img--desktop { display: block; }
+.ncf-promo-card__img--mobile { display: none; }
+
+@media (max-width: 639px) {
+  .ncf-promo-card__img--desktop.has-mobile-img { display: none; }
+  .ncf-promo-card__img--mobile { display: block; }
+}
+
+/* Overlay Layer */
+.ncf-promo-card__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background-color: var(--ncf-promo-overlay);
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------------------------
+   4. CONTENT WRAPPER & ALIGNMENTS
+   --------------------------------------------------------------------------- */
+.ncf-promo-card__content {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+/* Content Alignment Positions */
+.ncf-promo-card__content--align-left-top { justify-content: flex-start; align-items: flex-start; text-align: left; }
+.ncf-promo-card__content--align-left-center { justify-content: center; align-items: flex-start; text-align: left; }
+.ncf-promo-card__content--align-left-bottom { justify-content: flex-end; align-items: flex-start; text-align: left; }
+
+.ncf-promo-card__content--align-center-top { justify-content: flex-start; align-items: center; text-align: center; }
+.ncf-promo-card__content--align-center-center { justify-content: center; align-items: center; text-align: center; }
+.ncf-promo-card__content--align-center-bottom { justify-content: flex-end; align-items: center; text-align: center; }
+
+.ncf-promo-card__content--align-right-top { justify-content: flex-start; align-items: flex-end; text-align: right; }
+.ncf-promo-card__content--align-right-center { justify-content: center; align-items: flex-end; text-align: right; }
+.ncf-promo-card__content--align-right-bottom { justify-content: flex-end; align-items: flex-end; text-align: right; }
+
+/* Content Typography */
+.ncf-promo-card__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  background-color: rgba(2, 132, 199, 0.9);
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  width: fit-content;
+}
+
+.ncf-promo-card__title {
+  font-size: clamp(1.5rem, 3.5vw, 3rem);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  margin: 0;
+  color: inherit;
+}
+
+.ncf-promo-card__description {
+  font-size: clamp(0.875rem, 1.5vw, 1.125rem);
+  line-height: 1.5;
+  opacity: 0.92;
+  margin: 0;
+  max-width: 36rem;
+}
+
+/* ---------------------------------------------------------------------------
+   5. SPECIAL BADGES & COUNTDOWN TIMER
+   --------------------------------------------------------------------------- */
+.ncf-promo-card__badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.85rem;
+  border-radius: 0.5rem;
+  background-color: #e11d48;
+  color: #ffffff;
+  font-size: 0.8125rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  width: fit-content;
+  box-shadow: 0 4px 12px rgba(225, 29, 72, 0.3);
+}
+
+.ncf-promo-countdown {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.75rem;
+  background-color: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(12px);
+  margin-top: 0.5rem;
+}
+
+.ncf-promo-countdown__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ncf-promo-countdown__val {
+  font-size: 1.25rem;
+  font-weight: 900;
+  font-family: monospace;
+  line-height: 1;
+}
+
+.ncf-promo-countdown__lbl {
+  font-size: 0.625rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.75;
+}
+
+.ncf-promo-countdown__sep {
+  font-size: 1.25rem;
+  font-weight: 900;
+  opacity: 0.5;
+}
+
+/* ---------------------------------------------------------------------------
+   6. CTA BUTTONS GROUP
+   --------------------------------------------------------------------------- */
+.ncf-promo-card__buttons {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.ncf-promo-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.ncf-promo-btn--primary {
+  background-color: #ffffff;
+  color: #0f172a;
+  border: 1px solid #ffffff;
+}
+
+.ncf-promo-btn--primary:hover {
+  background-color: var(--ncf-promo-accent);
+  color: #ffffff;
+  border-color: var(--ncf-promo-accent);
+  transform: translateY(-2px);
+}
+
+.ncf-promo-btn--secondary {
+  background-color: transparent;
+  color: #ffffff;
+  border: 1.5px solid rgba(255, 255, 255, 0.6);
+}
+
+.ncf-promo-btn--secondary:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-color: #ffffff;
+  transform: translateY(-2px);
+}
+
+/* ---------------------------------------------------------------------------
+   7. REDUCED MOTION ACCESSIBILITY
+   --------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .ncf-promo-card,
+  .ncf-promo-card__img,
+  .ncf-promo-btn {
+    transition: none !important;
+    transform: none !important;
+  }
+}

@@ -1,0 +1,303 @@
+{%- comment -%}
+  Nova Commerce Framework (NCF) - Section: Main Collection Banner
+  File: sections/main-collection-banner.liquid
+  Sprint: 4.0 – Collection Page Foundation
+  Architecture: Mobile-First High-Conversion PLP Collection Header & Metadata Banner
+{%- endcomment -%}
+
+{%- assign banner_style = section.settings.banner_style | default: 'compact' -%}
+{%- assign container_type = section.settings.container_width | default: 'container' -%}
+{%- assign text_align = section.settings.text_alignment | default: 'left' -%}
+
+{%- comment -%} IMAGE RESOLUTION LOGIC {%- endcomment -%}
+{%- assign desktop_img = section.settings.desktop_image -%}
+{%- assign mobile_img = section.settings.mobile_image | default: desktop_img -%}
+{%- if desktop_img == blank and section.settings.use_collection_image and collection.image != blank -%}
+  {%- assign desktop_img = collection.image -%}
+  {%- assign mobile_img = collection.image -%}
+{%- endif -%}
+
+{%- comment -%} CONTENT OVERRIDES {%- endcomment -%}
+{%- assign eyebrow_text = section.settings.eyebrow | default: 'Curated Collection' -%}
+{%- assign heading_text = section.settings.heading_override | default: collection.title | default: 'Catalog Overview' -%}
+{%- assign description_text = section.settings.description_override | default: collection.description -%}
+{%- assign product_count = collection.products_count | default: 0 -%}
+
+<section
+  class="
+    ncf-collection-banner
+    ncf-collection-banner--{{ banner_style }}
+    {% if container_type == 'full' %}ncf-collection-banner--full-width{% endif %}
+  "
+  id="ncf-collection-banner-{{ section.id }}"
+  style="
+    --ncf-banner-bg: {{ section.settings.bg_color | default: '#f8fafc' }};
+    --ncf-banner-text: {{ section.settings.text_color | default: '#0f172a' }};
+    padding-top: {{ section.settings.padding_top | default: 32 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | default: 32 }}px;
+  "
+  aria-label="{{ heading_text | escape }}"
+>
+  {%- comment -%} HERO BANNER WITH BACKGROUND IMAGE {%- endcomment -%}
+  {%- if banner_style == 'hero' and desktop_img != blank -%}
+    <picture>
+      {%- if mobile_img != blank -%}
+        <source media="(max-width: 767px)" srcset="{{ mobile_img | image_url: width: 800 }}">
+      {%- endif -%}
+      {{ desktop_img | image_url: width: 2000 | image_tag:
+        loading: 'eager',
+        fetchpriority: 'high',
+        class: 'ncf-collection-banner__bg-image',
+        alt: heading_text | escape
+      }}
+    </picture>
+    <div
+      class="ncf-collection-banner__overlay"
+      style="opacity: {{ section.settings.overlay_opacity | default: 40 | divided_by: 100.0 }};"
+    ></div>
+  {%- endif -%}
+
+  <div class="ncf-collection-banner__container {% if container_type == 'container' %}max-w-7xl mx-auto px-6 lg:px-8{% else %}w-full px-4{% endif %}">
+
+    {%- comment -%} BREADCRUMB NAVIGATION {%- endcomment -%}
+    {%- if section.settings.show_breadcrumbs -%}
+      {% render 'plp-breadcrumbs' %}
+    {%- endif -%}
+
+    {%- comment -%} EDITORIAL SPLIT LAYOUT {%- endcomment -%}
+    {%- if banner_style == 'editorial' -%}
+      <div class="ncf-collection-banner__editorial-grid">
+        <div class="text-{{ text_align }}">
+          {%- if eyebrow_text != blank -%}
+            <span class="ncf-collection-banner__eyebrow">{{ eyebrow_text }}</span>
+          {%- endif -%}
+
+          <div class="ncf-collection-banner__heading-wrap {% if text_align == 'center' %}justify-center{% endif %}">
+            <h1 class="ncf-collection-banner__heading">{{ heading_text }}</h1>
+            {%- if section.settings.show_product_count -%}
+              <span class="ncf-collection-banner__count-badge">
+                {{ product_count }} {{ product_count | pluralize: 'Item', 'Items' }}
+              </span>
+            {%- endif -%}
+          </div>
+
+          {%- if section.settings.show_description and description_text != blank -%}
+            <div class="ncf-collection-banner__description">
+              {{ description_text }}
+            </div>
+          {%- endif -%}
+
+          {%- if section.settings.cta_label != blank and section.settings.cta_url != blank -%}
+            <a href="{{ section.settings.cta_url }}" class="ncf-collection-banner__cta">
+              <span>{{ section.settings.cta_label }}</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          {%- endif -%}
+        </div>
+
+        {%- if desktop_img != blank -%}
+          <div class="ncf-collection-banner__editorial-media">
+            {{ desktop_img | image_url: width: 1000 | image_tag:
+              loading: 'lazy',
+              class: 'ncf-collection-banner__editorial-img',
+              alt: heading_text | escape
+            }}
+          </div>
+        {%- endif -%}
+      </div>
+
+    {%- else -%}
+      {%- comment -%} STANDARD HERO, COMPACT, OR MINIMAL LAYOUT {%- endcomment -%}
+      <div class="text-{{ text_align }}">
+        {%- if eyebrow_text != blank -%}
+          <span class="ncf-collection-banner__eyebrow">{{ eyebrow_text }}</span>
+        {%- endif -%}
+
+        <div class="ncf-collection-banner__heading-wrap {% if text_align == 'center' %}justify-center{% endif %}">
+          <h1 class="ncf-collection-banner__heading">{{ heading_text }}</h1>
+          {%- if section.settings.show_product_count -%}
+            <span class="ncf-collection-banner__count-badge">
+              {{ product_count }} {{ product_count | pluralize: 'Item', 'Items' }}
+            </span>
+          {%- endif -%}
+        </div>
+
+        {%- if section.settings.show_description and description_text != blank -%}
+          <div class="ncf-collection-banner__description {% if text_align == 'center' %}mx-auto{% endif %}">
+            {{ description_text }}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.cta_label != blank and section.settings.cta_url != blank -%}
+          <a href="{{ section.settings.cta_url }}" class="ncf-collection-banner__cta">
+            <span>{{ section.settings.cta_label }}</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection Banner",
+  "tag": "section",
+  "class": "section-collection-banner",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout & Presentation"
+    },
+    {
+      "type": "select",
+      "id": "banner_style",
+      "label": "Banner Layout Variant",
+      "options": [
+        { "value": "compact", "label": "Compact Boxed Banner" },
+        { "value": "hero", "label": "Full Width Immersive Hero" },
+        { "value": "editorial", "label": "Editorial Split Banner" },
+        { "value": "none", "label": "Minimal Header (No Background)" }
+      ],
+      "default": "compact"
+    },
+    {
+      "type": "select",
+      "id": "container_width",
+      "label": "Container Width",
+      "options": [
+        { "value": "container", "label": "Standard Boxed (Max 1280px)" },
+        { "value": "full", "label": "Full Width Edge-to-Edge" }
+      ],
+      "default": "container"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text Alignment",
+      "options": [
+        { "value": "left", "label": "Left Aligned" },
+        { "value": "center", "label": "Center Aligned" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Banner Images"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_collection_image",
+      "label": "Use Collection Image as Default",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "desktop_image",
+      "label": "Custom Desktop Image Override"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Custom Mobile Image Override"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "label": "Hero Image Dark Overlay",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Content & Navigation"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumbs",
+      "label": "Show Breadcrumb Navigation",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Label",
+      "default": "Curated Catalog"
+    },
+    {
+      "type": "text",
+      "id": "heading_override",
+      "label": "Heading Override (Optional)",
+      "info": "Leave blank to display default Collection Title"
+    },
+    {
+      "type": "richtext",
+      "id": "description_override",
+      "label": "Description Override (Optional)",
+      "info": "Leave blank to display default Collection Description"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Show Collection Description",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_count",
+      "label": "Show Product Count Badge",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Optional CTA Button Label"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "Optional CTA Link URL"
+    },
+    {
+      "type": "header",
+      "content": "Colors & Padding"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#f8fafc"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#0f172a"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 96,
+      "step": 8,
+      "unit": "px",
+      "label": "Top Padding",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 96,
+      "step": 8,
+      "unit": "px",
+      "label": "Bottom Padding",
+      "default": 32
+    }
+  ]
+}
+{% endschema %}

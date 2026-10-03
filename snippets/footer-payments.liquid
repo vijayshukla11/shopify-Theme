@@ -1,0 +1,44 @@
+{%- comment -%}
+  Nova Commerce Framework (NCF) - Snippet: Footer Payment Badges
+  File: snippets/footer-payments.liquid
+  Sprint: 3.0 – Enterprise Footer System
+  Architecture: Atomic Payment Badges & Trust Icons
+{%- endcomment -%}
+
+<div class="ncf-footer-payments" aria-label="Accepted Payment Methods">
+  {%- if section.settings.show_visa -%}
+    <span class="ncf-footer-payment-badge">VISA</span>
+  {%- endif -%}
+
+  {%- if section.settings.show_mastercard -%}
+    <span class="ncf-footer-payment-badge">MASTERCARD</span>
+  {%- endif -%}
+
+  {%- if section.settings.show_amex -%}
+    <span class="ncf-footer-payment-badge">AMEX</span>
+  {%- endif -%}
+
+  {%- if section.settings.show_paypal -%}
+    <span class="ncf-footer-payment-badge">PAYPAL</span>
+  {%- endif -%}
+
+  {%- if section.settings.show_apple_pay -%}
+    <span class="ncf-footer-payment-badge">APPLE PAY</span>
+  {%- endif -%}
+
+  {%- if section.settings.show_google_pay -%}
+    <span class="ncf-footer-payment-badge">G PAY</span>
+  {%- endif -%}
+
+  {%- if section.settings.show_shop_pay -%}
+    <span class="ncf-footer-payment-badge" style="background-color: #5a31f4; color: #ffffff;">SHOP PAY</span>
+  {%- endif -%}
+
+  {%- if section.settings.show_upi -%}
+    <span class="ncf-footer-payment-badge" style="background-color: #0f172a; color: #38bdf8;">UPI</span>
+  {%- endif -%}
+
+  {%- if section.settings.show_cod -%}
+    <span class="ncf-footer-payment-badge" style="background-color: #15803d; color: #ffffff;">CASH ON DELIVERY</span>
+  {%- endif -%}
+</div>

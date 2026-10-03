@@ -1,0 +1,45 @@
+{%- comment -%}
+  Nova Commerce Framework (NCF) - Snippet: Recommendation Carousel
+  File: snippets/recommendation-carousel.liquid
+  Sprint: 4.6 – Product Recommendation System
+{%- endcomment -%}
+
+{%- assign desktop_columns = desktop_columns | default: 4 -%}
+{%- assign mobile_columns = mobile_columns | default: 1 -%}
+{%- assign limit = limit | default: 8 -%}
+{%- assign rec_type = rec_type | default: "related" -%}
+
+<div class="ncf-rec-carousel-wrapper group relative" data-rec-carousel-wrapper>
+  {%- comment -%} Navigation Arrows {%- endcomment -%}
+  <button
+    type="button"
+    class="ncf-rec-arrow prev opacity-0 group-hover:opacity-100 transition-opacity focus:opacity-100"
+    data-rec-prev
+    aria-label="Previous Recommendations"
+  >
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+  </button>
+
+  <button
+    type="button"
+    class="ncf-rec-arrow next opacity-0 group-hover:opacity-100 transition-opacity focus:opacity-100"
+    data-rec-next
+    aria-label="Next Recommendations"
+  >
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+  </button>
+
+  {%- comment -%} Track {%- endcomment -%}
+  <div class="ncf-rec-track custom-scrollbar" data-rec-carousel>
+    {%- for i in (1..limit) -%}
+      <div class="ncf-rec-slide col-{{ desktop_columns }}">
+        {% render 'recommendation-card', 
+          product: recommendations.products[forloop.index0], 
+          index: i,
+          rec_type: rec_type,
+          is_bundle: is_bundle
+        %}
+      </div>
+    {%- endfor -%}
+  </div>
+</div>

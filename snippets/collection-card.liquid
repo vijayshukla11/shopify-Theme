@@ -1,0 +1,108 @@
+{%- comment -%}
+  Nova Commerce Framework (NCF) - Snippet: Featured Collection Card
+  File: snippets/collection-card.liquid
+  Sprint: 2.7 – Premium Featured Collections
+  Architecture: Atomic Editorial Collection Card Snippet
+{%- endcomment -%}
+
+{%- assign collection_obj = block.settings.collection -%}
+{%- assign card_heading = block.settings.heading | default: collection_obj.title | default: 'Collection Title' -%}
+{%- assign card_desc = block.settings.description | default: collection_obj.description | strip_html | truncatewords: 20 -%}
+{%- assign desktop_img = block.settings.desktop_image | default: collection_obj.featured_image -%}
+{%- assign mobile_img = block.settings.mobile_image -%}
+{%- assign height_class = block.settings.card_height | default: section.settings.card_height | default: 'medium' -%}
+{%- assign overlay_opacity = block.settings.overlay_opacity | default: 45 -%}
+{%- assign collection_url = block.settings.btn_primary_url | default: collection_obj.url | default: '#' -%}
+
+<article
+  class="ncf-collection-card ncf-collection-card--height-{{ height_class }}"
+  style="
+    {% if block.settings.card_bg_color != blank %}background-color: {{ block.settings.card_bg_color }};{% endif %}
+    {% if block.settings.card_text_color != blank %}color: {{ block.settings.card_text_color }};{% endif %}
+  "
+  {{ block.shopify_attributes }}
+>
+  {%- comment -%} MEDIA BACKGROUND LAYER {%- endcomment -%}
+  <div class="ncf-collection-card__media">
+    {%- assign desktop_img_class = 'ncf-collection-card__img ncf-collection-card__img--desktop' -%}
+    {%- if mobile_img != blank -%}
+      {%- assign desktop_img_class = desktop_img_class | append: ' has-mobile-img' -%}
+    {%- endif -%}
+
+    {%- if desktop_img != blank -%}
+      {{ desktop_img | image_url: width: 1800 | image_tag:
+        loading: 'lazy',
+        sizes: '(min-width: 1024px) 50vw, 100vw',
+        widths: '375, 640, 750, 1024, 1280, 1500, 1800',
+        class: desktop_img_class,
+        alt: card_heading | escape
+      }}
+    {%- else -%}
+      {{ 'collection-1' | placeholder_svg_tag: 'ncf-collection-card__img ncf-collection-card__placeholder' }}
+    {%- endif -%}
+
+    {%- if mobile_img != blank -%}
+      {{ mobile_img | image_url: width: 800 | image_tag:
+        loading: 'lazy',
+        sizes: '100vw',
+        widths: '375, 640, 800',
+        class: 'ncf-collection-card__img ncf-collection-card__img--mobile',
+        alt: card_heading | escape
+      }}
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} OVERLAY GRADIENT LAYER {%- endcomment -%}
+  <div
+    class="ncf-collection-card__overlay"
+    style="background: linear-gradient(to top, rgba(15, 23, 42, {{ overlay_opacity | divided_by: 100.0 }}), rgba(15, 23, 42, {{ overlay_opacity | divided_by: 200.0 }}));"
+    aria-hidden="true"
+  ></div>
+
+  {%- comment -%} CONTENT LAYER {%- endcomment -%}
+  <div class="ncf-collection-card__content">
+    <div class="ncf-collection-card__header-meta">
+      {%- if block.settings.badge_text != blank -%}
+        <span class="ncf-collection-card__badge">
+          {{ block.settings.badge_text }}
+        </span>
+      {%- endif -%}
+
+      {%- if block.settings.show_product_count and collection_obj != blank -%}
+        <span class="ncf-collection-card__count">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+            <path d="M3 6h18"></path>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <span>{{ collection_obj.products_count }} {{ 'sections.featured_collections.products_label' | t | default: 'Products' }}</span>
+        </span>
+      {%- endif -%}
+    </div>
+
+    <h3 class="ncf-collection-card__title">
+      {{ card_heading }}
+    </h3>
+
+    {%- if card_desc != blank -%}
+      <p class="ncf-collection-card__description">
+        {{ card_desc }}
+      </p>
+    {%- endif -%}
+
+    <div class="ncf-collection-card__actions">
+      <a href="{{ collection_url }}" class="ncf-collection-btn ncf-collection-btn--primary">
+        <span>{{ block.settings.btn_primary_text | default: 'Explore Collection' }}</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </a>
+
+      {%- if block.settings.btn_secondary_text != blank -%}
+        <a href="{{ block.settings.btn_secondary_url | default: '#' }}" class="ncf-collection-btn ncf-collection-btn--secondary">
+          <span>{{ block.settings.btn_secondary_text }}</span>
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+</article>

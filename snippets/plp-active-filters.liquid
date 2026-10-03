@@ -1,0 +1,60 @@
+{%- comment -%}
+  Nova Commerce Framework (NCF) - Snippet: Active Filter Pills / Tags
+  File: snippets/plp-active-filters.liquid
+  Sprint: 4.1 – Premium Collection Filters & Product Listing Experience
+  Architecture: Dynamic active filter tags with remove URLs & clear all button
+{%- endcomment -%}
+
+<div class="ncf-plp-active-filters flex flex-wrap items-center gap-2 mb-4" id="ncf-active-filters-wrapper" aria-live="polite">
+  {%- assign total_active_count = 0 -%}
+
+  {%- for filter in collection.filters -%}
+    {%- for value in filter.active_values -%}
+      {%- assign total_active_count = total_active_count | plus: 1 -%}
+      <a
+        href="{{ value.url_to_remove }}"
+        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-sky-50 dark:bg-sky-950/60 border border-sky-200 dark:border-sky-800/80 text-sky-700 dark:text-sky-300 text-xs font-semibold hover:bg-sky-100 dark:hover:bg-sky-900 transition-colors group focus:outline-none focus:ring-2 focus:ring-sky-500 min-h-[32px]"
+        data-filter-remove-url="{{ value.url_to_remove }}"
+        aria-label="Remove filter: {{ filter.label }} {{ value.label }}"
+      >
+        <span class="font-mono text-[11px] font-bold uppercase tracking-wider text-sky-600 dark:text-sky-400">{{ filter.label }}:</span>
+        <span>{{ value.label }}</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-sky-500 group-hover:text-sky-700 dark:group-hover:text-sky-200">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </a>
+    {%- endfor -%}
+
+    {%- if filter.type == "price_range" -%}
+      {%- if filter.min_value.value != nil or filter.max_value.value != nil -%}
+        {%- assign total_active_count = total_active_count | plus: 1 -%}
+        <a
+          href="{{ filter.url_to_remove }}"
+          class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-sky-50 dark:bg-sky-950/60 border border-sky-200 dark:border-sky-800/80 text-sky-700 dark:text-sky-300 text-xs font-semibold hover:bg-sky-100 dark:hover:bg-sky-900 transition-colors group focus:outline-none focus:ring-2 focus:ring-sky-500 min-h-[32px]"
+          data-filter-remove-url="{{ filter.url_to_remove }}"
+          aria-label="Remove price filter"
+        >
+          <span class="font-mono text-[11px] font-bold uppercase tracking-wider text-sky-600 dark:text-sky-400">Price:</span>
+          <span>
+            {{ filter.min_value.value | default: 0 | money }} &ndash; {{ filter.max_value.value | default: filter.range_max | money }}
+          </span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-sky-500 group-hover:text-sky-700 dark:group-hover:text-sky-200">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </a>
+      {%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- comment -%} Clear All CTA {%- endcomment -%}
+  <a
+    href="{{ collection.url }}"
+    class="inline-flex items-center gap-1 text-xs font-bold text-slate-500 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-400 underline underline-offset-4 px-2 py-1 transition-colors min-h-[32px] {% if total_active_count == 0 %}hidden{% endif %}"
+    id="ncf-clear-all-active-filters"
+    data-filter-clear-all
+  >
+    <span>{{ 'products.facets.clear_all' | t | default: 'Clear All' }}</span>
+  </a>
+</div>

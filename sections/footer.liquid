@@ -1,0 +1,625 @@
+{%- comment -%}
+  Nova Commerce Framework (NCF) - Section: Enterprise Footer System
+  File: sections/footer.liquid
+  Sprint: 3.0 – Enterprise Footer System
+  Architecture: High-Conversion Accessible Enterprise Footer System
+{%- endcomment -%}
+
+{%- assign container_type = section.settings.container_type | default: 'container' -%}
+{%- assign desktop_cols = section.settings.columns_desktop | default: 4 -%}
+
+<footer
+  class="ncf-footer"
+  id="ncf-footer-{{ section.id }}"
+  data-enterprise-footer
+  style="
+    --ncf-footer-bg: {{ section.settings.bg_color | default: '#0f172a' }};
+    --ncf-footer-text: {{ section.settings.text_color | default: '#94a3b8' }};
+    --ncf-footer-heading: {{ section.settings.heading_color | default: '#ffffff' }};
+    --ncf-footer-border: {{ section.settings.border_color | default: '#1e293b' }};
+    --ncf-footer-accent: {{ section.settings.accent_color | default: '#0284c7' }};
+    --ncf-footer-cols: {{ desktop_cols }};
+    padding-top: {{ section.settings.padding_top | default: 64 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | default: 32 }}px;
+  "
+  aria-label="{{ 'sections.footer.title' | t | default: 'Footer Navigation' }}"
+>
+  <div class="ncf-footer-container {% if container_type == 'container' %}max-w-7xl mx-auto px-6 lg:px-8{% else %}w-full px-4{% endif %}">
+
+    {%- comment -%} 1. TOP BAND: BRAND LOGO, DESCRIPTION & NEWSLETTER {%- endcomment -%}
+    <div class="ncf-footer__top">
+      <div class="ncf-footer__top-grid">
+        {%- comment -%} Brand Block {%- endcomment -%}
+        <div class="ncf-footer__brand-block">
+          {%- if section.settings.brand_logo != blank -%}
+            {{ section.settings.brand_logo | image_url: width: 360 | image_tag:
+              loading: 'lazy',
+              class: 'ncf-footer__logo-img',
+              alt: shop.name | escape
+            }}
+          {%- else -%}
+            <h2 class="text-2xl font-black tracking-widest text-white uppercase">
+              {{ shop.name | default: 'CLINZA' }}
+            </h2>
+          {%- endif -%}
+
+          {%- if section.settings.brand_description != blank -%}
+            <p class="ncf-footer__brand-desc">
+              {{ section.settings.brand_description }}
+            </p>
+          {%- endif -%}
+        </div>
+
+        {%- comment -%} Newsletter Form {%- endcomment -%}
+        {%- if section.settings.show_newsletter -%}
+          <div class="ncf-footer__newsletter">
+            <h3 class="ncf-footer__newsletter-heading">
+              {{ section.settings.newsletter_title | default: 'Stay Ahead of the Curve' }}
+            </h3>
+            <p class="text-xs text-slate-400 mb-1">
+              {{ section.settings.newsletter_subtitle | default: 'Subscribe to receive product drops, technical updates, and exclusive access.' }}
+            </p>
+
+            <form method="post" action="/contact#contact_form" id="contact_form" accept-charset="UTF-8" class="ncf-footer__newsletter-form">
+              <input type="hidden" name="form_type" value="customer">
+              <input type="hidden" name="utf8" value="✓">
+              <input type="hidden" name="contact[tags]" value="newsletter">
+
+              <input
+                type="email"
+                name="contact[email]"
+                class="ncf-footer__newsletter-input"
+                placeholder="{{ 'sections.footer.newsletter_email_placeholder' | t | default: 'Enter your email address...' }}"
+                required
+                aria-label="Email address for newsletter"
+              >
+              <button type="submit" class="ncf-footer__newsletter-btn">
+                <span>{{ section.settings.newsletter_button_label | default: 'Subscribe' }}</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </button>
+            </form>
+
+            <p class="text-[11px] text-slate-500">
+              By subscribing you agree to our <a href="#" class="underline hover:text-slate-300">Privacy Policy</a>. Unsubscribe at any time.
+            </p>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- comment -%} 2. NAVIGATION COLUMNS {%- endcomment -%}
+    <div class="ncf-footer__navigation">
+      <div class="ncf-footer__columns-grid">
+        {%- if section.blocks.size > 0 -%}
+          {%- for block in section.blocks -%}
+            {% render 'footer-column', block: block, section: section %}
+          {%- endfor -%}
+        {%- else -%}
+          {%- comment -%} Default Fallback Navigation Columns {%- endcomment -%}
+          <div class="ncf-footer-col" data-collapsible aria-expanded="false">
+            <button type="button" class="ncf-footer-col__title-btn" aria-expanded="false">
+              <span>Shop Gear</span>
+              <svg class="ncf-footer-col__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="ncf-footer-col__content">
+              <ul class="ncf-footer-col__list">
+                <li><a href="#" class="ncf-footer-col__link">New Arrivals</a></li>
+                <li><a href="#" class="ncf-footer-col__link">Acoustic Series</a></li>
+                <li><a href="#" class="ncf-footer-col__link">Tactical Apparel</a></li>
+                <li><a href="#" class="ncf-footer-col__link">Accessories</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="ncf-footer-col" data-collapsible aria-expanded="false">
+            <button type="button" class="ncf-footer-col__title-btn" aria-expanded="false">
+              <span>Support</span>
+              <svg class="ncf-footer-col__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="ncf-footer-col__content">
+              <ul class="ncf-footer-col__list">
+                <li><a href="#" class="ncf-footer-col__link">Order Tracking</a></li>
+                <li><a href="#" class="ncf-footer-col__link">Warranty Registration</a></li>
+                <li><a href="#" class="ncf-footer-col__link">Shipping & Returns</a></li>
+                <li><a href="#" class="ncf-footer-col__link">Help Center</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="ncf-footer-col" data-collapsible aria-expanded="false">
+            <button type="button" class="ncf-footer-col__title-btn" aria-expanded="false">
+              <span>Company</span>
+              <svg class="ncf-footer-col__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="ncf-footer-col__content">
+              <ul class="ncf-footer-col__list">
+                <li><a href="#" class="ncf-footer-col__link">Our Story</a></li>
+                <li><a href="#" class="ncf-footer-col__link">Sustainability</a></li>
+                <li><a href="#" class="ncf-footer-col__link">Careers</a></li>
+                <li><a href="#" class="ncf-footer-col__link">Press Releases</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="ncf-footer-col" data-collapsible aria-expanded="false">
+            <button type="button" class="ncf-footer-col__title-btn" aria-expanded="false">
+              <span>Contact Us</span>
+              <svg class="ncf-footer-col__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="ncf-footer-col__content">
+              <div class="ncf-footer-contact">
+                <div class="ncf-footer-contact__item">
+                  <svg class="ncf-footer-contact__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                  <span>+1 (800) 555-NOVA</span>
+                </div>
+                <div class="ncf-footer-contact__item">
+                  <svg class="ncf-footer-contact__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                  <span>support@novacommerce.io</span>
+                </div>
+                <div class="ncf-footer-contact__item">
+                  <svg class="ncf-footer-contact__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                  <span>750 Tech Parkway, Suite 400, Austin, TX</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- comment -%} 3. TRUST BADGES BAND {%- endcomment -%}
+    {%- if section.settings.show_trust_badges -%}
+      <div class="ncf-footer__trust">
+        <div class="ncf-footer__trust-grid">
+          <div class="ncf-footer-trust-item">
+            <svg class="ncf-footer-trust-item__icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+            <div>
+              <div class="ncf-footer-trust-item__title">256-Bit SSL</div>
+              <div class="ncf-footer-trust-item__subtitle">Encrypted Security</div>
+            </div>
+          </div>
+
+          <div class="ncf-footer-trust-item">
+            <svg class="ncf-footer-trust-item__icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M12 8v4l3 3"></path>
+            </svg>
+            <div>
+              <div class="ncf-footer-trust-item__title">30-Day Returns</div>
+              <div class="ncf-footer-trust-item__subtitle">Money Back Guarantee</div>
+            </div>
+          </div>
+
+          <div class="ncf-footer-trust-item">
+            <svg class="ncf-footer-trust-item__icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="1" y="3" width="15" height="13"></rect>
+              <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+              <circle cx="5.5" cy="18.5" r="2.5"></circle>
+              <circle cx="18.5" cy="18.5" r="2.5"></circle>
+            </svg>
+            <div>
+              <div class="ncf-footer-trust-item__title">Express Shipping</div>
+              <div class="ncf-footer-trust-item__subtitle">Tracked Global Transit</div>
+            </div>
+          </div>
+
+          <div class="ncf-footer-trust-item">
+            <svg class="ncf-footer-trust-item__icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+            <div>
+              <div class="ncf-footer-trust-item__title">2-Year Warranty</div>
+              <div class="ncf-footer-trust-item__subtitle">Comprehensive Shield</div>
+            </div>
+          </div>
+
+          <div class="ncf-footer-trust-item">
+            <svg class="ncf-footer-trust-item__icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+            </svg>
+            <div>
+              <div class="ncf-footer-trust-item__title">Official Store</div>
+              <div class="ncf-footer-trust-item__subtitle">Direct Manufacturer</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} 4. SOCIAL ICONS & PAYMENT BADGES {%- endcomment -%}
+    <div class="ncf-footer__middle">
+      <div class="ncf-footer__middle-grid">
+        {%- if section.settings.show_social_icons -%}
+          {% render 'footer-social', section: section %}
+        {%- endif -%}
+
+        {%- if section.settings.show_payment_icons -%}
+          {% render 'footer-payments', section: section %}
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- comment -%} 5. BOTTOM BAR & SELECTORS {%- endcomment -%}
+    {% render 'footer-bottom', section: section %}
+
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "tag": "section",
+  "class": "section-footer",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Brand & Header"
+    },
+    {
+      "type": "image_picker",
+      "id": "brand_logo",
+      "label": "Footer Logo Image"
+    },
+    {
+      "type": "textarea",
+      "id": "brand_description",
+      "label": "Brand Description Text",
+      "default": "Nova Commerce Framework provides high-performance, modular ecommerce architecture engineered for demanding direct-to-consumer brands."
+    },
+    {
+      "type": "header",
+      "content": "Newsletter Subscription"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_newsletter",
+      "label": "Enable Newsletter Section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "newsletter_title",
+      "label": "Newsletter Heading",
+      "default": "Stay Ahead of the Curve"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_subtitle",
+      "label": "Newsletter Subtitle",
+      "default": "Subscribe to receive product drops, technical updates, and exclusive access."
+    },
+    {
+      "type": "text",
+      "id": "newsletter_button_label",
+      "label": "Button Label",
+      "default": "Subscribe"
+    },
+    {
+      "type": "header",
+      "content": "Trust Badges & Social"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_trust_badges",
+      "label": "Show Trust Badges Bar",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social_icons",
+      "label": "Show Social Media Buttons",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "social_facebook_url",
+      "label": "Facebook URL",
+      "default": "https://facebook.com"
+    },
+    {
+      "type": "text",
+      "id": "social_instagram_url",
+      "label": "Instagram URL",
+      "default": "https://instagram.com"
+    },
+    {
+      "type": "text",
+      "id": "social_youtube_url",
+      "label": "YouTube URL",
+      "default": "https://youtube.com"
+    },
+    {
+      "type": "text",
+      "id": "social_twitter_url",
+      "label": "Twitter / X URL",
+      "default": "https://x.com"
+    },
+    {
+      "type": "text",
+      "id": "social_linkedin_url",
+      "label": "LinkedIn URL",
+      "default": "https://linkedin.com"
+    },
+    {
+      "type": "text",
+      "id": "social_pinterest_url",
+      "label": "Pinterest URL"
+    },
+    {
+      "type": "text",
+      "id": "social_tiktok_url",
+      "label": "TikTok URL"
+    },
+    {
+      "type": "header",
+      "content": "Payment Badges"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show Payment Badges",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_visa",
+      "label": "Visa",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_mastercard",
+      "label": "Mastercard",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_amex",
+      "label": "American Express",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_paypal",
+      "label": "PayPal",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_apple_pay",
+      "label": "Apple Pay",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_google_pay",
+      "label": "Google Pay",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_shop_pay",
+      "label": "Shop Pay",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_upi",
+      "label": "UPI Badge",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cod",
+      "label": "Cash on Delivery Badge",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Bottom Bar & Selectors"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_country_selector",
+      "label": "Enable Country / Currency Selector",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_language_selector",
+      "label": "Enable Language Selector",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_theme_version",
+      "label": "Show Theme Version Badge",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Layout & Styling"
+    },
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container Width",
+      "options": [
+        { "value": "container", "label": "Boxed Container (Max 1280px)" },
+        { "value": "full", "label": "Full Width Edge-to-Edge" }
+      ],
+      "default": "container"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "label": "Desktop Navigation Columns",
+      "default": 4
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#0f172a"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Body Text Color",
+      "default": "#94a3b8"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading & Button Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent / Highlight Color",
+      "default": "#0284c7"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Divider Border Color",
+      "default": "#1e293b"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 32,
+      "max": 120,
+      "step": 8,
+      "unit": "px",
+      "label": "Top Padding",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 16,
+      "max": 96,
+      "step": 8,
+      "unit": "px",
+      "label": "Bottom Padding",
+      "default": 32
+    }
+  ],
+  "blocks": [
+    {
+      "type": "link_list",
+      "name": "Navigation Menu",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Column Title",
+          "default": "Quick Links"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Select Navigation Menu"
+        }
+      ]
+    },
+    {
+      "type": "contact",
+      "name": "Contact Information",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Column Title",
+          "default": "Contact Information"
+        },
+        {
+          "type": "text",
+          "id": "phone",
+          "label": "Phone Number",
+          "default": "+1 (800) 555-NOVA"
+        },
+        {
+          "type": "text",
+          "id": "email",
+          "label": "Email Address",
+          "default": "support@novacommerce.io"
+        },
+        {
+          "type": "text",
+          "id": "address",
+          "label": "Store Address",
+          "default": "750 Tech Parkway, Suite 400, Austin, TX"
+        },
+        {
+          "type": "text",
+          "id": "hours",
+          "label": "Business Hours",
+          "default": "Mon - Fri: 9am - 6pm EST"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Custom Content",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Column Title",
+          "default": "About Nova"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Column Text Content",
+          "default": "<p>Nova Commerce Framework powers cutting-edge storefronts with uncompromised engineering quality.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer",
+      "blocks": [
+        {
+          "type": "link_list",
+          "settings": {
+            "title": "Shop Gear"
+          }
+        },
+        {
+          "type": "link_list",
+          "settings": {
+            "title": "Support"
+          }
+        },
+        {
+          "type": "link_list",
+          "settings": {
+            "title": "Company"
+          }
+        },
+        {
+          "type": "contact",
+          "settings": {
+            "title": "Contact Us"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

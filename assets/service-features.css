@@ -1,0 +1,333 @@
+/*
+  ==============================================================================
+  NOVA COMMERCE FRAMEWORK (NCF) - TRUST & SERVICE FEATURES STYLESHEET
+  File: assets/service-features.css
+  Sprint: 2.3 - Trust & Service Features
+  Architecture: Lightweight CSS Grid Engine & Multi-Style Card System
+  ==============================================================================
+*/
+
+:root {
+  --ncf-sf-gap: 1.5rem;
+  --ncf-sf-card-radius: 0.75rem;
+  --ncf-sf-accent: #0284c7;
+  --ncf-sf-accent-bg: rgba(2, 132, 199, 0.08);
+  --ncf-sf-text-main: #0f172a;
+  --ncf-sf-text-sub: #64748b;
+  --ncf-sf-border: #e2e8f0;
+  --ncf-sf-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+  --ncf-sf-shadow-hover: 0 12px 24px -4px rgba(15, 23, 42, 0.08), 0 4px 6px -2px rgba(2, 132, 199, 0.05);
+}
+
+/* ---------------------------------------------------------------------------
+   1. SECTION WRAPPER & HEADER
+   --------------------------------------------------------------------------- */
+.ncf-service-section {
+  position: relative;
+  width: 100%;
+  padding-top: var(--ncf-sf-padding-top, 3.5rem);
+  padding-bottom: var(--ncf-sf-padding-bottom, 3.5rem);
+  background-color: var(--ncf-sf-bg-color, #ffffff);
+  border-top: 1px solid var(--ncf-sf-border);
+  border-bottom: 1px solid var(--ncf-sf-border);
+}
+
+.ncf-service-header {
+  margin-bottom: 2.5rem;
+}
+
+.ncf-service-header--left { text-align: left; }
+.ncf-service-header--center { text-align: center; margin-left: auto; margin-right: auto; }
+
+.ncf-service-header__eyebrow {
+  display: inline-block;
+  font-family: var(--font-heading-family, sans-serif);
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ncf-sf-accent);
+  margin-bottom: 0.5rem;
+}
+
+.ncf-service-header__title {
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  color: var(--ncf-sf-text-main);
+  margin: 0 0 0.5rem 0;
+  line-height: 1.2;
+}
+
+.ncf-service-header__subtitle {
+  font-size: 0.875rem;
+  color: var(--ncf-sf-text-sub);
+  margin: 0;
+  max-width: 36rem;
+}
+
+.ncf-service-header--center .ncf-service-header__subtitle {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ---------------------------------------------------------------------------
+   2. DYNAMIC CSS GRID LAYOUT ENGINE
+   --------------------------------------------------------------------------- */
+.ncf-service-grid {
+  display: grid;
+  gap: var(--ncf-sf-gap);
+  width: 100%;
+}
+
+/* Desktop Column Variations */
+.ncf-service-grid--cols-2 { grid-template-columns: repeat(2, 1fr); }
+.ncf-service-grid--cols-3 { grid-template-columns: repeat(3, 1fr); }
+.ncf-service-grid--cols-4 { grid-template-columns: repeat(4, 1fr); }
+.ncf-service-grid--cols-5 { grid-template-columns: repeat(5, 1fr); }
+.ncf-service-grid--cols-6 { grid-template-columns: repeat(6, 1fr); }
+
+/* Tablet Breakpoints */
+@media (max-width: 1023px) {
+  .ncf-service-grid--cols-4,
+  .ncf-service-grid--cols-5,
+  .ncf-service-grid--cols-6 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .ncf-service-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .ncf-service-grid--mobile-1 {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   3. SERVICE FEATURE CARD STYLES
+   --------------------------------------------------------------------------- */
+.ncf-service-card {
+  display: flex;
+  position: relative;
+  height: 100%;
+  padding: 1.25rem 1.5rem;
+  border-radius: var(--ncf-sf-card-radius);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease, background-color 0.25s ease;
+}
+
+.ncf-service-card--align-left {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 1.25rem;
+  text-align: left;
+}
+
+.ncf-service-card--align-center {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  text-align: center;
+}
+
+/* Style Variation 1: Minimal */
+.ncf-service-card--minimal {
+  background: transparent;
+  border: 1px solid transparent;
+}
+
+.ncf-service-card--minimal:hover {
+  background-color: var(--ncf-sf-accent-bg);
+  transform: translateY(-2px);
+}
+
+/* Style Variation 2: Bordered (Default Clean E-commerce) */
+.ncf-service-card--bordered {
+  background-color: #ffffff;
+  border: 1px solid var(--ncf-sf-border);
+  box-shadow: var(--ncf-sf-shadow);
+}
+
+.ncf-service-card--bordered:hover {
+  border-color: var(--ncf-sf-accent);
+  box-shadow: var(--ncf-sf-shadow-hover);
+  transform: translateY(-4px);
+}
+
+/* Style Variation 3: Filled Surface */
+.ncf-service-card--filled {
+  background-color: #f8fafc;
+  border: 1px solid #f1f5f9;
+}
+
+.ncf-service-card--filled:hover {
+  background-color: #ffffff;
+  border-color: var(--ncf-sf-accent);
+  box-shadow: var(--ncf-sf-shadow-hover);
+  transform: translateY(-4px);
+}
+
+/* Style Variation 4: Luxury Dark / High Contrast */
+.ncf-service-card--luxury {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.15);
+}
+
+.ncf-service-card--luxury:hover {
+  border-color: var(--ncf-sf-accent);
+  box-shadow: 0 20px 35px -10px rgba(2, 132, 199, 0.3);
+  transform: translateY(-4px);
+}
+
+/* Style Variation 5: Outlined Distinct */
+.ncf-service-card--outlined {
+  background-color: #ffffff;
+  border: 2px dashed var(--ncf-sf-border);
+}
+
+.ncf-service-card--outlined:hover {
+  border-style: solid;
+  border-color: var(--ncf-sf-accent);
+  transform: translateY(-3px);
+}
+
+/* Focus Visible Accessibility */
+.ncf-service-card:focus-visible {
+  outline: 2px solid var(--ncf-sf-accent);
+  outline-offset: 3px;
+}
+
+/* ---------------------------------------------------------------------------
+   4. ICON BOX & GRAPHICS
+   --------------------------------------------------------------------------- */
+.ncf-service-card__icon-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  shrink: 0;
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 0.75rem;
+  background-color: var(--ncf-sf-accent-bg);
+  color: var(--ncf-sf-accent);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease, color 0.3s ease;
+}
+
+.ncf-service-card:hover .ncf-service-card__icon-box {
+  transform: scale(1.08) rotate(-3deg);
+  background-color: var(--ncf-sf-accent);
+  color: #ffffff;
+}
+
+.ncf-service-card--luxury .ncf-service-card__icon-box {
+  background-color: rgba(2, 132, 199, 0.2);
+  color: #38bdf8;
+}
+
+.ncf-service-card--luxury:hover .ncf-service-card__icon-box {
+  background-color: #38bdf8;
+  color: #0f172a;
+}
+
+.ncf-service-card__icon-box svg {
+  width: 1.625rem;
+  height: 1.625rem;
+  stroke-width: 2;
+}
+
+/* ---------------------------------------------------------------------------
+   5. CARD CONTENT DETAILS
+   --------------------------------------------------------------------------- */
+.ncf-service-card__content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.ncf-service-card__badge-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.ncf-service-card__badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.625rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background-color: var(--ncf-sf-accent);
+  color: #ffffff;
+}
+
+.ncf-service-card__title {
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1.3;
+  margin: 0;
+  color: var(--ncf-sf-text-main);
+  transition: color 0.2s ease;
+}
+
+.ncf-service-card--luxury .ncf-service-card__title {
+  color: #ffffff;
+}
+
+.ncf-service-card:hover .ncf-service-card__title {
+  color: var(--ncf-sf-accent);
+}
+
+.ncf-service-card__description {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--ncf-sf-text-sub);
+  margin: 0;
+}
+
+.ncf-service-card--luxury .ncf-service-card__description {
+  color: #94a3b8;
+}
+
+.ncf-service-card__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--ncf-sf-accent);
+  margin-top: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  transition: transform 0.2s ease;
+}
+
+.ncf-service-card:hover .ncf-service-card__link {
+  transform: translateX(3px);
+}
+
+/* ---------------------------------------------------------------------------
+   6. ACCESSIBILITY & REDUCED MOTION
+   --------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .ncf-service-card,
+  .ncf-service-card__icon-box,
+  .ncf-service-card__link {
+    transition: none !important;
+    transform: none !important;
+  }
+}

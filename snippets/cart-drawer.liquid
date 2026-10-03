@@ -1,0 +1,291 @@
+{%- comment -%}
+  Nova Commerce Framework (NCF) - Snippet: Live AJAX Cart Drawer
+  File: snippets/cart-drawer.liquid
+  Sprint: 5.0 – Production Shopify Live Cart Drawer & Checkout Engine
+  Design System: Matches TechNova visual tokens (#0F172A, #2563EB, #F8FAFC, #E2E8F0).
+{%- endcomment -%}
+
+<div
+  id="ncf-cart-drawer"
+  class="ncf-cart-drawer fixed inset-0 z-50 pointer-events-none transition-opacity duration-300 opacity-0"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="ncf-cart-drawer-title"
+  aria-hidden="true"
+  data-cart-drawer
+>
+  {%- comment -%} Backdrop Overlay {%- endcomment -%}
+  <div
+    class="ncf-cart-drawer__backdrop fixed inset-0 bg-slate-950/60 backdrop-blur-xs transition-opacity duration-300 opacity-0 cursor-pointer"
+    data-cart-drawer-backdrop
+    data-cart-drawer-close
+    tabindex="-1"
+    aria-hidden="true"
+  ></div>
+
+  {%- comment -%} Slide-Over Drawer Panel {%- endcomment -%}
+  <div
+    class="ncf-cart-drawer__panel fixed inset-y-0 right-0 w-full max-w-md sm:max-w-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 shadow-2xl flex flex-col translate-x-full transition-transform duration-300 ease-out z-10 pointer-events-auto"
+    data-cart-drawer-panel
+  >
+    
+    {%- comment -%} 1. DRAWER HEADER {%- endcomment -%}
+    <div class="px-5 py-4 sm:px-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-white dark:bg-slate-900 sticky top-0 z-20">
+      <div class="flex items-center gap-2.5">
+        <h2 id="ncf-cart-drawer-title" class="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
+          Your Cart
+        </h2>
+        <span
+          class="px-2 py-0.5 rounded-full bg-sky-100 dark:bg-sky-950/80 text-sky-700 dark:text-sky-300 text-xs font-bold font-mono"
+          data-cart-drawer-count
+        >
+          {{ cart.item_count }}
+        </span>
+      </div>
+
+      <button
+        type="button"
+        class="w-9 h-9 rounded-xl text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center transition-colors focus:outline-none focus:ring-2 focus:ring-sky-500 cursor-pointer"
+        data-cart-drawer-close
+        aria-label="Close cart drawer"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    {%- comment -%} 2. FREE SHIPPING THRESHOLD PROGRESS BAR {%- endcomment -%}
+    {%- assign free_shipping_threshold = 99900 -%} {%- comment -%} ₹999 in paise {%- endcomment -%}
+    {%- assign current_subtotal = cart.total_price | default: 0 -%}
+    {%- assign progress_percent = current_subtotal | times: 100 | divided_by: free_shipping_threshold -%}
+    {%- if progress_percent > 100 -%}{%- assign progress_percent = 100 -%}{%- endif -%}
+
+    <div
+      class="px-5 py-3 sm:px-6 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800 text-xs font-medium"
+      data-cart-free-shipping-container
+    >
+      <div class="flex items-center justify-between mb-1.5" data-cart-free-shipping-text>
+        {%- if current_subtotal >= free_shipping_threshold -%}
+          <span class="text-emerald-700 dark:text-emerald-400 font-bold flex items-center gap-1.5">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <span>You've unlocked <strong>FREE Express Shipping</strong>!</span>
+          </span>
+        {%- else -%}
+          {%- assign remaining_amount = free_shipping_threshold | minus: current_subtotal -%}
+          <span class="text-slate-600 dark:text-slate-300">
+            Add <strong class="text-sky-600 dark:text-sky-400 font-mono">{{ remaining_amount | money }}</strong> more for <strong>FREE Express Shipping</strong>
+          </span>
+        {%- endif -%}
+      </div>
+      <div class="w-full h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+        <div
+          class="h-full bg-[#2563EB] transition-all duration-300 rounded-full"
+          style="width: {{ progress_percent }}%;"
+          data-cart-free-shipping-bar
+        ></div>
+      </div>
+    </div>
+
+    {%- comment -%} 3. LIVE CART ITEMS SCROLL REGION {%- endcomment -%}
+    <div
+      class="flex-1 overflow-y-auto px-5 py-4 sm:px-6 divide-y divide-slate-100 dark:divide-slate-800 space-y-4"
+      data-cart-drawer-items
+      role="region"
+      aria-label="Cart items list"
+    >
+      {%- if cart.item_count > 0 -%}
+        {%- for item in cart.items -%}
+          <div
+            class="pt-4 first:pt-0 flex gap-4 items-start group relative"
+            data-cart-item-row
+            data-line-item-key="{{ item.key }}"
+            data-line-item-index="{{ forloop.index }}"
+          >
+            {%- comment -%} Item Image {%- endcomment -%}
+            <div class="w-18 h-18 sm:w-20 sm:h-20 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 overflow-hidden flex-shrink-0 flex items-center justify-center p-1.5">
+              {%- if item.image -%}
+                <img
+                  src="{{ item.image | image_url: width: 160 }}"
+                  alt="{{ item.title | escape }}"
+                  loading="lazy"
+                  class="w-full h-full object-contain"
+                  width="80"
+                  height="80"
+                />
+              {%- else -%}
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-slate-400">
+                  <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                </svg>
+              {%- endif -%}
+            </div>
+
+            {%- comment -%} Item Details {%- endcomment -%}
+            <div class="flex-1 min-w-0 flex flex-col justify-between self-stretch">
+              <div>
+                <div class="flex items-start justify-between gap-2">
+                  <h3 class="text-sm font-bold text-slate-900 dark:text-slate-100 leading-snug line-clamp-2">
+                    <a href="{{ item.url }}" class="hover:text-sky-600 dark:hover:text-sky-400 transition-colors">
+                      {{ item.product.title }}
+                    </a>
+                  </h3>
+                  
+                  {%- comment -%} Remove Item Button {%- endcomment -%}
+                  <button
+                    type="button"
+                    class="text-slate-400 hover:text-rose-500 dark:hover:text-rose-400 p-1 -mr-1 rounded-lg transition-colors cursor-pointer"
+                    data-cart-item-remove
+                    data-line-key="{{ item.key }}"
+                    aria-label="Remove {{ item.product.title | escape }} from cart"
+                    title="Remove item"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="3 6 5 6 21 6"></polyline>
+                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                  </button>
+                </div>
+
+                {%- unless item.product.has_only_default_variant -%}
+                  <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 font-medium">
+                    {{ item.variant.title }}
+                  </p>
+                {%- endunless -%}
+
+                {%- if item.selling_plan_allocation -%}
+                  <p class="text-xs text-sky-600 dark:text-sky-400 font-medium">
+                    {{ item.selling_plan_allocation.selling_plan.name }}
+                  </p>
+                {%- endif -%}
+              </div>
+
+              {%- comment -%} Quantity & Pricing {%- endcomment -%}
+              <div class="flex items-center justify-between pt-2 mt-auto">
+                <div class="flex items-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-0.5">
+                  <button
+                    type="button"
+                    class="w-7 h-7 rounded text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center justify-center font-bold text-sm transition-colors cursor-pointer"
+                    data-cart-qty-decrease
+                    data-line-key="{{ item.key }}"
+                    aria-label="Decrease quantity for {{ item.product.title | escape }}"
+                  >
+                    -
+                  </button>
+                  <input
+                    type="number"
+                    value="{{ item.quantity }}"
+                    min="0"
+                    max="99"
+                    class="w-8 text-center text-xs font-bold font-mono bg-transparent text-slate-800 dark:text-slate-200 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                    data-cart-qty-input
+                    data-line-key="{{ item.key }}"
+                    aria-label="Quantity for {{ item.product.title | escape }}"
+                  />
+                  <button
+                    type="button"
+                    class="w-7 h-7 rounded text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center justify-center font-bold text-sm transition-colors cursor-pointer"
+                    data-cart-qty-increase
+                    data-line-key="{{ item.key }}"
+                    aria-label="Increase quantity for {{ item.product.title | escape }}"
+                  >
+                    +
+                  </button>
+                </div>
+
+                <div class="text-right">
+                  <span class="text-sm font-extrabold text-slate-900 dark:text-slate-100 font-mono">
+                    {{ item.final_line_price | money }}
+                  </span>
+                  {%- if item.original_line_price > item.final_line_price -%}
+                    <span class="text-xs text-slate-400 line-through block font-mono">
+                      {{ item.original_line_price | money }}
+                    </span>
+                  {%- endif -%}
+                </div>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} 4. EMPTY CART STATE {%- endcomment -%}
+    <div
+      class="flex-1 flex flex-col items-center justify-center p-8 text-center {% if cart.item_count > 0 %}hidden{% endif %}"
+      data-cart-drawer-empty
+    >
+      <div class="w-16 h-16 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 flex items-center justify-center mb-4">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <path d="M16 10a4 4 0 0 1-8 0"></path>
+        </svg>
+      </div>
+      <h3 class="text-lg font-bold text-slate-900 dark:text-slate-100">
+        Your cart is empty
+      </h3>
+      <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1 max-w-xs">
+        Looks like you haven't added any flagship gear to your cart yet.
+      </p>
+      <a
+        href="{{ routes.all_products_collection_url | default: '/collections/all' }}"
+        class="mt-6 inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#2563EB] hover:bg-blue-700 text-white text-xs font-bold tracking-wide transition-all shadow-xs"
+        data-cart-drawer-close
+      >
+        <span>Explore Collection</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </a>
+    </div>
+
+    {%- comment -%} 5. DRAWER FOOTER & CHECKOUT {%- endcomment -%}
+    <div
+      class="p-5 sm:p-6 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-850 space-y-3.5 {% if cart.item_count == 0 %}hidden{% endif %}"
+      data-cart-drawer-footer
+    >
+      <div class="space-y-1.5">
+        <div class="flex items-center justify-between text-sm">
+          <span class="text-slate-500 dark:text-slate-400 font-medium">Subtotal</span>
+          <span class="text-base sm:text-lg font-extrabold text-slate-900 dark:text-slate-100 font-mono" data-cart-drawer-subtotal>
+            {{ cart.total_price | money }}
+          </span>
+        </div>
+        <p class="text-[11px] text-slate-400 leading-tight">
+          Taxes, discounts and shipping calculated during checkout.
+        </p>
+      </div>
+
+      <div class="space-y-2 pt-1">
+        <a
+          href="{{ routes.checkout_url }}"
+          class="w-full py-3.5 px-6 rounded-xs bg-[#111111] hover:bg-neutral-800 active:scale-98 text-white font-bold text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md"
+          data-cart-drawer-checkout
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          <span>PROCEED TO CHECKOUT</span>
+        </a>
+
+        <a
+          href="{{ routes.cart_url }}"
+          class="w-full py-2.5 text-center text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-[#2563EB] dark:hover:text-sky-400 transition-colors block"
+        >
+          View Detailed Cart Page
+        </a>
+      </div>
+
+      {%- comment -%} Security & Trust Info {%- endcomment -%}
+      <div class="pt-2 border-t border-slate-200/80 dark:border-slate-800 flex items-center justify-center gap-4 text-[11px] text-slate-400 font-medium">
+        <span class="flex items-center gap-1">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-emerald-500"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+          256-Bit SSL Encrypted
+        </span>
+        <span>•</span>
+        <span class="flex items-center gap-1">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-sky-500"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          Direct Warranty
+        </span>
+      </div>
+    </div>
+
+  </div>
+</div>

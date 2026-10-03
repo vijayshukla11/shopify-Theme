@@ -1,0 +1,15 @@
+/*
+  ==============================================================================
+  NOVA COMMERCE FRAMEWORK (NCF) - MAIN THEME STYLESHEET ENTRY POINT
+  File: assets/theme.css
+  Sprint: 2.2 - Premium Category Collection Slider
+  Architecture: Custom Framework Layer & Global Theme Overrides
+  ==============================================================================
+*/
+
+/* Custom Framework Layer Overrides */
+:root {
+  --ncf-theme-version: '4.6.0';
+  --color-primary-accent: #B3262D;
+}
+

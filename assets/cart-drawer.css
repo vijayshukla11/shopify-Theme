@@ -1,0 +1,48 @@
+/**
+ * Nova Commerce Framework (NCF) - Cart Drawer Styles
+ * File: assets/cart-drawer.css
+ * Sprint: 5.0 – Production Shopify Live Cart Drawer Engine
+ */
+
+.ncf-cart-drawer {
+  transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.28s;
+  visibility: hidden;
+}
+
+.ncf-cart-drawer.is-open {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+.ncf-cart-drawer.is-open .ncf-cart-drawer__backdrop {
+  opacity: 1 !important;
+}
+
+.ncf-cart-drawer.is-open .ncf-cart-drawer__panel {
+  transform: translateX(0) !important;
+}
+
+/* Chrome / Safari / Edge Scrollbar Polish */
+[data-cart-drawer-items]::-webkit-scrollbar {
+  width: 5px;
+}
+
+[data-cart-drawer-items]::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+[data-cart-drawer-items]::-webkit-scrollbar-thumb {
+  background-color: rgba(148, 163, 184, 0.3);
+  border-radius: 9999px;
+}
+
+[data-cart-drawer-items]::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(148, 163, 184, 0.6);
+}
+
+/* Item Row Loading Skeleton State during AJAX quantity mutations */
+[data-cart-item-row].is-loading {
+  opacity: 0.5;
+  pointer-events: none;
+}

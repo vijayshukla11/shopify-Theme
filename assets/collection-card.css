@@ -1,0 +1,354 @@
+/*
+  ==============================================================================
+  NOVA COMMERCE FRAMEWORK (NCF) - PREMIUM FEATURED COLLECTIONS STYLESHEET
+  File: assets/collection-card.css
+  Sprint: 2.7 – Premium Featured Collections
+  Architecture: Mobile-First Editorial Collection Cards & Multi-Layout Grid Engine
+  ==============================================================================
+*/
+
+:root {
+  --ncf-collection-overlay: rgba(15, 23, 42, 0.45);
+  --ncf-collection-accent: #0284c7;
+  --ncf-collection-radius: 1rem;
+}
+
+/* ---------------------------------------------------------------------------
+   1. SECTION WRAPPER & CONTAINER
+   --------------------------------------------------------------------------- */
+.ncf-featured-collections-section {
+  position: relative;
+  width: 100%;
+}
+
+/* ---------------------------------------------------------------------------
+   2. MOBILE-FIRST GRID ENGINE (LAYOUT VARIANTS)
+   --------------------------------------------------------------------------- */
+.ncf-collections-grid {
+  display: grid;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+/* 2.1 Editorial Grid Layout */
+.ncf-collections-grid--editorial {
+  grid-template-columns: 1fr;
+}
+@media (min-width: 768px) {
+  .ncf-collections-grid--editorial {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 1024px) {
+  .ncf-collections-grid--editorial {
+    grid-template-columns: repeat(12, 1fr);
+  }
+  .ncf-collections-grid--editorial > .ncf-collection-card:nth-child(3n+1) {
+    grid-column: span 7;
+  }
+  .ncf-collections-grid--editorial > .ncf-collection-card:nth-child(3n+2) {
+    grid-column: span 5;
+  }
+  .ncf-collections-grid--editorial > .ncf-collection-card:nth-child(3n) {
+    grid-column: span 12;
+  }
+}
+
+/* 2.2 Masonry Layout */
+.ncf-collections-grid--masonry {
+  grid-template-columns: 1fr;
+}
+@media (min-width: 768px) {
+  .ncf-collections-grid--masonry {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .ncf-collections-grid--masonry > .ncf-collection-card:nth-child(odd) {
+    margin-bottom: 2rem;
+  }
+}
+@media (min-width: 1024px) {
+  .ncf-collections-grid--masonry {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* 2.3 Two Column Layout */
+.ncf-collections-grid--two-column {
+  grid-template-columns: 1fr;
+}
+@media (min-width: 768px) {
+  .ncf-collections-grid--two-column {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* 2.4 Three Column Layout */
+.ncf-collections-grid--three-column {
+  grid-template-columns: 1fr;
+}
+@media (min-width: 768px) {
+  .ncf-collections-grid--three-column {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 1024px) {
+  .ncf-collections-grid--three-column {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* 2.5 Feature Card Layout (1 Hero Card + Grid) */
+.ncf-collections-grid--feature-card {
+  grid-template-columns: 1fr;
+}
+@media (min-width: 1024px) {
+  .ncf-collections-grid--feature-card {
+    grid-template-columns: repeat(12, 1fr);
+  }
+  .ncf-collections-grid--feature-card > .ncf-collection-card:first-child {
+    grid-column: span 8;
+  }
+  .ncf-collections-grid--feature-card > .ncf-collection-card:not(:first-child) {
+    grid-column: span 4;
+  }
+}
+
+/* 2.6 Magazine Layout */
+.ncf-collections-grid--magazine-layout {
+  grid-template-columns: 1fr;
+}
+@media (min-width: 768px) {
+  .ncf-collections-grid--magazine-layout {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 1024px) {
+  .ncf-collections-grid--magazine-layout {
+    grid-template-columns: repeat(12, 1fr);
+  }
+  .ncf-collections-grid--magazine-layout > .ncf-collection-card:nth-child(1) {
+    grid-column: span 12;
+  }
+  .ncf-collections-grid--magazine-layout > .ncf-collection-card:nth-child(n+2) {
+    grid-column: span 6;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   3. EDITORIAL COLLECTION CARD COMPONENT
+   --------------------------------------------------------------------------- */
+.ncf-collection-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-radius: var(--ncf-collection-radius);
+  overflow: hidden;
+  color: #ffffff;
+  background-color: #0f172a;
+  isolation: isolate;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+}
+
+.ncf-collection-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -12px rgba(15, 23, 42, 0.35);
+}
+
+/* Card Height Variants (Mobile First) */
+.ncf-collection-card--height-small { min-height: 280px; }
+.ncf-collection-card--height-medium { min-height: 360px; }
+.ncf-collection-card--height-large { min-height: 480px; }
+.ncf-collection-card--height-hero { min-height: 580px; }
+
+@media (min-width: 768px) {
+  .ncf-collection-card--height-small { min-height: 320px; }
+  .ncf-collection-card--height-medium { min-height: 420px; }
+  .ncf-collection-card--height-large { min-height: 540px; }
+  .ncf-collection-card--height-hero { min-height: 640px; }
+}
+
+/* ---------------------------------------------------------------------------
+   4. MEDIA BACKGROUND & RESPONSIVE IMAGES
+   --------------------------------------------------------------------------- */
+.ncf-collection-card__media {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.ncf-collection-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ncf-collection-card:hover .ncf-collection-card__img {
+  transform: scale(1.06);
+}
+
+.ncf-collection-card__img--desktop { display: block; }
+.ncf-collection-card__img--mobile { display: none; }
+
+@media (max-width: 639px) {
+  .ncf-collection-card__img--desktop.has-mobile-img { display: none; }
+  .ncf-collection-card__img--mobile { display: block; }
+}
+
+/* Dark Gradient Overlay */
+.ncf-collection-card__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(
+    to top,
+    rgba(15, 23, 42, 0.85) 0%,
+    rgba(15, 23, 42, 0.45) 50%,
+    rgba(15, 23, 42, 0.2) 100%
+  );
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------------------------
+   5. CARD CONTENT & TYPOGRAPHY
+   --------------------------------------------------------------------------- */
+.ncf-collection-card__content {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(1.25rem, 3.5vw, 2.5rem);
+  width: 100%;
+  height: 100%;
+  justify-content: flex-end;
+  gap: 0.625rem;
+}
+
+.ncf-collection-card__header-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* Badge & Product Count */
+.ncf-collection-card__badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  background-color: var(--ncf-collection-accent);
+  color: #ffffff;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  line-height: 1;
+}
+
+.ncf-collection-card__count {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  background-color: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  line-height: 1;
+  backdrop-filter: blur(8px);
+}
+
+.ncf-collection-card__title {
+  font-size: clamp(1.25rem, 2.5vw, 2.25rem);
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin: 0;
+  color: #ffffff;
+}
+
+.ncf-collection-card__description {
+  font-size: clamp(0.8125rem, 1.2vw, 1rem);
+  line-height: 1.5;
+  opacity: 0.9;
+  margin: 0;
+  max-width: 32rem;
+}
+
+/* ---------------------------------------------------------------------------
+   6. BUTTONS & MINIMUM 44px TOUCH TARGETS
+   --------------------------------------------------------------------------- */
+.ncf-collection-card__actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.ncf-collection-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px; /* Mobile touch target */
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.ncf-collection-btn:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+.ncf-collection-btn--primary {
+  background-color: #ffffff;
+  color: #0f172a;
+  border: 1px solid #ffffff;
+}
+
+.ncf-collection-btn--primary:hover {
+  background-color: var(--ncf-collection-accent);
+  color: #ffffff;
+  border-color: var(--ncf-collection-accent);
+  transform: translateY(-2px);
+}
+
+.ncf-collection-btn--secondary {
+  background-color: transparent;
+  color: #ffffff;
+  border: 1.5px solid rgba(255, 255, 255, 0.6);
+}
+
+.ncf-collection-btn--secondary:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-color: #ffffff;
+  transform: translateY(-2px);
+}
+
+/* ---------------------------------------------------------------------------
+   7. ACCESSIBILITY & REDUCED MOTION
+   --------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .ncf-collection-card,
+  .ncf-collection-card__img,
+  .ncf-collection-btn {
+    transition: none !important;
+    transform: none !important;
+  }
+}

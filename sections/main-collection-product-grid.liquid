@@ -1,0 +1,346 @@
+{%- comment -%}
+  Nova Commerce Framework (NCF) - Section: Main Collection Product Grid & Filter System
+  File: sections/main-collection-product-grid.liquid
+  Sprint: 4.2 – AJAX Filtering Engine & Live Collection Experience
+  Architecture: Complete PLP layout shell integrating Sticky Toolbar, Desktop Filter Sidebar, Off-Canvas Mobile Drawer, Skeleton Loading, and Product Cards Grid with Column Controls
+{%- endcomment -%}
+
+{%- assign sidebar_pos = section.settings.sidebar_position | default: 'left' -%}
+{%- assign desktop_cols = section.settings.grid_columns_desktop | default: '3' -%}
+{%- assign mobile_cols = section.settings.grid_columns_mobile | default: '2' -%}
+{%- assign enable_ajax = section.settings.enable_ajax | default: true -%}
+{%- assign enable_skeleton = section.settings.enable_skeleton | default: true -%}
+
+<section
+  class="ncf-plp-main-section py-6 lg:py-10"
+  id="ncf-plp-main-section-{{ section.id }}"
+  data-section-id="{{ section.id }}"
+  data-sidebar-position="{{ sidebar_pos }}"
+  data-grid-columns="{{ desktop_cols }}"
+  data-grid-columns-mobile="{{ mobile_cols }}"
+  data-enable-ajax="{{ enable_ajax }}"
+  data-enable-skeleton="{{ enable_skeleton }}"
+  data-enable-load-more="{{ section.settings.enable_load_more }}"
+  data-enable-infinite-scroll="{{ section.settings.enable_infinite_scroll }}"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    {%- comment -%} STICKY TOOLBAR {%- endcomment -%}
+    {%- if section.settings.show_toolbar -%}
+      {% render 'plp-toolbar' %}
+    {%- endif -%}
+
+    {%- comment -%} MAIN PLP LAYOUT (SIDEBAR + GRID) {%- endcomment -%}
+    <div class="grid grid-cols-1 {% if sidebar_pos != 'drawer' %}lg:grid-cols-12{% endif %} gap-8 items-start">
+      
+      {%- comment -%} DESKTOP FILTER SIDEBAR COLUMN {%- endcomment -%}
+      {%- if sidebar_pos != 'drawer' -%}
+        <div class="hidden lg:block lg:col-span-3 {% if sidebar_pos == 'right' %}lg:order-last{% endif %}">
+          {% render 'plp-filter-sidebar' %}
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} PRODUCT GRID AREA {%- endcomment -%}
+      <div class="{% if sidebar_pos != 'drawer' %}lg:col-span-9{% else %}w-full{% endif %}" id="ncf-plp-product-grid-container">
+        
+        <div
+          class="grid gap-4 sm:gap-6 {% if mobile_cols == '1' %}grid-cols-1{% else %}grid-cols-2{% endif %} {% if desktop_cols == '2' %}lg:grid-cols-2{% elsif desktop_cols == '4' %}lg:grid-cols-4{% elsif desktop_cols == '6' %}lg:grid-cols-6{% else %}lg:grid-cols-3{% endif %} transition-opacity duration-200"
+          id="ncf-plp-product-grid"
+          data-plp-grid-target
+        >
+          {%- if collection.products.size > 0 -%}
+            {%- for product in collection.products -%}
+              <div class="ncf-product-grid-item" data-product-item>
+                {% render 'product-card', 
+                  product: product, 
+                  show_vendor: section.settings.show_card_vendor,
+                  show_rating: section.settings.show_card_rating,
+                  show_badges: section.settings.show_card_badges,
+                  show_delivery: section.settings.show_card_delivery,
+                  show_quick_view: section.settings.show_card_quick_view,
+                  show_quick_add: section.settings.show_card_quick_add,
+                  show_swatches: section.settings.show_card_swatches,
+                  show_stock: section.settings.show_card_stock
+                %}
+              </div>
+            {%- endfor -%}
+
+          {%- else -%}
+            {%- comment -%} DEMO PRODUCTS GRID IF NO LIVE SHOPIFY PRODUCTS {%- endcomment -%}
+            {%- for i in (1..8) -%}
+              <div class="ncf-product-grid-item" data-product-item data-demo-index="{{ forloop.index }}">
+                {% render 'product-card', 
+                  index: forloop.index,
+                  show_vendor: section.settings.show_card_vendor,
+                  show_rating: section.settings.show_card_rating,
+                  show_badges: section.settings.show_card_badges,
+                  show_delivery: section.settings.show_card_delivery,
+                  show_quick_view: section.settings.show_card_quick_view,
+                  show_quick_add: section.settings.show_card_quick_add,
+                  show_swatches: section.settings.show_card_swatches,
+                  show_stock: section.settings.show_card_stock
+                %}
+              </div>
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+
+        {%- comment -%} EMPTY RESULTS STATE {%- endcomment -%}
+        <div
+          class="hidden bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-dashed border-slate-300 dark:border-slate-800 p-10 lg:p-14 text-center my-8 shadow-xs"
+          id="ncf-plp-empty-state"
+        >
+          <div class="w-20 h-20 rounded-full bg-sky-50 dark:bg-sky-950/60 border border-sky-100 dark:border-sky-800/60 flex items-center justify-center mx-auto mb-5 text-sky-600 dark:text-sky-400 shadow-sm">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              <line x1="8" y1="11" x2="14" y2="11"></line>
+            </svg>
+          </div>
+          <h3 class="text-xl font-extrabold text-slate-900 dark:text-slate-100 mb-2 font-mono">
+            No products found
+          </h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400 max-w-md mx-auto mb-6 leading-relaxed">
+            We couldn't find any items matching your selected criteria. Try adjusting or clearing your filters to see more results.
+          </p>
+          
+          <div class="flex flex-wrap items-center justify-center gap-3 mb-8">
+            <button
+              type="button"
+              class="btn btn-primary min-h-[44px] px-6 py-2.5 text-xs font-bold inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl shadow-md transition-all hover:scale-105"
+              data-filter-clear-all
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="23 4 23 10 17 10"></polyline>
+                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+              </svg>
+              <span>Reset All Filters</span>
+            </button>
+          </div>
+
+          <div class="pt-6 border-t border-slate-200 dark:border-slate-800/80 max-w-lg mx-auto">
+            <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-400 block mb-3">
+              Popular Collections
+            </span>
+            <div class="flex flex-wrap items-center justify-center gap-2">
+              <a href="{{ routes.all_products_collection_url }}" class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:border-sky-500 transition-colors">
+                All Products
+              </a>
+              <a href="{{ routes.collections_url }}/smartwatches" class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:border-sky-500 transition-colors">
+                Smartwatches
+              </a>
+              <a href="{{ routes.collections_url }}/tws-earbuds" class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:border-sky-500 transition-colors">
+                TWS Earbuds
+              </a>
+              <a href="{{ routes.collections_url }}/chargers" class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:border-sky-500 transition-colors">
+                Chargers
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {%- comment -%} LOAD MORE / INFINITE SCROLL PLACEHOLDER {%- endcomment -%}
+        {%- if section.settings.enable_load_more or section.settings.enable_infinite_scroll -%}
+          <div class="text-center my-8" id="ncf-plp-pagination-container">
+            {%- if section.settings.enable_load_more -%}
+              <button
+                type="button"
+                class="btn btn-secondary px-8 py-3 rounded-xl border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-200 text-xs font-bold hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors shadow-xs"
+                data-plp-load-more-btn
+              >
+                <span>Load More Products</span>
+              </button>
+            {%- endif -%}
+
+            {%- if section.settings.enable_infinite_scroll -%}
+              <div class="py-4 text-xs font-mono text-slate-400 flex items-center justify-center gap-2" data-plp-infinite-scroll-trigger>
+                <div class="w-4 h-4 rounded-full border-2 border-sky-500 border-t-transparent animate-spin"></div>
+                <span>Scroll to load more...</span>
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+      </div>
+
+    </div>
+  </div>
+
+  {%- comment -%} MOBILE OFF-CANVAS FILTER DRAWER {%- endcomment -%}
+  {% render 'plp-filter-drawer' %}
+</section>
+
+{% schema %}
+{
+  "name": "Collection Product Grid",
+  "tag": "section",
+  "class": "section-collection-product-grid",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout & Sidebar Configuration"
+    },
+    {
+      "type": "select",
+      "id": "sidebar_position",
+      "label": "Desktop Filter Style & Position",
+      "options": [
+        { "value": "left", "label": "Left Sticky Sidebar" },
+        { "value": "right", "label": "Right Sticky Sidebar" },
+        { "value": "drawer", "label": "Off-Canvas Drawer Only" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "grid_columns_desktop",
+      "label": "Desktop Product Grid Columns",
+      "options": [
+        { "value": "2", "label": "2 Columns" },
+        { "value": "3", "label": "3 Columns" },
+        { "value": "4", "label": "4 Columns" },
+        { "value": "6", "label": "6 Columns" }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "select",
+      "id": "grid_columns_mobile",
+      "label": "Mobile Product Grid Columns",
+      "options": [
+        { "value": "1", "label": "1 Column" },
+        { "value": "2", "label": "2 Columns" }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "header",
+      "content": "Product Card Features"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_card_vendor",
+      "label": "Show Product Vendor",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_card_rating",
+      "label": "Show Rating & Review Count",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_card_badges",
+      "label": "Show Badges (Sale, New, Best Seller)",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_card_delivery",
+      "label": "Show Delivery Badges",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_card_stock",
+      "label": "Show Stock Status Indicator",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_card_swatches",
+      "label": "Show Color Swatches",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_card_quick_view",
+      "label": "Show Quick View Trigger",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_card_quick_add",
+      "label": "Show Quick Add Button",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "AJAX & Loading Controls"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_ajax",
+      "label": "Enable AJAX Live Filtering (No Reload)",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_skeleton",
+      "label": "Enable Premium Skeleton Card Loading",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_load_more",
+      "label": "Enable Load More Button (Placeholder)",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_infinite_scroll",
+      "label": "Enable Infinite Scroll (Placeholder)",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Toolbar & Sticky Behavior"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_toolbar",
+      "label": "Enable Sticky Product Toolbar",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky_toolbar",
+      "label": "Pin Toolbar While Scrolling",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky_sidebar",
+      "label": "Pin Desktop Sidebar While Scrolling",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Facet Group Options"
+    },
+    {
+      "type": "range",
+      "id": "expanded_groups",
+      "min": 1,
+      "max": 8,
+      "step": 1,
+      "label": "Default Expanded Accordions Count",
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_count",
+      "label": "Show Product Count Badges",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Enable In-Facet Search for Long Lists",
+      "default": true
+    }
+  ]
+}
+{% endschema %}
+

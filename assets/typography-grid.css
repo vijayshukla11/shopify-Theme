@@ -1,0 +1,440 @@
+/*
+  Nova Commerce Framework (NCF) - Typography, Grid & Layout Framework
+  File: assets/typography-grid.css
+  Sprint: 1.2
+  Target: Premium Electronics Ecommerce Theme
+*/
+
+/* ==========================================================================
+   1. FLUID TYPOGRAPHY ENGINE
+   ========================================================================== */
+
+h1, .ncf-h1,
+h2, .ncf-h2,
+h3, .ncf-h3,
+h4, .ncf-h4,
+h5, .ncf-h5,
+h6, .ncf-h6 {
+  font-family: var(--font-heading-family, system-ui, -apple-system, sans-serif);
+  font-weight: var(--font-heading-weight, 700);
+  font-style: var(--font-heading-style, normal);
+  color: var(--color-primary-text, #0f172a);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5em;
+}
+
+.ncf-display {
+  font-size: var(--font-display-size, clamp(2.25rem, 5vw + 1rem, 3.75rem));
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+h1, .ncf-h1 {
+  font-size: var(--font-h1-size, clamp(1.875rem, 3.5vw + 1rem, 2.75rem));
+}
+
+h2, .ncf-h2 {
+  font-size: var(--font-h2-size, clamp(1.5rem, 2.5vw + 0.875rem, 2.25rem));
+}
+
+h3, .ncf-h3 {
+  font-size: var(--font-h3-size, clamp(1.25rem, 1.8vw + 0.75rem, 1.75rem));
+}
+
+h4, .ncf-h4 {
+  font-size: var(--font-h4-size, clamp(1.125rem, 1.2vw + 0.625rem, 1.375rem));
+}
+
+h5, .ncf-h5 {
+  font-size: var(--font-h5-size, clamp(1rem, 0.8vw + 0.5rem, 1.125rem));
+}
+
+h6, .ncf-h6 {
+  font-size: var(--font-h6-size, clamp(0.875rem, 0.5vw + 0.5rem, 1rem));
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Body & Text Variants */
+p, .ncf-body-text {
+  font-size: var(--font-body-size, 1rem);
+  line-height: 1.6;
+  color: var(--color-primary-text, #0f172a);
+  margin-bottom: 1rem;
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+.ncf-text--lead {
+  font-size: calc(var(--font-body-size, 1rem) * 1.2);
+  line-height: 1.5;
+  color: var(--color-primary-text, #0f172a);
+}
+
+.ncf-text--small {
+  font-size: var(--font-body-small-size, 0.875rem);
+  line-height: 1.5;
+}
+
+.ncf-text--caption {
+  font-size: var(--font-caption-size, 0.75rem);
+  color: var(--color-muted-text, #64748b);
+  line-height: 1.4;
+}
+
+.ncf-text--subdued {
+  color: var(--color-muted-text, #64748b);
+}
+
+.ncf-text--accent {
+  color: var(--color-brand-accent, #0284c7);
+}
+
+.ncf-text--overline {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-brand-accent, #0284c7);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.ncf-text--code {
+  font-family: var(--font-code-family);
+  font-size: 0.875rem;
+  background-color: var(--color-secondary-bg, #f8fafc);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  border: 1px solid var(--color-border, #e2e8f0);
+}
+
+/* Font Weight Utilities */
+.ncf-font-normal { font-weight: 400; }
+.ncf-font-medium { font-weight: 500; }
+.ncf-font-semibold { font-weight: 600; }
+.ncf-font-bold { font-weight: 700; }
+.ncf-font-black { font-weight: 900; }
+
+/* Text Alignment */
+.ncf-text-left { text-align: left; }
+.ncf-text-center { text-align: center; }
+.ncf-text-right { text-align: right; }
+
+
+/* ==========================================================================
+   2. RESPONSIVE 12-COLUMN GRID SYSTEM
+   ========================================================================== */
+
+.ncf-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--grid-gap-mobile, 16px);
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .ncf-grid {
+    gap: var(--grid-gap-tablet, 20px);
+  }
+}
+
+@media (min-width: 1024px) {
+  .ncf-grid {
+    gap: var(--grid-gap-desktop, 24px);
+  }
+}
+
+/* Mobile Base Column Spans (Default Full Width) */
+.ncf-col-1  { grid-column: span 1 / span 1; }
+.ncf-col-2  { grid-column: span 2 / span 2; }
+.ncf-col-3  { grid-column: span 3 / span 3; }
+.ncf-col-4  { grid-column: span 4 / span 4; }
+.ncf-col-5  { grid-column: span 5 / span 5; }
+.ncf-col-6  { grid-column: span 6 / span 6; }
+.ncf-col-7  { grid-column: span 7 / span 7; }
+.ncf-col-8  { grid-column: span 8 / span 8; }
+.ncf-col-9  { grid-column: span 9 / span 9; }
+.ncf-col-10 { grid-column: span 10 / span 10; }
+.ncf-col-11 { grid-column: span 11 / span 11; }
+.ncf-col-12 { grid-column: span 12 / span 12; }
+
+/* Responsive Breakpoint Grid Modifiers: sm (640px) */
+@media (min-width: 640px) {
+  .sm\:ncf-col-1  { grid-column: span 1 / span 1; }
+  .sm\:ncf-col-2  { grid-column: span 2 / span 2; }
+  .sm\:ncf-col-3  { grid-column: span 3 / span 3; }
+  .sm\:ncf-col-4  { grid-column: span 4 / span 4; }
+  .sm\:ncf-col-5  { grid-column: span 5 / span 5; }
+  .sm\:ncf-col-6  { grid-column: span 6 / span 6; }
+  .sm\:ncf-col-7  { grid-column: span 7 / span 7; }
+  .sm\:ncf-col-8  { grid-column: span 8 / span 8; }
+  .sm\:ncf-col-9  { grid-column: span 9 / span 9; }
+  .sm\:ncf-col-10 { grid-column: span 10 / span 10; }
+  .sm\:ncf-col-11 { grid-column: span 11 / span 11; }
+  .sm\:ncf-col-12 { grid-column: span 12 / span 12; }
+}
+
+/* Responsive Breakpoint Grid Modifiers: md (768px) */
+@media (min-width: 768px) {
+  .md\:ncf-col-1  { grid-column: span 1 / span 1; }
+  .md\:ncf-col-2  { grid-column: span 2 / span 2; }
+  .md\:ncf-col-3  { grid-column: span 3 / span 3; }
+  .md\:ncf-col-4  { grid-column: span 4 / span 4; }
+  .md\:ncf-col-5  { grid-column: span 5 / span 5; }
+  .md\:ncf-col-6  { grid-column: span 6 / span 6; }
+  .md\:ncf-col-7  { grid-column: span 7 / span 7; }
+  .md\:ncf-col-8  { grid-column: span 8 / span 8; }
+  .md\:ncf-col-9  { grid-column: span 9 / span 9; }
+  .md\:ncf-col-10 { grid-column: span 10 / span 10; }
+  .md\:ncf-col-11 { grid-column: span 11 / span 11; }
+  .md\:ncf-col-12 { grid-column: span 12 / span 12; }
+}
+
+/* Responsive Breakpoint Grid Modifiers: lg (1024px) */
+@media (min-width: 1024px) {
+  .lg\:ncf-col-1  { grid-column: span 1 / span 1; }
+  .lg\:ncf-col-2  { grid-column: span 2 / span 2; }
+  .lg\:ncf-col-3  { grid-column: span 3 / span 3; }
+  .lg\:ncf-col-4  { grid-column: span 4 / span 4; }
+  .lg\:ncf-col-5  { grid-column: span 5 / span 5; }
+  .lg\:ncf-col-6  { grid-column: span 6 / span 6; }
+  .lg\:ncf-col-7  { grid-column: span 7 / span 7; }
+  .lg\:ncf-col-8  { grid-column: span 8 / span 8; }
+  .lg\:ncf-col-9  { grid-column: span 9 / span 9; }
+  .lg\:ncf-col-10 { grid-column: span 10 / span 10; }
+  .lg\:ncf-col-11 { grid-column: span 11 / span 11; }
+  .lg\:ncf-col-12 { grid-column: span 12 / span 12; }
+}
+
+
+/* ==========================================================================
+   3. ELECTRONICS ECOMMERCE LAYOUT PRIMITIVES
+   ========================================================================== */
+
+/* Bento Grid Layout (High-end Electronics Showcase) */
+.ncf-bento-grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: var(--grid-gap-mobile, 16px);
+}
+
+@media (min-width: 768px) {
+  .ncf-bento-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--grid-gap-desktop, 24px);
+  }
+
+  .ncf-bento-card--large {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+
+  .ncf-bento-card--wide {
+    grid-column: span 2;
+  }
+
+  .ncf-bento-card--tall {
+    grid-row: span 2;
+  }
+}
+
+.ncf-bento-card {
+  background-color: var(--color-surface, #ffffff);
+  border: 1px solid var(--color-border, #e2e8f0);
+  border-radius: var(--card-radius, 10px);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.ncf-bento-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-brand-accent, #0284c7);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+}
+
+/* Tech Specs Comparison Table Grid */
+.ncf-specs-grid {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-border, #e2e8f0);
+  border-radius: var(--card-radius, 10px);
+  overflow: hidden;
+  background-color: var(--color-surface, #ffffff);
+}
+
+.ncf-specs-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  padding: 0.875rem 1.25rem;
+  border-bottom: 1px solid var(--color-border, #e2e8f0);
+  align-items: center;
+}
+
+@media (min-width: 640px) {
+  .ncf-specs-row {
+    grid-template-columns: 180px 1fr;
+  }
+}
+
+.ncf-specs-row:last-child {
+  border-bottom: none;
+}
+
+.ncf-specs-row:nth-child(even) {
+  background-color: var(--color-secondary-bg, #f8fafc);
+}
+
+.ncf-specs-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-muted-text, #64748b);
+}
+
+.ncf-specs-value {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-primary-text, #0f172a);
+}
+
+/* Product Card Grid Presets */
+.ncf-product-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--grid-gap-mobile, 16px);
+}
+
+@media (min-width: 768px) {
+  .ncf-product-grid--3-col {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--grid-gap-desktop, 24px);
+  }
+
+  .ncf-product-grid--4-col {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--grid-gap-desktop, 24px);
+  }
+}
+
+/* Aspect Ratio Utilities */
+.ncf-aspect-1-1 {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.ncf-aspect-16-9 {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.ncf-aspect-4-3 {
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+/* Badges & Chips */
+.ncf-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1;
+  border-radius: var(--badge-radius, 4px);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ncf-badge--accent {
+  background-color: var(--color-brand-accent, #0284c7);
+  color: #ffffff;
+}
+
+.ncf-badge--success {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.ncf-badge--warning {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.ncf-badge--outline {
+  background-color: transparent;
+  border: 1px solid var(--color-border, #e2e8f0);
+  color: var(--color-muted-text, #64748b);
+}
+
+
+/* ==========================================================================
+   4. FLEXBOX & SPACING HELPERS
+   ========================================================================== */
+
+.ncf-flex { display: flex; }
+.ncf-flex-col { flex-direction: column; }
+.ncf-flex-wrap { flex-wrap: wrap; }
+
+.ncf-items-start { align-items: flex-start; }
+.ncf-items-center { align-items: center; }
+.ncf-items-end { align-items: flex-end; }
+
+.ncf-justify-start { justify-content: flex-start; }
+.ncf-justify-center { justify-content: flex-center; }
+.ncf-justify-between { justify-content: space-between; }
+
+.ncf-gap-xs { gap: 0.5rem; }
+.ncf-gap-sm { gap: 1rem; }
+.ncf-gap-md { gap: 1.5rem; }
+.ncf-gap-lg { gap: 2rem; }
+.ncf-gap-xl { gap: 3rem; }
+
+/* Section Padding Rhythms */
+.ncf-py-section {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+@media (min-width: 768px) {
+  .ncf-py-section {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+}
+
+.ncf-py-component {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+
+/* ==========================================================================
+   5. ELEVATIONS & SURFACES
+   ========================================================================== */
+
+.ncf-card-surface {
+  background-color: var(--color-surface, #ffffff);
+  border: 1px solid var(--color-border, #e2e8f0);
+  border-radius: var(--card-radius, 10px);
+}
+
+.ncf-shadow-sm {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.ncf-shadow-md {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.ncf-shadow-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}

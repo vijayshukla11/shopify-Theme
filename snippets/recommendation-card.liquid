@@ -1,0 +1,31 @@
+{%- comment -%}
+  Nova Commerce Framework (NCF) - Snippet: Recommendation Card
+  File: snippets/recommendation-card.liquid
+  Sprint: 4.6 – Product Recommendation System
+  Description: Reuses enterprise product-card snippet and appends recommendation badges or bundle tag overlays.
+{%- endcomment -%}
+
+{%- assign is_bundle = is_bundle | default: false -%}
+{%- assign bundle_discount = bundle_discount | default: "15% OFF" -%}
+{%- assign rec_type = rec_type | default: "related" -%}
+
+<div class="ncf-recommendation-card-wrapper relative">
+  {%- if is_bundle -%}
+    <div class="absolute top-3 right-3 z-20">
+      <span class="ncf-bundle-badge shadow-sm">
+        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+        <span>{{ bundle_discount }}</span>
+      </span>
+    </div>
+  {%- endif -%}
+
+  {% render 'product-card', 
+    product: product, 
+    index: index, 
+    show_vendor: show_vendor, 
+    show_rating: show_rating, 
+    show_badges: show_badges,
+    show_quick_add: show_quick_add,
+    show_swatches: show_swatches
+  %}
+</div>

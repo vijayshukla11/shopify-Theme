@@ -1,0 +1,45 @@
+{%- comment -%}
+  Nova Commerce Framework (NCF) - Snippet: Recommendation Header & Tab Navigation
+  File: snippets/recommendation-header.liquid
+  Sprint: 4.6 – Product Recommendation System
+{%- endcomment -%}
+
+{%- assign eyebrow = eyebrow | default: 'Curated Merchandising' -%}
+{%- assign heading = heading | default: 'Recommended For You' -%}
+{%- assign description = description | default: 'Hand-picked products and accessories matched to your current selection.' -%}
+{%- assign show_tabs = show_tabs | default: true -%}
+{%- assign active_type = active_type | default: 'related' -%}
+
+<div class="ncf-rec-header flex flex-col md:flex-row md:items-end justify-between gap-4">
+  <div class="space-y-1">
+    {%- if eyebrow != blank -%}
+      <span class="ncf-rec-eyebrow">{{ eyebrow }}</span>
+    {%- endif -%}
+    {%- if heading != blank -%}
+      <h2 class="ncf-rec-heading">{{ heading }}</h2>
+    {%- endif -%}
+    {%- if description != blank -%}
+      <p class="text-xs text-slate-500 dark:text-slate-400 max-w-xl leading-relaxed">{{ description }}</p>
+    {%- endif -%}
+  </div>
+
+  {%- if show_tabs -%}
+    <div class="ncf-rec-nav-tabs" role="tablist" aria-label="Product Recommendation Tabs">
+      <button type="button" class="ncf-rec-tab-btn {% if active_type == 'related' %}is-active{% endif %}" data-rec-tab="related" role="tab">
+        Related
+      </button>
+      <button type="button" class="ncf-rec-tab-btn {% if active_type == 'fbt' %}is-active{% endif %}" data-rec-tab="fbt" role="tab">
+        Frequently Bought Together
+      </button>
+      <button type="button" class="ncf-rec-tab-btn {% if active_type == 'accessories' %}is-active{% endif %}" data-rec-tab="accessories" role="tab">
+        Accessories
+      </button>
+      <button type="button" class="ncf-rec-tab-btn {% if active_type == 'bundles' %}is-active{% endif %}" data-rec-tab="bundles" role="tab">
+        Bundles
+      </button>
+      <button type="button" class="ncf-rec-tab-btn {% if active_type == 'recently_viewed' %}is-active{% endif %}" data-rec-tab="recently_viewed" role="tab">
+        Recently Viewed
+      </button>
+    </div>
+  {%- endif -%}
+</div>

@@ -1,0 +1,437 @@
+{%- comment -%}
+  Nova Commerce Framework (NCF) - Section: Premium Testimonials
+  File: sections/testimonials.liquid
+  Sprint: 2.9 – Premium Testimonials
+  Architecture: Mobile-First High-Conversion Social Proof Showcase
+{%- endcomment -%}
+
+{%- assign layout_variant = section.settings.layout_variant | default: 'grid' -%}
+{%- assign container_type = section.settings.container_type | default: 'container' -%}
+{%- assign desktop_cols = section.settings.columns_desktop | default: 3 -%}
+
+<section
+  class="ncf-testimonials-section {% if container_type == 'full' %}ncf-testimonials-section--full-width{% endif %}"
+  id="ncf-testimonials-{{ section.id }}"
+  data-testimonials-section
+  data-autoplay="{{ section.settings.enable_autoplay }}"
+  data-autoplay-speed="{{ section.settings.autoplay_speed }}"
+  style="
+    background-color: {{ section.settings.bg_color | default: '#f8fafc' }};
+    padding-top: {{ section.settings.padding_top | default: 64 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | default: 64 }}px;
+  "
+  aria-label="{{ section.settings.heading | default: 'Customer Testimonials' }}"
+>
+  <div class="ncf-testimonials-container {% if container_type == 'container' %}max-w-7xl mx-auto px-6 lg:px-8{% else %}w-full px-4{% endif %}">
+
+    {%- comment -%} SPLIT LAYOUT WRAPPER vs STANDARD HEADER {%- endcomment -%}
+    {%- if layout_variant == 'split' -%}
+      <div class="ncf-testimonials-split-layout">
+        <div class="ncf-testimonials-split-header">
+          {%- if section.settings.eyebrow != blank -%}
+            <span class="inline-block text-xs font-mono font-extrabold uppercase tracking-widest text-sky-600 mb-2">
+              {{ section.settings.eyebrow }}
+            </span>
+          {%- endif -%}
+
+          {%- if section.settings.heading != blank -%}
+            <h2 class="text-3xl sm:text-4xl font-black tracking-tight text-slate-900 uppercase mb-4">
+              {{ section.settings.heading }}
+            </h2>
+          {%- endif -%}
+
+          {%- if section.settings.subtitle != blank -%}
+            <p class="text-slate-600 text-sm sm:text-base mb-6">
+              {{ section.settings.subtitle }}
+            </p>
+          {%- endif -%}
+
+          {%- comment -%} AGGREGATED RATING BADGE {%- endcomment -%}
+          <div class="inline-flex items-center gap-3 p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
+            <div class="text-3xl font-black text-slate-900">4.9/5</div>
+            <div>
+              <div class="flex text-amber-500">
+                {%- for i in (1..5) -%}
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                  </svg>
+                {%- endfor -%}
+              </div>
+              <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Based on 1,200+ Verified Reviews</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="ncf-testimonials-carousel-wrapper">
+          <div class="ncf-testimonials-carousel-track" data-testimonials-carousel-track>
+            {%- if section.blocks.size > 0 -%}
+              {%- for block in section.blocks -%}
+                <div class="ncf-testimonials-carousel-item">
+                  {% render 'testimonial-card', block: block, section: section %}
+                </div>
+              {%- endfor -%}
+            {%- else -%}
+              {%- for i in (1..3) -%}
+                <div class="ncf-testimonials-carousel-item">
+                  {% render 'testimonial-card', section: section %}
+                </div>
+              {%- endfor -%}
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+
+    {%- else -%}
+      {%- comment -%} STANDARD SECTION HEADER {%- endcomment -%}
+      {%- if section.settings.heading != blank or section.settings.eyebrow != blank -%}
+        <div class="ncf-testimonials__header text-{{ section.settings.header_alignment | default: 'center' }} mb-12">
+          {%- if section.settings.eyebrow != blank -%}
+            <span class="inline-block text-xs font-mono font-extrabold uppercase tracking-widest text-sky-600 mb-2">
+              {{ section.settings.eyebrow }}
+            </span>
+          {%- endif -%}
+
+          {%- if section.settings.heading != blank -%}
+            <h2 class="text-3xl sm:text-4xl font-black tracking-tight text-slate-900 uppercase">
+              {{ section.settings.heading }}
+            </h2>
+          {%- endif -%}
+
+          {%- if section.settings.subtitle != blank -%}
+            <p class="text-slate-600 text-sm sm:text-base max-w-2xl mt-2 {% if section.settings.header_alignment == 'center' %}mx-auto{% endif %}">
+              {{ section.settings.subtitle }}
+            </p>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} LAYOUT SWITCHER {%- endcomment -%}
+      {%- if layout_variant == 'grid' -%}
+        <div class="ncf-testimonials-grid ncf-testimonials-grid--cols-{{ desktop_cols }}">
+          {%- if section.blocks.size > 0 -%}
+            {%- for block in section.blocks -%}
+              {% render 'testimonial-card', block: block, section: section %}
+            {%- endfor -%}
+          {%- else -%}
+            {%- for i in (1..3) -%}
+              {% render 'testimonial-card', section: section %}
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+
+      {%- elsif layout_variant == 'carousel' -%}
+        <div class="ncf-testimonials-carousel-wrapper">
+          <div class="ncf-testimonials-carousel-track" data-testimonials-carousel-track>
+            {%- if section.blocks.size > 0 -%}
+              {%- for block in section.blocks -%}
+                <div class="ncf-testimonials-carousel-item">
+                  {% render 'testimonial-card', block: block, section: section %}
+                </div>
+              {%- endfor -%}
+            {%- else -%}
+              {%- for i in (1..4) -%}
+                <div class="ncf-testimonials-carousel-item">
+                  {% render 'testimonial-card', section: section %}
+                </div>
+              {%- endfor -%}
+            {%- endif -%}
+          </div>
+        </div>
+
+      {%- elsif layout_variant == 'editorial' -%}
+        <div class="ncf-testimonials-editorial-grid">
+          {%- if section.blocks.size > 0 -%}
+            {%- for block in section.blocks -%}
+              {% render 'testimonial-card', block: block, section: section %}
+            {%- endfor -%}
+          {%- else -%}
+            {%- for i in (1..2) -%}
+              {% render 'testimonial-card', section: section %}
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+
+      {%- elsif layout_variant == 'featured' -%}
+        <div class="ncf-testimonials-featured-layout">
+          {%- assign featured_block = section.blocks | where: "type", "testimonial" | first -%}
+          {%- if featured_block != blank -%}
+            {% render 'testimonial-card', block: featured_block, section: section %}
+          {%- else -%}
+            <article class="ncf-testimonial-card ncf-testimonial-card--featured-hero">
+              <div class="ncf-testimonial-card__header">
+                <div class="ncf-testimonial-card__rating">
+                  {%- for i in (1..5) -%}
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                  {%- endfor -%}
+                </div>
+                <span class="ncf-testimonial-card__verified">VERIFIED PURCHASER</span>
+              </div>
+              <blockquote class="ncf-testimonial-card__quote">
+                “The Nova Commerce Framework delivers unmatched speed and reliability. Transitioning our operational catalog boosted conversions by 38% in the first month!”
+              </blockquote>
+              <div class="ncf-testimonial-card__author">
+                <div class="ncf-testimonial-card__avatar-placeholder">E</div>
+                <div class="ncf-testimonial-card__author-info">
+                  <span class="ncf-testimonial-card__author-name">Elena Rostova</span>
+                  <span class="ncf-testimonial-card__author-location">VP of Product, Apex Global</span>
+                </div>
+              </div>
+            </article>
+          {%- endif -%}
+
+          <div class="ncf-testimonials-grid ncf-testimonials-grid--cols-1">
+            {%- for block in section.blocks offset: 1 limit: 2 -%}
+              {% render 'testimonial-card', block: block, section: section %}
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+
+    {%- endif -%}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "tag": "section",
+  "class": "section-testimonials",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Label",
+      "default": "SOCIAL PROOF"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "Loved by Explorers Worldwide"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Section Subtitle",
+      "default": "Read real feedback from verified customers who test our gear in demanding conditions."
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "Header Alignment",
+      "options": [
+        { "value": "left", "label": "Left Aligned" },
+        { "value": "center", "label": "Center Aligned" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Layout & Appearance"
+    },
+    {
+      "type": "select",
+      "id": "layout_variant",
+      "label": "Testimonial Layout Style",
+      "options": [
+        { "value": "grid", "label": "Grid Layout" },
+        { "value": "carousel", "label": "Carousel Layout (Horizontal Scroll)" },
+        { "value": "editorial", "label": "Editorial Cards (Large Quotes)" },
+        { "value": "split", "label": "Split Layout (Header + Rating Badge)" },
+        { "value": "featured", "label": "Featured Hero Review Layout" }
+      ],
+      "default": "grid"
+    },
+    {
+      "type": "select",
+      "id": "card_style",
+      "label": "Card Visual Style",
+      "options": [
+        { "value": "classic", "label": "Classic White Shadow" },
+        { "value": "minimal", "label": "Minimalist Soft Gray" },
+        { "value": "bordered", "label": "Sharp Architectural Border" },
+        { "value": "luxury", "label": "Dark Luxury Slate" }
+      ],
+      "default": "classic"
+    },
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Container Width",
+      "options": [
+        { "value": "container", "label": "Standard Boxed Container (Max 1280px)" },
+        { "value": "full", "label": "Full Width Edge-to-Edge" }
+      ],
+      "default": "container"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "label": "Desktop Grid Columns",
+      "default": 3
+    },
+    {
+      "type": "header",
+      "content": "Carousel Controls"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_autoplay",
+      "label": "Enable Carousel Autoplay",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "min": 3000,
+      "max": 9000,
+      "step": 1000,
+      "unit": "ms",
+      "label": "Autoplay Duration",
+      "default": 5000
+    },
+    {
+      "type": "header",
+      "content": "Colors & Spacing"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#f8fafc"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 8,
+      "unit": "px",
+      "label": "Top Padding",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 8,
+      "unit": "px",
+      "label": "Bottom Padding",
+      "default": 64
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "text",
+          "id": "author_name",
+          "label": "Customer Name",
+          "default": "Sarah Jenkins"
+        },
+        {
+          "type": "image_picker",
+          "id": "author_image",
+          "label": "Customer Avatar/Photo"
+        },
+        {
+          "type": "text",
+          "id": "author_location",
+          "label": "Customer Location / Title",
+          "default": "Verified Customer, London"
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "label": "Star Rating (1-5)",
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Review Quote Text",
+          "default": "The build quality surpassed my expectations completely. The ergonomic support and military-grade durability make this my go-to choice every day!"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_verified",
+          "label": "Show Verified Purchase Badge",
+          "default": true
+        },
+        {
+          "type": "product",
+          "id": "product_reference",
+          "label": "Referenced Product (Optional)"
+        },
+        {
+          "type": "select",
+          "id": "card_style",
+          "label": "Card Style Override",
+          "options": [
+            { "value": "classic", "label": "Classic" },
+            { "value": "minimal", "label": "Minimal" },
+            { "value": "bordered", "label": "Bordered" },
+            { "value": "luxury", "label": "Luxury" }
+          ],
+          "default": "classic"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_featured",
+          "label": "Set as Hero Featured Review",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials",
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "author_name": "Marcus Vance",
+            "author_location": "Acoustic Engineer, NYC",
+            "quote": "The clarity and spatial separation in these audio components are astounding. A true masterclass in precision engineering.",
+            "rating": 5
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "author_name": "Dr. Claire Sterling",
+            "author_location": "Expedition Leader, Zurich",
+            "quote": "Tested under sub-zero temperatures during our alpine ridge survey. Zero battery degradation and supreme comfort.",
+            "rating": 5
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "author_name": "Tariq Mansour",
+            "author_location": "Industrial Designer, Tokyo",
+            "quote": "The tactile response and matte finish exceed luxury retail standards. Fast shipping and flawless unboxing experience.",
+            "rating": 5
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

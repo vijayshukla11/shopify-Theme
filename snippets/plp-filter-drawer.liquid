@@ -1,0 +1,181 @@
+{%- comment -%}
+  Nova Commerce Framework (NCF) - Snippet: Mobile Off-Canvas Filter Drawer
+  File: snippets/plp-filter-drawer.liquid
+  Sprint: 4.1 – Premium Collection Filters & Product Listing Experience
+  Architecture: Full-screen Off-Canvas Mobile Drawer with Focus Trap & Sticky Footer Actions
+{%- endcomment -%}
+
+<div
+  id="ncf-plp-filter-drawer"
+  class="fixed inset-0 z-50 pointer-events-none transition-opacity duration-300 opacity-0 hidden"
+  role="dialog"
+  aria-modal="true"
+  aria-label="{{ 'products.facets.filter_by' | t | default: 'Filter Products' }}"
+>
+  {%- comment -%} BACKDROP OVERLAY {%- endcomment -%}
+  <div
+    class="fixed inset-0 bg-slate-950/70 backdrop-blur-xs transition-opacity"
+    id="ncf-filter-drawer-backdrop"
+    data-filter-drawer-close
+    aria-hidden="true"
+  ></div>
+
+  {%- comment -%} OFF-CANVAS PANEL CONTAINER {%- endcomment -%}
+  <div class="fixed inset-y-0 left-0 max-w-full flex">
+    <div
+      class="w-screen max-w-md bg-white dark:bg-slate-900 shadow-2xl flex flex-col h-full transform transition-transform duration-300 -translate-x-full pointer-events-auto"
+      id="ncf-filter-drawer-panel"
+    >
+      
+      {%- comment -%} DRAWER HEADER {%- endcomment -%}
+      <div class="px-5 py-4 bg-slate-900 text-white flex items-center justify-between border-b border-slate-800 shrink-0">
+        <div class="flex items-center gap-2.5">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-sky-400">
+            <line x1="4" y1="21" x2="4" y2="14"></line>
+            <line x1="4" y1="10" x2="4" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12" y2="3"></line>
+            <line x1="20" y1="21" x2="20" y2="16"></line>
+            <line x1="20" y1="12" x2="20" y2="3"></line>
+            <line x1="1" y1="14" x2="7" y2="14"></line>
+            <line x1="9" y1="8" x2="15" y2="8"></line>
+            <line x1="17" y1="16" x2="23" y2="16"></line>
+          </svg>
+          <h2 class="font-extrabold text-base uppercase tracking-wider font-mono text-white">
+            {{ 'products.facets.filter_by' | t | default: 'Filters' }}
+          </h2>
+          <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-sky-500 text-white text-[10px] font-extrabold" id="ncf-drawer-active-badge" hidden>0</span>
+        </div>
+
+        <button
+          type="button"
+          class="p-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition-colors focus:outline-none focus:ring-2 focus:ring-sky-500 min-h-[44px] min-w-[44px] flex items-center justify-center"
+          data-filter-drawer-close
+          aria-label="{{ 'accessibility.close' | t | default: 'Close Filter Drawer' }}"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      {%- comment -%} DRAWER BODY SCROLL REGION {%- endcomment -%}
+      <div class="p-5 overflow-y-auto flex-1 space-y-4" id="ncf-filter-drawer-body">
+        
+        {% render 'plp-active-filters' %}
+
+        <form id="ncf-mobile-filter-form" class="ncf-plp-filter-form space-y-1">
+          {%- if collection.filters.size > 0 -%}
+            {%- for filter in collection.filters -%}
+              {% render 'plp-filter-group',
+                filter: filter,
+                group_index: forloop.index0,
+                show_product_count: section.settings.show_product_count,
+                show_search: section.settings.show_search,
+                default_expanded_count: section.settings.expanded_groups
+              %}
+            {%- endfor -%}
+
+          {%- else -%}
+            {%- comment -%} FALLBACK/DEMO GROUPS FOR MOBILE PREVIEW {%- endcomment -%}
+            <div class="space-y-1">
+              
+              {/* Availability */}
+              <div class="ncf-filter-group border-b border-slate-200 dark:border-slate-800 py-3">
+                <button type="button" class="w-full flex items-center justify-between text-left font-extrabold text-sm text-slate-900 dark:text-slate-100 py-1" aria-expanded="true" data-accordion-trigger>
+                  <span>Availability</span>
+                  <svg class="w-4 h-4 text-slate-400 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="pt-3 pb-1 space-y-2" data-accordion-body>
+                  <label class="flex items-center justify-between text-xs font-medium text-slate-700 dark:text-slate-300 cursor-pointer min-h-[44px]">
+                    <div class="flex items-center gap-2">
+                      <input type="checkbox" name="filter.v.availability" value="1" checked class="w-4 h-4 rounded text-sky-600 focus:ring-sky-500">
+                      <span>In Stock</span>
+                    </div>
+                    <span class="text-[11px] font-mono text-slate-400">(42)</span>
+                  </label>
+                  <label class="flex items-center justify-between text-xs font-medium text-slate-700 dark:text-slate-300 cursor-pointer min-h-[44px]">
+                    <div class="flex items-center gap-2">
+                      <input type="checkbox" name="filter.v.availability" value="0" class="w-4 h-4 rounded text-sky-600 focus:ring-sky-500">
+                      <span>Out of Stock</span>
+                    </div>
+                    <span class="text-[11px] font-mono text-slate-400">(6)</span>
+                  </label>
+                </div>
+              </div>
+
+              {/* Price Range */}
+              <div class="ncf-filter-group border-b border-slate-200 dark:border-slate-800 py-3">
+                <button type="button" class="w-full flex items-center justify-between text-left font-extrabold text-sm text-slate-900 dark:text-slate-100 py-1" aria-expanded="true" data-accordion-trigger>
+                  <span>Price Range</span>
+                  <svg class="w-4 h-4 text-slate-400 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="pt-3 pb-1 space-y-3" data-accordion-body>
+                  <div class="grid grid-cols-2 gap-3">
+                    <div class="relative">
+                      <span class="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">$</span>
+                      <input type="number" placeholder="0" min="0" max="1000" value="0" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg pl-7 pr-2 py-2 text-xs font-mono font-bold text-slate-900 dark:text-slate-100 min-h-[44px]">
+                    </div>
+                    <div class="relative">
+                      <span class="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">$</span>
+                      <input type="number" placeholder="1000" min="0" max="1000" value="1000" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg pl-7 pr-2 py-2 text-xs font-mono font-bold text-slate-900 dark:text-slate-100 min-h-[44px]">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Color Swatches */}
+              <div class="ncf-filter-group border-b border-slate-200 dark:border-slate-800 py-3">
+                <button type="button" class="w-full flex items-center justify-between text-left font-extrabold text-sm text-slate-900 dark:text-slate-100 py-1" aria-expanded="true" data-accordion-trigger>
+                  <span>Color</span>
+                  <svg class="w-4 h-4 text-slate-400 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="pt-3 pb-1" data-accordion-body>
+                  <ul class="flex flex-wrap gap-2">
+                    <li>
+                      <label class="w-8 h-8 rounded-full border-2 border-slate-300 dark:border-slate-700 bg-slate-950 block cursor-pointer" title="Midnight Black">
+                        <input type="checkbox" name="filter.v.option.color" value="black" class="sr-only">
+                      </label>
+                    </li>
+                    <li>
+                      <label class="w-8 h-8 rounded-full border-2 border-sky-500 bg-slate-200 block cursor-pointer ring-2 ring-sky-500/30" title="Titanium Silver">
+                        <input type="checkbox" name="filter.v.option.color" value="silver" class="sr-only" checked>
+                      </label>
+                    </li>
+                    <li>
+                      <label class="w-8 h-8 rounded-full border-2 border-slate-300 dark:border-slate-700 bg-sky-600 block cursor-pointer" title="Pacific Blue">
+                        <input type="checkbox" name="filter.v.option.color" value="blue" class="sr-only">
+                      </label>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+            </div>
+          {%- endif -%}
+        </form>
+      </div>
+
+      {%- comment -%} DRAWER STICKY FOOTER ACTIONS {%- endcomment -%}
+      <div class="p-4 bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 flex items-center gap-3 shrink-0">
+        <a
+          href="{{ collection.url }}"
+          class="btn btn-secondary min-h-[44px] flex-1 text-center justify-center text-xs font-bold py-3 px-4 rounded-xl border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300"
+          data-filter-clear-all
+        >
+          {{ 'products.facets.clear_all' | t | default: 'Clear All' }}
+        </a>
+
+        <button
+          type="button"
+          class="btn btn-primary min-h-[44px] flex-[2] text-center justify-center text-xs font-bold py-3 px-4 rounded-xl bg-sky-600 hover:bg-sky-500 text-white shadow-md"
+          data-filter-drawer-close
+        >
+          <span>{{ 'products.facets.apply' | t | default: 'Apply Filters' }}</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>

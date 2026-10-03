@@ -1,0 +1,126 @@
+{%- comment -%}
+  Nova Commerce Framework (NCF) - Snippet: Mobile Navigation Drawer
+  File: snippets/mobile-menu.liquid
+  Sprint: 2.0 - Premium Announcement Bar & Enterprise Header
+{%- endcomment -%}
+
+<div class="ncf-mobile-drawer" data-mobile-drawer aria-hidden="true" role="dialog" aria-modal="true" aria-label="Mobile Navigation">
+  
+  {%- comment -%} Dark Blur Backdrop Overlay {%- endcomment -%}
+  <div class="ncf-mobile-drawer__overlay" data-mobile-drawer-overlay></div>
+
+  <div class="ncf-mobile-drawer__content">
+    
+    {%- comment -%} Drawer Header {%- endcomment -%}
+    <div class="ncf-mobile-drawer__header">
+      <a href="{{ routes.root_url }}" class="ncf-mobile-drawer__logo" aria-label="{{ shop.name | default: 'CLINZA' }}">
+        {%- if section.settings.logo != blank -%}
+          {{
+            section.settings.logo
+            | image_url: width: 300
+            | image_tag:
+              class: 'ncf-header__logo-img',
+              widths: '100, 200, 300',
+              alt: shop.name
+          }}
+        {%- else -%}
+          <span>CLINZA</span>
+        {%- endif -%}
+      </a>
+
+      <button type="button" class="ncf-mobile-drawer__close-btn" data-mobile-drawer-close aria-label="Close navigation menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    {%- comment -%} Drawer Body Navigation {%- endcomment -%}
+    <div class="ncf-mobile-drawer__body">
+      
+      {%- comment -%} Mobile Navigation Links List {%- endcomment -%}
+      <nav aria-label="Mobile Navigation Menu">
+        <ul class="ncf-mobile-nav__list">
+          
+          {%- assign menu_handle = section.settings.main_menu | default: 'main-menu' -%}
+          {%- if linklists[menu_handle].links.size > 0 -%}
+            {%- for link in linklists[menu_handle].links -%}
+              <li class="ncf-mobile-nav__item">
+                <a
+                  href="{{ link.url }}"
+                  class="ncf-mobile-nav__link"
+                >
+                  <span>{{ link.title }}</span>
+                  {%- if link.links.size > 0 -%}
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                  {%- endif -%}
+                </a>
+
+                {%- if link.links.size > 0 -%}
+                  <ul class="ncf-mobile-nav__sublist">
+                    {%- for child_link in link.links -%}
+                      <li>
+                        <a href="{{ child_link.url }}" class="ncf-mobile-nav__sublink">
+                          {{ child_link.title }}
+                        </a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          {%- else -%}
+            {%- comment -%} Fallback Category Navigation Links {%- endcomment -%}
+            <li class="ncf-mobile-nav__item">
+              <a href="{{ routes.collections_url }}/smartwatches" class="ncf-mobile-nav__link">
+                <span>Smartwatches</span>
+              </a>
+            </li>
+            <li class="ncf-mobile-nav__item">
+              <a href="{{ routes.collections_url }}/tws-earbuds" class="ncf-mobile-nav__link">
+                <span>Earbuds</span>
+              </a>
+            </li>
+            <li class="ncf-mobile-nav__item">
+              <a href="{{ routes.collections_url }}/headphones" class="ncf-mobile-nav__link">
+                <span>Headphones</span>
+              </a>
+            </li>
+            <li class="ncf-mobile-nav__item">
+              <a href="{{ routes.collections_url }}/analog-watches" class="ncf-mobile-nav__link">
+                <span>Watches</span>
+              </a>
+            </li>
+            <li class="ncf-mobile-nav__item">
+              <a href="{{ routes.collections_url }}/speakers" class="ncf-mobile-nav__link">
+                <span>Audio</span>
+              </a>
+            </li>
+            <li class="ncf-mobile-nav__item">
+              <a href="{{ routes.collections_url }}/accessories" class="ncf-mobile-nav__link">
+                <span>Accessories</span>
+              </a>
+            </li>
+            <li class="ncf-mobile-nav__item">
+              <a href="{{ routes.all_products_collection_url }}" class="ncf-mobile-nav__link" style="color: var(--color-accent, #2563eb);">
+                <span>Deals & Offers</span>
+              </a>
+            </li>
+          {%- endif -%}
+
+        </ul>
+      </nav>
+
+      {%- comment -%} Support & Account Actions Footer in Mobile Menu {%- endcomment -%}
+      <div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px dashed #cbd5e1; font-size: 0.75rem; color: #64748b; font-family: monospace;">
+        <div style="margin-bottom: 0.5rem; font-weight: 700; color: #0f172a; text-transform: uppercase;">CLINZA CUSTOMER CARE</div>
+        <div>Toll-Free: +91 800-CLINZA</div>
+        <div>Mon-Sat: 10am - 7pm IST • Instant WhatsApp Support</div>
+      </div>
+
+    </div>
+  </div>
+</div>

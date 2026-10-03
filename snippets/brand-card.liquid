@@ -1,0 +1,77 @@
+{%- comment -%}
+  Nova Commerce Framework (NCF) - Snippet: Brand Card
+  File: snippets/brand-card.liquid
+  Sprint: 2.8 – Premium Brand Showcase
+  Architecture: Atomic Responsive Brand Card Snippet with Badge & Logo System
+{%- endcomment -%}
+
+{%- assign logo = block.settings.logo -%}
+{%- assign brand_name = block.settings.name | default: 'Brand Name' -%}
+{%- assign brand_desc = block.settings.description -%}
+{%- assign brand_url = block.settings.link | default: '#' -%}
+{%- assign badge_text = block.settings.badge_text -%}
+{%- assign layout_style = section.settings.layout_variant | default: 'logo_grid' -%}
+{%- assign logo_height = section.settings.logo_max_height | default: 60 -%}
+{%- assign enable_grayscale = section.settings.enable_grayscale -%}
+{%- assign hover_effect = section.settings.hover_animation | default: 'lift' -%}
+
+<a
+  href="{{ brand_url }}"
+  class="
+    ncf-brand-card
+    {% if layout_style == 'editorial_cards' %}ncf-brand-card--editorial{% endif %}
+    {% if layout_style == 'featured_banner' and block.settings.is_featured %}ncf-brand-card--banner{% endif %}
+    {% if enable_grayscale %}ncf-brand-card--grayscale{% endif %}
+    ncf-brand-card--hover-{{ hover_effect }}
+  "
+  aria-label="{{ brand_name | escape }}"
+  {{ block.shopify_attributes }}
+>
+  {%- comment -%} OPTIONAL BADGE {%- endcomment -%}
+  {%- if badge_text != blank -%}
+    <span class="ncf-brand-card__badge">
+      {{ badge_text }}
+    </span>
+  {%- endif -%}
+
+  {%- comment -%} BRAND LOGO {%- endcomment -%}
+  <div class="ncf-brand-card__logo-wrapper" style="height: {{ logo_height }}px;">
+    {%- if logo != blank -%}
+      {{ logo | image_url: width: 600 | image_tag:
+        loading: 'lazy',
+        sizes: '(min-width: 1024px) 200px, 120px',
+        widths: '120, 200, 300, 400, 600',
+        class: 'ncf-brand-card__logo-img',
+        alt: brand_name | escape
+      }}
+    {%- else -%}
+      <div class="font-black text-slate-800 text-lg uppercase tracking-wider">
+        {{ brand_name }}
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} BRAND DETAILS FOR EDITORIAL & BANNER MODES {%- endcomment -%}
+  {%- if layout_style == 'editorial_cards' or layout_style == 'featured_banner' or section.settings.show_brand_names -%}
+    {%- if logo != blank -%}
+      <h3 class="ncf-brand-card__name">
+        {{ brand_name }}
+      </h3>
+    {%- endif -%}
+
+    {%- if brand_desc != blank and layout_style != 'logo_grid' and layout_style != 'logo_carousel' -%}
+      <p class="ncf-brand-card__description">
+        {{ brand_desc }}
+      </p>
+    {%- endif -%}
+
+    {%- if brand_url != '#' and layout_style != 'logo_grid' and layout_style != 'logo_carousel' -%}
+      <span class="ncf-brand-card__link-text">
+        <span>Explore Products</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </span>
+    {%- endif -%}
+  {%- endif -%}
+</a>
