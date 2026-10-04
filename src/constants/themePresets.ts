@@ -56,7 +56,7 @@ export class ThemePresetsList {
         buttonRadius: 'lg',
         cardRadius: 'lg',
         productImageRatio: '1:1',
-        badgeStyle: 'rounded',
+        badgeStyle: 'minimal',
         announcementText: '⚡ Complimentary Express Delivery Across India on Orders Over ₹999'
       }
     },

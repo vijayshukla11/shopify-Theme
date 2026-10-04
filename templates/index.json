@@ -6,19 +6,19 @@
         "announcement_1": {
           "type": "announcement",
           "settings": {
-            "badge_text": "FREE DELIVERY",
-            "text": "Complimentary Express Delivery on Orders Over ₹999 • 1-Year Replacement Warranty",
-            "link_text": "Shop Deals",
+            "badge_text": "COMPLIMENTARY SHIPPING",
+            "text": "Complimentary Shipping on Orders Over ₹999 • Easy 7-Day Doorstep Exchanges",
+            "link_text": "Shop Catalogue",
             "link_url": "/collections/all"
           }
         },
         "announcement_2": {
           "type": "announcement",
           "settings": {
-            "badge_text": "NEW LAUNCH",
-            "text": "Apex Ultra AMOLED Smartwatch & Echo Pro 42dB Hybrid ANC Earbuds are now live!",
-            "link_text": "Explore New Arrivals",
-            "link_url": "/collections/smartwatches"
+            "badge_text": "NEW CAPSULE",
+            "text": "The Linen Edit — Summer 2026 Sartorial Capsule is now live!",
+            "link_text": "Explore Linen",
+            "link_url": "/collections/shirts"
           }
         }
       },
@@ -29,9 +29,9 @@
       "settings": {
         "enable_section": true,
         "show_marquee": false,
-        "bg_color": "#111827",
+        "bg_color": "#111111",
         "text_color": "#ffffff",
-        "accent_color": "#2563EB"
+        "accent_color": "#B3262D"
       }
     },
     "header": {
@@ -41,15 +41,15 @@
         "enable_transparent_header": false,
         "main_menu": "main-menu",
         "show_search_categories": true,
-        "search_placeholder": "Search smartwatches, earbuds, headphones, chargers, cables...",
+        "search_placeholder": "Search shirts, trousers, linen, essentials...",
         "show_account_icon": true,
         "show_wishlist_icon": true,
         "show_compare_icon": false,
         "show_cart_icon": true,
         "bg_color": "#ffffff",
-        "text_color": "#111827",
-        "border_color": "#e5e7eb",
-        "accent_color": "#2563EB"
+        "text_color": "#111111",
+        "border_color": "#eaeaea",
+        "accent_color": "#B3262D"
       }
     },
     "hero_banner": {
@@ -58,17 +58,17 @@
         "hero_slide_1": {
           "type": "slide",
           "settings": {
-            "badge_text": "NEXT-GEN AUDIO & SMARTWEAR",
-            "eyebrow_text": "FLAGSHIP WIRELESS FREEDOM",
-            "heading": "ELEVATE YOUR TECH LIFE",
-            "description": "Engineered with 42dB hybrid active noise cancellation, AMOLED precision displays, and ultra-durable GaN fast charging for everyday performance.",
-            "price_text": "₹2,299",
-            "compare_price_text": "₹4,999",
-            "feature_list": "42dB Hybrid ANC, 1.96\" AMOLED Display, 65W GaN Fast Charging",
-            "primary_button_label": "SHOP BEST SELLERS",
+            "badge_text": "SUMMER 2026 ATELIER CAPSULE",
+            "eyebrow_text": "PERFECTION EXISTS IN EVERY THREAD",
+            "heading": "THE LINEN EDIT",
+            "description": "Crafted from 100% pure European flax with meticulous single-needle tailoring for effortless Mediterranean ease and modern everyday elegance.",
+            "price_text": "₹1,499",
+            "compare_price_text": "₹2,499",
+            "feature_list": "100% European Flax, Mother-of-Pearl Buttons, Tailored Relaxed Cut",
+            "primary_button_label": "SHOP NOW",
             "primary_button_link": "/collections/all",
-            "secondary_button_label": "EXPLORE SMARTWATCHES",
-            "secondary_button_link": "/collections/smartwatches",
+            "secondary_button_label": "EXPLORE CAPSULE",
+            "secondary_button_link": "/collections/shirts",
             "overlay_preset": "medium",
             "content_alignment": "center"
           }
@@ -91,32 +91,32 @@
           "type": "service_card",
           "settings": {
             "icon_preset": "shield",
-            "title": "1-YEAR WARRANTY",
-            "description": "Guaranteed replacement coverage on all electronics."
+            "title": "SECURE PAYMENTS",
+            "description": "100% Encrypted Transactions with bank-grade security."
           }
         },
         "feature_2": {
           "type": "service_card",
           "settings": {
             "icon_preset": "returns",
-            "title": "7-DAY REPLACEMENT",
-            "description": "Hassle-free doorstep exchange and returns."
+            "title": "EASY RETURNS",
+            "description": "7-Day Complimentary Doorstep Exchanges nationwide."
           }
         },
         "feature_3": {
           "type": "service_card",
           "settings": {
             "icon_preset": "shipping",
-            "title": "FREE EXPRESS SHIPPING",
-            "description": "Complimentary delivery across India on orders over ₹999."
+            "title": "RELIABLE DELIVERY",
+            "description": "Complimentary express shipping on orders over ₹999."
           }
         },
         "feature_4": {
           "type": "service_card",
           "settings": {
             "icon_preset": "lock",
-            "title": "SECURE CHECKOUT",
-            "description": "UPI, Credit Cards, NetBanking & COD available."
+            "title": "CUSTOMER SUPPORT",
+            "description": "Mon–Sat Dedicated Sartorial Concierge Assistance."
           }
         }
       },
@@ -126,74 +126,75 @@
         "feature_3",
         "feature_4"
       ],
-      "settings": {
-        "eyebrow": "THE CLINZA ADVANTAGE",
-        "heading": "Engineered For Reliability & Trust",
-        "subtitle": "Certified electronics built to power your everyday digital life.",
-        "header_alignment": "center",
-        "columns_desktop": 4,
-        "columns_mobile": 2,
-        "card_style": "classic",
-        "card_alignment": "left",
-        "bg_color": "#ffffff"
-      }
-    },
-    "category_slider": {
+     "settings": {
+  "eyebrow": "THE CLINZA ASSURANCE",
+  "heading": "Sartorial Excellence In Every Detail",
+  "subtitle": "Uncompromising craftsmanship backed by complimentary doorstep exchanges.",
+  "header_alignment": "center",
+  "columns_desktop": 4,
+"columns_mobile": "2",
+"card_style": "classic",
+"card_alignment": "left",
+"bg_color": "#ffffff"
+}
+},
+"category_slider": {
       "type": "category-slider",
       "blocks": {
         "cat_1": {
           "type": "category_card",
           "settings": {
-            "badge": "FLAGSHIP",
-            "subtitle": "AMOLED & BT CALLING",
-            "title": "SMARTWATCHES",
+            "badge": "ESSENTIAL",
+            "subtitle": "PURE FLAX WEAVES",
+            
+            "title": "SHIRTS",
             "show_count": true,
-            "custom_count_text": "AMOLED & GPS",
-            "cta_text": "Shop Smartwatches"
+            "custom_count_text": "Pure Linen & Oxford",
+            "cta_text": "Shop Shirts"
           }
         },
         "cat_2": {
           "type": "category_card",
           "settings": {
-            "badge": "BEST SELLER",
-            "subtitle": "42DB HYBRID ANC",
-            "title": "TWS EARBUDS",
+            "badge": "TAILORED",
+            "subtitle": "ITALIAN TAILORING",
+            "title": "TROUSERS",
             "show_count": true,
-            "custom_count_text": "ANC & Low Latency",
-            "cta_text": "Shop Earbuds"
+            "custom_count_text": "Chinos & Pleated",
+            "cta_text": "Shop Trousers"
           }
         },
         "cat_3": {
           "type": "category_card",
           "settings": {
-            "badge": "HI-RES",
-            "subtitle": "OVER-EAR STUDIO",
-            "title": "HEADPHONES",
+            "badge": "KNITS",
+            "subtitle": "SUPIMA COTTON",
+            "title": "T-SHIRTS",
             "show_count": true,
-            "custom_count_text": "Studio Max ANC",
-            "cta_text": "Shop Headphones"
+            "custom_count_text": "Resort Polos & Tees",
+            "cta_text": "Shop T-Shirts"
           }
         },
         "cat_4": {
           "type": "category_card",
           "settings": {
-            "badge": "FAST CHARGE",
-            "subtitle": "GAN III & 20,000MAH",
-            "title": "POWER & CHARGERS",
+            "badge": "DENIM",
+            "subtitle": "RAW SELVEDGE",
+            "title": "JEANS",
             "show_count": true,
-            "custom_count_text": "65W GaN & PD",
-            "cta_text": "Shop Chargers"
+            "custom_count_text": "Straight Leg Denim",
+            "cta_text": "Shop Jeans"
           }
         },
         "cat_5": {
           "type": "category_card",
           "settings": {
-            "badge": "ESSENTIAL",
-            "subtitle": "CABLES & STANDS",
-            "title": "ACCESSORIES",
+            "badge": "UTILITY",
+            "subtitle": "LINEN UTILITY",
+            "title": "CARGOS",
             "show_count": true,
-            "custom_count_text": "MagSafe & Stands",
-            "cta_text": "Shop Accessories"
+            "custom_count_text": "Tailored Linen Cargos",
+            "cta_text": "Shop Cargos"
           }
         }
       },
@@ -205,10 +206,10 @@
         "cat_5"
       ],
       "settings": {
-        "title": "EXPLORE POPULAR CATEGORIES",
-        "subtitle": "Discover certified smartwatches, wireless audio, high-speed charging, and mobile gear.",
+        "title": "SHOP BY CATEGORY",
+        "subtitle": "Explore our curated menswear catalogue crafted with exceptional European flax and refined tailoring.",
         "desktop_columns": "5",
-        "card_radius": 6,
+        "card_radius": 4,
         "bg_color": "#ffffff",
         "show_arrows": true,
         "show_dots": true
@@ -219,13 +220,13 @@
       "settings": {
         "heading": "BEST SELLERS",
         "title": "BEST SELLERS",
-        "eyebrow": "TRENDING NOW",
-        "subtitle": "Top-rated smartwatches, wireless earbuds, and everyday tech essentials.",
+        "eyebrow": "CURATED FAVORITES",
+        "subtitle": "The most coveted silhouettes and timeless essentials from our atelier.",
         "products_to_show": 5,
         "columns_desktop": 5,
-        "columns_mobile": "2",
+       "columns_mobile": "2",
         "card_style": "classic",
-        "media_aspect_ratio": "square",
+        "media_aspect_ratio": "portrait",
         "hover_animation": "zoom",
         "show_secondary_image": true,
         "show_vendor": false,
@@ -239,28 +240,28 @@
         "col_1": {
           "type": "collection_card",
           "settings": {
-            "badge_text": "AUDIO",
+            "badge_text": "ATELIER",
             "show_product_count": true,
-            "heading": "WIRELESS AUDIO",
-            "description": "Studio-grade ANC headphones, earbuds, and waterproof Bluetooth speakers."
+            "heading": "PREMIUM SHIRTS",
+            "description": "Pure European Flax Weaves with single-needle tailoring."
           }
         },
         "col_2": {
           "type": "collection_card",
           "settings": {
-            "badge_text": "SMARTWEAR",
+            "badge_text": "ESSENTIAL",
             "show_product_count": true,
-            "heading": "SMARTWATCHES & BANDS",
-            "description": "Vivid AMOLED touchscreens with all-day health and fitness intelligence."
+            "heading": "EVERYDAY ESSENTIALS",
+            "description": "Modern Minimalist Staples designed for effortless daily rotation."
           }
         },
         "col_3": {
           "type": "collection_card",
           "settings": {
-            "badge_text": "POWER",
+            "badge_text": "NEW",
             "show_product_count": true,
-            "heading": "POWER & CHARGING",
-            "description": "Ultra-compact 65W GaN wall adapters, 20,000mAh power banks, and braided cables."
+            "heading": "CHECKED SHIRTS",
+            "description": "Artisanal Textured Tailoring in micro and windowpane patterns."
           }
         }
       },
@@ -270,9 +271,9 @@
         "col_3"
       ],
       "settings": {
-        "heading": "FEATURED CATEGORIES",
-        "eyebrow": "CURATED TECH",
-        "subtitle": "Engineered for uncompromising daily durability, high speeds, and audio clarity.",
+        "heading": "EDITORIAL CAPSULES",
+        "eyebrow": "THE ATELIER",
+        "subtitle": "Three curated capsules reflecting effortless elegance and timeless Mediterranean ease.",
         "card_height": "medium",
         "bg_color": "#ffffff"
       }
@@ -283,19 +284,19 @@
         "promo_1": {
           "type": "banner_card",
           "settings": {
-            "badge_text": "UP TO 50% OFF",
-            "eyebrow": "DAILY TECH DEALS",
-            "heading": "FLAGSHIP AUDIO & CHARGING",
-            "description": "Upgrade your desk and on-the-go lifestyle with high-definition wireless earbuds, 65W GaN adapters, and heavy-duty braided cables."
+            "badge_text": "UPTO 30% OFF",
+            "eyebrow": "SUMMER 2026 CAPSULE",
+            "heading": "THE NEW SEASON COLLECTION",
+            "description": "Understated elegance meets effortless Mediterranean ease. Crafted from 100% pure flax and ultra-fine Supima cotton."
           }
         },
         "promo_2": {
           "type": "banner_card",
           "settings": {
-            "badge_text": "EXECUTIVE PACK",
-            "eyebrow": "SMART PRODUCTIVITY",
-            "heading": "CURATED TECH COMBO",
-            "description": "Save over ₹5,500 on our all-in-one Executive Tech Bundle featuring the Apex Ultra Watch, Echo Pro ANC Buds, and 65W GaN Wall Adapter."
+            "badge_text": "SARTORIAL EDIT",
+            "eyebrow": "TAILORED SUITING",
+            "heading": "UNSTRUCTURED ITALIAN TAILORING",
+            "description": "Engineered in lightweight European flax and Italian cotton. Designed for seamless poise from daytime meetings to sunset dinners."
           }
         }
       },
@@ -306,7 +307,7 @@
       "settings": {
         "grid_layout": "split_2",
         "banner_height": "medium",
-        "bg_color": "#f8fafc"
+        "bg_color": "#f8f8f8"
       }
     },
     "new_arrivals": {
@@ -314,13 +315,13 @@
       "settings": {
         "heading": "NEW ARRIVALS",
         "title": "NEW ARRIVALS",
-        "eyebrow": "JUST LAUNCHED",
-        "subtitle": "Discover the latest cutting-edge consumer electronics and accessories.",
+        "eyebrow": "JUST IN",
+        "subtitle": "Fresh cuts, refined textures, and the latest seasonal color palette.",
         "products_to_show": 5,
         "columns_desktop": 5,
-        "columns_mobile": "2",
+      "columns_mobile": "2",
         "card_style": "classic",
-        "media_aspect_ratio": "square",
+        "media_aspect_ratio": "portrait",
         "hover_animation": "zoom",
         "show_secondary_image": true,
         "show_vendor": false,
@@ -331,13 +332,13 @@
     "newsletter": {
       "type": "newsletter",
       "settings": {
-        "eyebrow": "STAY AHEAD",
-        "heading": "SUBSCRIBE FOR VIP TECH DEALS",
-        "subtitle": "Get early access to flash sales, launch discounts, and special tech bundle offers.",
+        "eyebrow": "THE CLINZA ATELIER",
+        "heading": "JOIN THE SARTORIAL CIRCLE",
+        "subtitle": "Receive private invitations to capsule launches, styling previews, and curated members-only editions.",
         "placeholder_text": "ENTER YOUR EMAIL ADDRESS",
-        "button_label": "GET OFFERS",
-        "privacy_note": "No spam ever. Unsubscribe with a single click anytime.",
-        "success_message": "Thank you for subscribing! Your exclusive welcome discount code is CLINZA10."
+        "button_label": "SUBSCRIBE",
+        "privacy_note": "We respect your privacy. Unsubscribe anytime with zero hassle.",
+        "success_message": "Welcome to the Atelier. Your invite has been sent."
       }
     },
     "footer": {
@@ -346,19 +347,19 @@
         "col_shop": {
           "type": "link_list",
           "settings": {
-            "heading": "POPULAR CATEGORIES"
+            "heading": "CATEGORIES"
           }
         },
         "col_support": {
           "type": "link_list",
           "settings": {
-            "heading": "CUSTOMER SUPPORT"
+            "heading": "CLIENT SERVICES"
           }
         },
         "col_about": {
           "type": "link_list",
           "settings": {
-            "heading": "ABOUT CLINZA"
+            "heading": "THE ATELIER"
           }
         }
       },
@@ -369,15 +370,15 @@
       ],
       "settings": {
         "show_newsletter": true,
-        "newsletter_heading": "Get Exclusive Tech Offers",
-        "newsletter_text": "Subscribe to receive launch notifications, flash discount alerts, and warranty updates.",
+        "newsletter_heading": "Join The Atelier Circle",
+        "newsletter_text": "Subscribe for private access to capsule launches and bespoke styling notes.",
         "show_trust_badges": true,
         "show_social_icons": true,
         "show_payment_icons": true,
         "show_contact_info": true,
-        "contact_phone": "+91 800-CLINZA (254692)",
-        "contact_email": "support@clinza.com",
-        "contact_address": "CLINZA Electronics Pvt Ltd, Bengaluru / Mumbai, India"
+        "contact_phone": "+91 800-CLINZA",
+        "contact_email": "concierge@clinza.com",
+        "contact_address": "CLINZA Sartorial Atelier, Mumbai / Bengaluru, India"
       }
     }
   },
@@ -385,12 +386,12 @@
     "announcement_bar",
     "header",
     "hero_banner",
+    "service_features",
     "category_slider",
     "best_sellers",
-    "promo_banner",
     "featured_collections",
+    "promo_banner",
     "new_arrivals",
-    "service_features",
     "newsletter",
     "footer"
   ]

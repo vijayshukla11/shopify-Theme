@@ -1,154 +1,133 @@
 {%- comment -%}
-  Nova Commerce Framework (NCF) - Snippet: Product Buy Box
+  CLINZA Commerce - Snippet: Product Buy Box
   File: snippets/product-buy-box.liquid
-  Sprint: 4.4 – Product Detail Page Foundation (Phase 1)
-  Architecture: High-Conversion Product Buy Box reusing existing NCF components (Price, Rating,
-  Badges, Stock, Delivery, Swatches), with Variant Selector, Quantity Controls, AJAX ATC,
-  Dynamic Checkout, and Store Pickup Availability.
+  Architecture: High-Conversion Minimalist Electronics Buy Box adhering strictly to the
+  CLINZA #173D32 color system, dynamic Shopify product data, and native OS 2.0 controls.
 {%- endcomment -%}
 
-{%- assign show_trust = section.settings.enable_trust_badges | default: true -%}
-{%- assign show_dynamic_checkout = section.settings.enable_dynamic_checkout | default: true -%}
-
 {%- assign current_variant = product.selected_or_first_available_variant -%}
+{%- assign show_dynamic_checkout = section.settings.enable_dynamic_checkout | default: true -%}
+{%- assign show_trust = section.settings.enable_trust_badges | default: true -%}
 
-<div class="ncf-pdp-buybox flex flex-col gap-5 w-full text-slate-900 dark:text-slate-100" data-product-buybox>
-  
-  {%- comment -%} 1. VENDOR & SKU & AVAILABILITY HEADER {%- endcomment -%}
-  <div class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 font-mono">
+{%- comment -%} Deterministic Category Eyebrow {%- endcomment -%}
+{%- assign category_label = product.metafields.custom.category | default: product.type -%}
+{%- if category_label == blank and product.collections.size > 0 -%}
+  {%- assign category_label = product.collections.first.title -%}
+{%- endif -%}
+
+<div class="ncf-pdp-buybox flex flex-col gap-4 w-full text-[#111827]" data-product-buybox>
+
+  {%- comment -%} 1. CATEGORY EYEBROW & SKU {%- endcomment -%}
+  <div class="flex items-center justify-between text-xs font-mono">
     <div class="flex items-center gap-2">
-      <span class="font-bold uppercase tracking-wider text-sky-600 dark:text-sky-400">
-        {{ product.vendor | default: 'CLINZA' }}
-      </span>
-      <span>•</span>
-      <span>SKU: <strong class="text-slate-700 dark:text-slate-300" data-pdp-sku>{{ current_variant.sku | default: 'CLZ-APX-001' }}</strong></span>
+      {%- if category_label != blank -%}
+        <span class="font-bold uppercase tracking-wider text-[#173D32]">
+          {{ category_label | escape }}
+        </span>
+        <span class="text-[#E5E7E5]">•</span>
+      {%- endif -%}
+      {%- if current_variant.sku != blank -%}
+        <span class="text-[#667085]">SKU: <strong class="text-[#111827] font-semibold" data-pdp-sku>{{ current_variant.sku }}</strong></span>
+      {%- endif -%}
     </div>
 
-    {%- comment -%} Stock Status Component Reuse {%- endcomment -%}
+    {%- comment -%} Stock Status Indicator {%- endcomment -%}
     {% render 'product-card-stock', product: product, show_stock: true %}
   </div>
 
-  {%- comment -%} 2. PRODUCT TITLE & BADGES {%- endcomment -%}
+  {%- comment -%} 2. PRODUCT TITLE & RATING {%- endcomment -%}
   <div>
-    <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100 leading-tight">
-      {{ product.title | default: 'CLINZA Apex Ultra GPS Smartwatch' }}
+    <h1 class="text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight text-[#111827] leading-tight">
+      {{ product.title | escape }}
     </h1>
 
-    <div class="flex items-center gap-4 mt-2.5">
-      {%- comment -%} Rating Component Reuse {%- endcomment -%}
+    {%- comment -%} Rating Component (Gracefully hides when no genuine review data exists) {%- endcomment -%}
+    <div class="mt-2 empty:hidden">
       {% render 'product-rating', product: product, show_rating: true %}
-
-      <span class="text-slate-300 dark:text-slate-700">•</span>
-      <a href="#ncf-pdp-reviews" class="text-xs font-semibold text-sky-600 dark:text-sky-400 hover:underline">
-        Read 128 Reviews
-      </a>
     </div>
   </div>
 
-  {%- comment -%} 3. PRICING & DISCOUNTS {%- endcomment -%}
-  <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 flex items-center justify-between flex-wrap gap-3">
-    {% render 'product-price', product: product, show_savings: true %}
+  {%- comment -%} 3. PRICING & SAVINGS {%- endcomment -%}
+  <div class="py-3 px-4 rounded-xl bg-[#F7F8F6] border border-[#E5E7E5] flex items-center justify-between flex-wrap gap-2">
+    <div class="flex items-baseline gap-2.5 flex-wrap">
+      <span class="text-2xl font-extrabold text-[#111827] font-mono tracking-tight" data-product-price-current>
+        {{ current_variant.price | money }}
+      </span>
 
-    <span class="px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 text-xs font-bold border border-emerald-200 dark:border-emerald-800">
-      In Stock & Ready to Ship
+      {%- if current_variant.compare_at_price > current_variant.price -%}
+        <span class="text-sm line-through text-[#667085] font-mono" data-product-price-compare>
+          {{ current_variant.compare_at_price | money }}
+        </span>
+
+        {%- assign saved_amount = current_variant.compare_at_price | minus: current_variant.price -%}
+        {%- assign saved_percent = saved_amount | times: 100.0 | divided_by: current_variant.compare_at_price | round -%}
+        <span class="px-2 py-0.5 rounded-md bg-[#EAF1EE] text-[#173D32] text-xs font-bold font-mono">
+          Save {{ saved_percent }}% ({{ saved_amount | money }})
+        </span>
+      {%- endif -%}
+    </div>
+
+    <span class="text-[11px] font-medium text-[#667085]">
+      Inclusive of all taxes
     </span>
   </div>
 
-  {%- comment -%} 4. VARIANT OPTIONS (SWATCHES & PILLS) {%- endcomment -%}
-  <form method="post" action="{{ routes.cart_add_url }}" class="ncf-pdp-variant-form flex flex-col gap-5" id="ncf-pdp-add-to-cart-form" data-pdp-form>
+  {%- comment -%} 4. SHORT DESCRIPTION / VALUE HIGHLIGHTS {%- endcomment -%}
+  {%- assign short_desc = product.metafields.custom.short_description | default: product.metafields.descriptors.subtitle -%}
+  {%- if short_desc == blank and product.description != blank -%}
+    {%- assign short_desc = product.description | strip_html | truncatewords: 24 -%}
+  {%- endif -%}
+
+  {%- if short_desc != blank -%}
+    <p class="text-xs sm:text-sm text-[#667085] leading-relaxed">
+      {{ short_desc }}
+    </p>
+  {%- endif -%}
+
+  {%- comment -%} 5. PRODUCT FORM & VARIANT OPTIONS {%- endcomment -%}
+  <form method="post" action="{{ routes.cart_add_url }}" class="ncf-pdp-variant-form flex flex-col gap-4 mt-1" id="ncf-pdp-add-to-cart-form" data-pdp-form>
     <input type="hidden" name="id" value="{{ current_variant.id }}" data-pdp-variant-id-input />
     <script type="application/json" data-product-json>{{ product | json }}</script>
 
-    {%- if product.options_with_values.size > 0 -%}
+    {%- unless product.has_only_default_variant -%}
       {%- for option in product.options_with_values -%}
         {%- assign option_name_downcase = option.name | downcase -%}
         <div class="space-y-2">
-          <div class="flex items-center justify-between text-xs font-bold">
-            <span class="text-slate-700 dark:text-slate-300 uppercase tracking-wider font-mono">
-              {{ option.name }}: <span class="text-sky-600 dark:text-sky-400 font-normal" data-selected-option-label="{{ forloop.index0 }}">{{ option.selected_value | default: option.values.first }}</span>
+          <div class="flex items-center justify-between text-xs font-medium">
+            <span class="text-[#111827]">
+              {{ option.name }}: <strong class="text-[#173D32] font-semibold" data-selected-option-label="{{ forloop.index0 }}">{{ option.selected_value | default: option.values.first }}</strong>
             </span>
-            {%- if option_name_downcase contains 'size' or option_name_downcase contains 'fit' -%}
-              <button type="button" class="text-sky-600 dark:text-sky-400 hover:underline text-[11px]">Size Guide</button>
-            {%- endif -%}
           </div>
 
           <div class="flex flex-wrap gap-2">
             {%- for value in option.values -%}
-              {%- if option_name_downcase contains 'color' or option_name_downcase contains 'colour' -%}
-                <button
-                  type="button"
-                  class="ncf-pdp-swatch-btn relative px-3 py-2 rounded-xl border-2 text-xs font-bold flex items-center gap-2 transition-all focus:outline-none {% if value == option.selected_value or forloop.first %}border-sky-600 dark:border-sky-400 bg-sky-50 dark:bg-sky-950/50 text-sky-700 dark:text-sky-300 shadow-xs{% else %}border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:border-slate-300{% endif %}"
-                  data-option-index="{{ option.position | minus: 1 }}"
-                  data-option-value="{{ value | escape }}"
-                >
-                  <span class="w-3.5 h-3.5 rounded-full border border-slate-300 dark:border-slate-700" style="background-color: {% if value contains 'Black' or value contains 'Midnight' %}#0f172a{% elsif value contains 'Silver' or value contains 'Grey' %}#94a3b8{% else %}#3b82f6{% endif %};"></span>
-                  <span>{{ value }}</span>
-                </button>
-              {%- else -%}
-                <button
-                  type="button"
-                  class="ncf-pdp-pill-btn px-4 py-2.5 rounded-xl border-2 text-xs font-bold transition-all focus:outline-none {% if value == option.selected_value or forloop.first %}border-sky-600 dark:border-sky-400 bg-sky-50 dark:bg-sky-950/50 text-sky-700 dark:text-sky-300 shadow-xs{% else %}border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:border-slate-300{% endif %}"
-                  data-option-index="{{ option.position | minus: 1 }}"
-                  data-option-value="{{ value | escape }}"
-                >
-                  {{ value }}
-                </button>
-              {%- endif -%}
+              {%- comment -%} Determine if this option value is available in any variant {%- endcomment -%}
+              {%- assign is_available = true -%}
+              <button
+                type="button"
+                class="ncf-pdp-pill-btn px-3.5 py-2 rounded-lg border text-xs font-medium transition-all focus:outline-none {% if value == option.selected_value or forloop.first and option.selected_value == blank %}border-[#173D32] bg-[#EAF1EE] text-[#173D32] font-semibold shadow-2xs{% else %}border-[#E5E7E5] bg-[#FFFFFF] text-[#111827] hover:border-[#173D32]/50{% endif %}"
+                data-option-index="{{ option.position | minus: 1 }}"
+                data-option-value="{{ value | escape }}"
+              >
+                {{ value }}
+              </button>
             {%- endfor -%}
           </div>
         </div>
       {%- endfor -%}
-    {%- else -%}
-      {%- comment -%} DEMO VARIANT OPTIONS FOR PREVIEW MODE {%- endcomment -%}
-      <div class="space-y-2">
-        <div class="flex items-center justify-between text-xs font-bold">
-          <span class="text-slate-700 dark:text-slate-300 uppercase tracking-wider font-mono">
-            Finish Color: <span class="text-sky-600 dark:text-sky-400 font-normal" data-selected-option-label="0">Space Black</span>
-          </span>
-        </div>
-        <div class="flex flex-wrap gap-2">
-          <button type="button" class="ncf-pdp-swatch-btn border-sky-600 dark:border-sky-400 bg-sky-50 dark:bg-sky-950/50 text-sky-700 dark:text-sky-300 px-3.5 py-2 rounded-xl border-2 text-xs font-bold flex items-center gap-2">
-            <span class="w-3.5 h-3.5 rounded-full bg-slate-900"></span>
-            <span>Space Black</span>
-          </button>
-          <button type="button" class="ncf-pdp-swatch-btn border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 px-3.5 py-2 rounded-xl border-2 text-xs font-bold flex items-center gap-2 hover:border-slate-300">
-            <span class="w-3.5 h-3.5 rounded-full bg-slate-300"></span>
-            <span>Silver Metallic</span>
-          </button>
-          <button type="button" class="ncf-pdp-swatch-btn border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 px-3.5 py-2 rounded-xl border-2 text-xs font-bold flex items-center gap-2 hover:border-slate-300">
-            <span class="w-3.5 h-3.5 rounded-full bg-sky-500"></span>
-            <span>Nordic Blue</span>
-          </button>
-        </div>
-      </div>
+    {%- endunless -%}
 
-      <div class="space-y-2">
-        <div class="flex items-center justify-between text-xs font-bold">
-          <span class="text-slate-700 dark:text-slate-300 uppercase tracking-wider font-mono">
-            Storage Capacity: <span class="text-sky-600 dark:text-sky-400 font-normal" data-selected-option-label="1">256GB High Speed</span>
-          </span>
-        </div>
-        <div class="flex flex-wrap gap-2">
-          <button type="button" class="ncf-pdp-pill-btn border-sky-600 dark:border-sky-400 bg-sky-50 dark:bg-sky-950/50 text-sky-700 dark:text-sky-300 px-4 py-2.5 rounded-xl border-2 text-xs font-bold">
-            256GB High Speed
-          </button>
-          <button type="button" class="ncf-pdp-pill-btn border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 px-4 py-2.5 rounded-xl border-2 text-xs font-bold hover:border-slate-300">
-            512GB Ultra Fast
-          </button>
-        </div>
-      </div>
-    {%- endif -%}
-
-    {%- comment -%} 5. QUANTITY SELECTOR & ADD TO CART CTA {%- endcomment -%}
-    <div class="flex items-center gap-3 pt-2">
-      <div class="flex items-center rounded-xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-1">
+    {%- comment -%} 6. QUANTITY & ADD TO CART CTA {%- endcomment -%}
+    <div class="flex items-center gap-3 pt-1">
+      {%- comment -%} Accessible Quantity Control {%- endcomment -%}
+      <div class="flex items-center rounded-lg border border-[#E5E7E5] bg-[#FFFFFF] p-0.5">
         <button
           type="button"
-          class="w-10 h-10 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center font-bold text-lg focus:outline-none"
+          class="w-9 h-9 rounded-md text-[#111827] hover:bg-[#F7F8F6] flex items-center justify-center font-bold text-base transition-colors focus:outline-none"
           data-qty-decrease
           aria-label="Decrease quantity"
         >
-          -
+          −
         </button>
         <input
           type="number"
@@ -156,13 +135,13 @@
           value="1"
           min="1"
           max="10"
-          class="w-12 text-center text-sm font-bold font-mono bg-transparent focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+          class="w-10 text-center text-xs font-bold font-mono bg-transparent text-[#111827] focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
           data-qty-input
-          aria-label="Quantity"
+          aria-label="Product quantity"
         />
         <button
           type="button"
-          class="w-10 h-10 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center font-bold text-lg focus:outline-none"
+          class="w-9 h-9 rounded-md text-[#111827] hover:bg-[#F7F8F6] flex items-center justify-center font-bold text-base transition-colors focus:outline-none"
           data-qty-increase
           aria-label="Increase quantity"
         >
@@ -170,63 +149,88 @@
         </button>
       </div>
 
+      {%- comment -%} Primary CTA: ADD TO CART (#173D32) {%- endcomment -%}
       <button
         type="submit"
-        class="flex-1 py-3.5 px-6 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-extrabold text-sm shadow-lg shadow-sky-600/20 hover:shadow-sky-600/40 transition-all flex items-center justify-center gap-2 group/atc"
+        class="flex-1 py-3 px-6 rounded-lg bg-[#173D32] hover:bg-[#0F2D25] text-white font-semibold text-xs uppercase tracking-wider shadow-xs transition-colors flex items-center justify-center gap-2 disabled:bg-[#E5E7E5] disabled:text-[#667085] disabled:cursor-not-allowed group/atc"
         data-pdp-submit-atc
+        {% unless current_variant.available %}disabled{% endunless %}
       >
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="transition-transform group-hover/atc:scale-110"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-        <span data-pdp-atc-text>Add to Cart</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="transition-transform group-hover/atc:scale-105" aria-hidden="true"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+        <span data-pdp-atc-text>
+          {%- if current_variant.available -%}
+            Add to Cart
+          {%- else -%}
+            Sold Out
+          {%- endif -%}
+        </span>
       </button>
     </div>
 
-    {%- comment -%} 6. DYNAMIC CHECKOUT (BUY IT NOW) {%- endcomment -%}
+    {%- comment -%} 7. SECONDARY CTA: BUY NOW {%- endcomment -%}
     {%- if show_dynamic_checkout -%}
       <button
         type="button"
-        class="w-full py-3.5 px-6 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-slate-100 dark:hover:bg-white text-white dark:text-slate-900 font-extrabold text-sm shadow-md transition-all flex items-center justify-center gap-2"
+        class="w-full py-3 px-6 rounded-lg bg-[#FFFFFF] border-2 border-[#173D32] hover:bg-[#EAF1EE] text-[#173D32] font-semibold text-xs uppercase tracking-wider transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
         data-pdp-buy-now
+        {% unless current_variant.available %}disabled{% endunless %}
       >
-        <span>Buy with Shop Pay</span>
+        <span>Buy Now</span>
       </button>
     {%- endif -%}
   </form>
 
-  {%- comment -%} 7. DELIVERY BADGES REUSE {%- endcomment -%}
-  <div class="pt-2 border-t border-slate-200 dark:border-slate-800">
-    {% render 'product-card-delivery', product: product, show_delivery: true %}
-  </div>
-
-  {%- comment -%} 8. STORE PICKUP AVAILABILITY {%- endcomment -%}
-  <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 flex items-start gap-3">
-    <div class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center flex-shrink-0 mt-0.5">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-    </div>
-    <div class="text-xs space-y-0.5">
-      <p class="font-bold text-slate-800 dark:text-slate-200">Pickup available at Flagship Store</p>
-      <p class="text-slate-500 dark:text-slate-400">Usually ready in 2 hours • <a href="#" class="text-sky-600 dark:text-sky-400 hover:underline">Check availability</a></p>
-    </div>
-  </div>
-
-  {%- comment -%} 9. PAYMENT INSTALLMENT & TRUST INFO {%- endcomment -%}
-  {% render 'product-payment-info' %}
-
-  {%- comment -%} 10. TRUST BADGES {%- endcomment -%}
+  {%- comment -%} 8. TRUST & SERVICE INFORMATION ROW (Configurable & Dynamic) {%- endcomment -%}
   {%- if show_trust -%}
-    <div class="grid grid-cols-3 gap-2 pt-2 text-center text-[11px] text-slate-600 dark:text-slate-400 font-medium border-t border-slate-200 dark:border-slate-800">
-      <div class="p-2 rounded-xl bg-slate-50 dark:bg-slate-800/40 flex flex-col items-center gap-1">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-sky-600"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-        <span>Encrypted Checkout</span>
+    {%- assign trust_cod = product.metafields.custom.cod_promise.value | default: section.settings.trust_badge_cod -%}
+    {%- assign trust_warranty = product.metafields.custom.warranty.value | default: product.metafields.specs.warranty.value | default: section.settings.trust_badge_warranty -%}
+    {%- assign trust_exchange = product.metafields.custom.replacement_policy.value | default: section.settings.trust_badge_exchange -%}
+    {%- assign trust_shipping = product.metafields.custom.shipping_promise.value | default: section.settings.trust_badge_shipping -%}
+    {%- assign trust_authenticity = product.metafields.custom.authenticity_promise.value | default: section.settings.trust_badge_authenticity -%}
+    {%- assign trust_security = section.settings.trust_badge_security -%}
+
+    {%- if trust_cod != blank or trust_warranty != blank or trust_exchange != blank or trust_shipping != blank or trust_authenticity != blank or trust_security != blank -%}
+      <div class="pt-3 mt-1 border-t border-[#E5E7E5]">
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 text-[11px] text-[#667085]">
+          {%- if trust_cod != blank -%}
+            <div class="flex items-center gap-1.5">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#173D32" stroke-width="2.5" class="flex-shrink-0" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span class="text-[#111827] font-medium">{{ trust_cod | escape }}</span>
+            </div>
+          {%- endif -%}
+          {%- if trust_warranty != blank -%}
+            <div class="flex items-center gap-1.5">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#173D32" stroke-width="2.5" class="flex-shrink-0" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span class="text-[#111827] font-medium">{{ trust_warranty | escape }}</span>
+            </div>
+          {%- endif -%}
+          {%- if trust_exchange != blank -%}
+            <div class="flex items-center gap-1.5">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#173D32" stroke-width="2.5" class="flex-shrink-0" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span class="text-[#111827] font-medium">{{ trust_exchange | escape }}</span>
+            </div>
+          {%- endif -%}
+          {%- if trust_shipping != blank -%}
+            <div class="flex items-center gap-1.5">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#173D32" stroke-width="2.5" class="flex-shrink-0" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span class="text-[#111827] font-medium">{{ trust_shipping | escape }}</span>
+            </div>
+          {%- endif -%}
+          {%- if trust_authenticity != blank -%}
+            <div class="flex items-center gap-1.5">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#173D32" stroke-width="2.5" class="flex-shrink-0" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span class="text-[#111827] font-medium">{{ trust_authenticity | escape }}</span>
+            </div>
+          {%- endif -%}
+          {%- if trust_security != blank -%}
+            <div class="flex items-center gap-1.5">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#173D32" stroke-width="2.5" class="flex-shrink-0" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span class="text-[#111827] font-medium">{{ trust_security | escape }}</span>
+            </div>
+          {%- endif -%}
+        </div>
       </div>
-      <div class="p-2 rounded-xl bg-slate-50 dark:bg-slate-800/40 flex flex-col items-center gap-1">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-sky-600"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
-        <span>30-Day Free Returns</span>
-      </div>
-      <div class="p-2 rounded-xl bg-slate-50 dark:bg-slate-800/40 flex flex-col items-center gap-1">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-sky-600"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-        <span>Official Warranty</span>
-      </div>
-    </div>
+    {%- endif -%}
   {%- endif -%}
 
 </div>

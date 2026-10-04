@@ -1,71 +1,70 @@
 {%- comment -%}
-  Nova Commerce Framework (NCF) - Section: Main Product Detail Page (PDP)
+  CLINZA Commerce - Section: Main Product Detail Page (PDP)
   File: sections/main-product.liquid
-  Sprint: 4.4 – Product Detail Page Foundation (Phase 1)
-  Architecture: Production-Ready 50/50 Desktop Layout, Sticky Gallery, Natural Scrolling Buy Box,
-  Mobile Stacked Layout, Sticky Mobile Add-to-Cart Bar, and Full Theme Editor Controls.
+  Architecture: Minimalist 58/42 Desktop Layout, Product-First Presentation,
+  Sticky Vertical Rail Gallery, Buy Box, Dynamic Accordions, and Sticky Mobile ATC.
 {%- endcomment -%}
 
 {%- assign enable_sticky_gallery = section.settings.enable_sticky_gallery | default: true -%}
 {%- assign enable_sticky_buybox = section.settings.enable_sticky_buybox | default: false -%}
 {%- assign enable_sticky_mobile_atc = section.settings.enable_sticky_mobile_atc | default: true -%}
-{%- assign enable_highlights = section.settings.enable_highlights | default: true -%}
 
 <section
-  class="ncf-main-product-section relative py-6 md:py-10 bg-white dark:bg-slate-950 transition-colors"
+  class="ncf-main-product-section relative py-4 sm:py-6 md:py-8 bg-[#FFFFFF] text-[#111827]"
   data-section-id="{{ section.id }}"
   data-section-type="main-product"
 >
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     
-    {%- comment -%} Breadcrumb Navigation {%- endcomment -%}
-    <nav class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 mb-6 font-medium" aria-label="Breadcrumb">
-      <a href="{{ routes.root_url }}" class="hover:text-sky-600 dark:hover:text-sky-400 transition-colors">Home</a>
-      <span>/</span>
-      <a href="{{ routes.all_products_collection_url }}" class="hover:text-sky-600 dark:hover:text-sky-400 transition-colors">Collections</a>
-      <span>/</span>
-      <span class="text-slate-900 dark:text-slate-100 font-bold truncate max-w-[200px] sm:max-w-xs">
-        {{ product.title | default: 'Nova Pro Wireless Headphones' }}
-      </span>
-    </nav>
+    {%- comment -%} 1. BREADCRUMB NAVIGATION {%- endcomment -%}
+    {%- if section.settings.show_breadcrumbs -%}
+      {%- assign primary_collection = product.collections.first -%}
+      {%- assign primary_category_title = primary_collection.title | default: product.type -%}
+      <nav class="flex items-center flex-wrap gap-1.5 text-xs text-[#667085] mb-5 font-normal" aria-label="Breadcrumb">
+        <a href="{{ routes.root_url }}" class="hover:text-[#173D32] transition-colors">Home</a>
+        <span class="text-[#E5E7E5]">/</span>
+        {%- if primary_category_title != blank -%}
+          {%- if primary_collection.url != blank -%}
+            <a href="{{ primary_collection.url }}" class="hover:text-[#173D32] transition-colors">{{ primary_category_title | escape }}</a>
+          {%- else -%}
+            <a href="{{ routes.all_products_collection_url }}" class="hover:text-[#173D32] transition-colors">{{ primary_category_title | escape }}</a>
+          {%- endif -%}
+          <span class="text-[#E5E7E5]">/</span>
+        {%- endif -%}
+        <span class="text-[#111827] font-medium truncate max-w-[240px] sm:max-w-md" aria-current="page">
+          {{ product.title | escape }}
+        </span>
+      </nav>
+    {%- endif -%}
 
-    {%- comment -%} 50/50 Grid Container {%- endcomment -%}
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+    {%- comment -%} 2. 58/42 PRODUCT LAYOUT GRID {%- endcomment -%}
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
       
-      {%- comment -%} Left Column: Sticky Media Gallery (50% / 6 cols on lg) {%- endcomment -%}
-      <div class="lg:col-span-6 {% if enable_sticky_gallery %}lg:sticky lg:top-24{% endif %} self-start">
+      {%- comment -%} Left Column: Media Gallery (58.33% / 7 cols on lg) {%- endcomment -%}
+      <div class="lg:col-span-7 {% if enable_sticky_gallery %}lg:sticky lg:top-24{% endif %} self-start">
         {% render 'product-media-gallery', product: product %}
       </div>
 
-      {%- comment -%} Right Column: Buy Box & Product Spec Highlights (50% / 6 cols on lg) {%- endcomment -%}
-      <div class="lg:col-span-6 space-y-8 {% if enable_sticky_buybox %}lg:sticky lg:top-24{% endif %}">
+      {%- comment -%} Right Column: Buy Box & Purchasing Area (41.67% / 5 cols on lg) {%- endcomment -%}
+      <div class="lg:col-span-5 space-y-6 {% if enable_sticky_buybox %}lg:sticky lg:top-24{% endif %}">
         {% render 'product-buy-box', product: product %}
-
-        {%- if enable_highlights -%}
-          {% render 'product-spec-highlights', product: product %}
-        {%- endif -%}
       </div>
 
     </div>
 
-    {%- comment -%} Sprint 4.5: Feature Grid Section {%- endcomment -%}
-    {%- if section.settings.enable_feature_grid -%}
-      <div class="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800">
-        {% render 'product-feature-grid', product: product %}
-      </div>
-    {%- endif -%}
-
-    {%- comment -%} Sprint 4.5: Information & Trust Tabs Section {%- endcomment -%}
+    {%- comment -%} 3. PRODUCT INFORMATION ACCORDIONS {%- endcomment -%}
     {%- if section.settings.enable_tabs -%}
-      <div class="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800">
+      <div class="mt-10 pt-6 border-t border-[#E5E7E5]">
         {% render 'product-tabs', product: product %}
       </div>
     {%- endif -%}
 
-    {%- comment -%} Sprint 4.6: Product Recommendation Engine Section {%- endcomment -%}
-    <div class="mt-12">
-      {% section 'product-recommendations' %}
-    </div>
+    {%- comment -%} 4. PRODUCT RECOMMENDATIONS ENGINE {%- endcomment -%}
+    {%- if section.settings.show_recommendations -%}
+      <div class="mt-10 pt-6 border-t border-[#E5E7E5]">
+        {% section 'product-recommendations' %}
+      </div>
+    {%- endif -%}
 
   </div>
 
@@ -74,12 +73,12 @@
     {
       "@context": "https://schema.org/",
       "@type": "Product",
-      "name": {{ product.title | default: "CLINZA Smartwatch" | json }},
+      "name": {{ product.title | json }},
       "image": [
         {{ product.featured_image | image_url: width: 1200 | json }}
       ],
-      "description": {{ product.description | strip_html | default: "CLINZA premium electronics" | json }},
-      "sku": {{ product.selected_or_first_available_variant.sku | default: "CLZ-001" | json }},
+      "description": {{ product.description | strip_html | json }},
+      "sku": {{ product.selected_or_first_available_variant.sku | json }},
       "brand": {
         "@type": "Brand",
         "name": {{ product.vendor | default: "CLINZA" | json }}
@@ -88,7 +87,7 @@
         "@type": "Offer",
         "url": {{ request.origin | append: product.url | json }},
         "priceCurrency": {{ cart.currency.iso_code | default: "INR" | json }},
-        "price": {{ product.selected_or_first_available_variant.price | default: 199900 | divided_by: 100.0 | json }},
+        "price": {{ product.selected_or_first_available_variant.price | divided_by: 100.0 | json }},
         "itemCondition": "https://schema.org/NewCondition",
         "availability": "{% if product.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}"
       }
@@ -99,34 +98,35 @@
   {%- if enable_sticky_mobile_atc -%}
     <div
       id="ncf-mobile-sticky-atc-bar"
-      class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg border-t border-slate-200 dark:border-slate-800 p-3 shadow-2xl transition-transform duration-300 translate-y-full"
+      class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#FFFFFF]/95 backdrop-blur-md border-t border-[#E5E7E5] p-3 shadow-lg transition-transform duration-300 translate-y-full"
       data-mobile-sticky-bar
     >
       <div class="flex items-center justify-between gap-3 max-w-md mx-auto">
         <div class="flex items-center gap-2.5 min-w-0">
-          <img
-            src="{{ product.featured_media | image_url: width: 120 | default: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=120&q=80' }}"
-            alt="{{ product.title | escape }}"
-            width="40"
-            height="40"
-            class="w-10 h-10 rounded-lg object-cover flex-shrink-0 border border-slate-200 dark:border-slate-800"
-          />
+          {%- if product.featured_media != blank -%}
+            <img
+              src="{{ product.featured_media | image_url: width: 100 }}"
+              alt="{{ product.title | escape }}"
+              width="40"
+              height="40"
+              class="w-10 h-10 rounded-lg object-contain p-0.5 bg-[#F7F8F6] border border-[#E5E7E5] flex-shrink-0"
+            />
+          {%- endif -%}
           <div class="min-w-0">
-            <span class="text-xs font-bold text-slate-900 dark:text-slate-100 truncate block leading-tight">
-              {{ product.title | default: 'Nova Pro Headphones' }}
+            <span class="text-xs font-semibold text-[#111827] truncate block leading-tight">
+              {{ product.title | escape }}
             </span>
-            <span class="text-xs font-extrabold font-mono text-sky-600 dark:text-sky-400 block">
-              {{ product.price | money | default: '₹14,999' }}
+            <span class="text-xs font-bold font-mono text-[#173D32] block" data-product-price-current>
+              {{ product.selected_or_first_available_variant.price | money }}
             </span>
           </div>
         </div>
 
         <button
           type="button"
-          class="py-2.5 px-5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold shadow-md flex items-center gap-1.5 flex-shrink-0"
+          class="py-2.5 px-4 rounded-lg bg-[#173D32] hover:bg-[#0F2D25] text-white text-xs font-semibold uppercase tracking-wider shadow-xs flex items-center gap-1.5 flex-shrink-0 focus:outline-none"
           data-pdp-sticky-atc-trigger
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
           <span>Add to Cart</span>
         </button>
       </div>
@@ -143,6 +143,12 @@
     {
       "type": "header",
       "content": "Layout Controls"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumbs",
+      "label": "Show Breadcrumbs",
+      "default": true
     },
     {
       "type": "checkbox",
@@ -164,12 +170,12 @@
     },
     {
       "type": "header",
-      "content": "Media Gallery Features"
+      "content": "Media Gallery"
     },
     {
       "type": "checkbox",
       "id": "enable_gallery_zoom",
-      "label": "Enable Gallery Image Zoom",
+      "label": "Enable Image Zoom",
       "default": true
     },
     {
@@ -187,81 +193,115 @@
     {
       "type": "checkbox",
       "id": "enable_3d_placeholder",
-      "label": "Enable 3D Model Placeholder",
-      "default": true
+      "label": "Enable 3D Model Support",
+      "default": false
     },
     {
       "type": "header",
-      "content": "Buy Box & Highlights Features"
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_highlights",
-      "label": "Enable Product Technical Highlights",
-      "default": true
+      "content": "Buy Box Controls"
     },
     {
       "type": "checkbox",
       "id": "enable_trust_badges",
-      "label": "Enable Trust Badges",
+      "label": "Show Trust & Service Information",
       "default": true
+    },
+    {
+      "type": "text",
+      "id": "trust_badge_cod",
+      "label": "Cash on Delivery Promise",
+      "default": "Cash on Delivery Available"
+    },
+    {
+      "type": "text",
+      "id": "trust_badge_warranty",
+      "label": "Warranty Promise",
+      "default": "1-Year Brand Warranty"
+    },
+    {
+      "type": "text",
+      "id": "trust_badge_exchange",
+      "label": "Replacement / Exchange Promise",
+      "default": "7-Day Doorstep Exchange"
+    },
+    {
+      "type": "text",
+      "id": "trust_badge_shipping",
+      "label": "Shipping Promise",
+      "default": "Free Delivery Above ₹999"
+    },
+    {
+      "type": "text",
+      "id": "trust_badge_authenticity",
+      "label": "Authenticity Guarantee",
+      "default": "100% Genuine Electronic"
+    },
+    {
+      "type": "text",
+      "id": "trust_badge_security",
+      "label": "Payment Security Promise",
+      "default": "Secure Encrypted Checkout"
     },
     {
       "type": "checkbox",
       "id": "enable_dynamic_checkout",
-      "label": "Enable Dynamic Checkout Buttons (Shop Pay)",
+      "label": "Show Buy Now Button",
       "default": true
     },
     {
       "type": "header",
-      "content": "Sprint 4.5: Product Information & Trust Tabs"
+      "content": "Product Accordions"
     },
     {
       "type": "checkbox",
       "id": "enable_tabs",
-      "label": "Enable Product Information Tabs",
+      "label": "Enable Product Details Accordions",
       "default": true
     },
     {
       "type": "checkbox",
       "id": "enable_specifications",
-      "label": "Enable Specifications Table",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_feature_grid",
-      "label": "Enable Technical Feature Grid",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_downloads",
-      "label": "Enable Downloads Section",
+      "label": "Enable Specifications Accordion",
       "default": true
     },
     {
       "type": "checkbox",
       "id": "enable_shipping",
-      "label": "Enable Shipping Section",
+      "label": "Enable Shipping & Returns Accordion",
       "default": true
+    },
+    {
+      "type": "richtext",
+      "id": "shipping_policy_content",
+      "label": "Shipping Policy Fallback Content",
+      "default": "<p>Complimentary express shipping across India on orders over ₹999. Estimated transit time: 2–4 business days.</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "returns_policy_content",
+      "label": "Returns / Exchange Fallback Content",
+      "default": "<p>Hassle-free 7-day doorstep replacement for manufacturing defects or verified transit damage.</p>"
     },
     {
       "type": "checkbox",
       "id": "enable_warranty",
-      "label": "Enable Warranty Section",
+      "label": "Enable Warranty Accordion",
       "default": true
     },
     {
-      "type": "checkbox",
-      "id": "enable_faq",
-      "label": "Enable FAQ Section",
-      "default": true
+      "type": "richtext",
+      "id": "warranty_policy_content",
+      "label": "Warranty Policy Fallback Content",
+      "default": "<p>Official 1-Year Brand Warranty covering functional defects and internal hardware malfunctions.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Product Recommendations"
     },
     {
       "type": "checkbox",
-      "id": "enable_payment_info",
-      "label": "Enable Payment & EMI Info",
+      "id": "show_recommendations",
+      "label": "Show Recommended Products",
       "default": true
     }
   ]

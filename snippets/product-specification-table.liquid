@@ -1,83 +1,105 @@
 {%- comment -%}
-  Nova Commerce Framework (NCF) - Snippet: Product Specification Table
+  CLINZA Commerce - Snippet: Product Specification Table
   File: snippets/product-specification-table.liquid
-  Sprint: 4.5 – Product Information, Specifications & Trust Experience
-  Dynamic Metafield Engine with graceful missing value hiding.
+  Dynamic Metafield Engine: only renders attributes with genuine metafield values.
 {%- endcomment -%}
 
-{%- assign specs_processor = product.metafields.specs.processor.value | default: "High-Performance Neural Signal Core" -%}
-{%- assign specs_ram = product.metafields.specs.ram.value | default: "256MB Ultra-Low Latency Buffer" -%}
-{%- assign specs_storage = product.metafields.specs.storage.value | default: "256GB High Speed Onboard Flash" -%}
-{%- assign specs_display = product.metafields.specs.display.value | default: "OLED Status Screen" -%}
-{%- assign specs_battery = product.metafields.specs.battery.value | default: "40 Hours ANC On / 60 Hours Standard" -%}
-{%- assign specs_connectivity = product.metafields.specs.connectivity.value | default: "Bluetooth 5.3, UWB, USB-C Audio" -%}
-{%- assign specs_weight = product.metafields.specs.weight.value | default: "248g Titanium Alloy Chassis" -%}
-{%- assign specs_warranty = product.metafields.specs.warranty.value | default: "2-Year Manufacturer Warranty" -%}
+{%- assign specs_processor = product.metafields.specs.processor.value | default: product.metafields.custom.processor.value -%}
+{%- assign specs_ram = product.metafields.specs.ram.value | default: product.metafields.custom.ram.value -%}
+{%- assign specs_storage = product.metafields.specs.storage.value | default: product.metafields.custom.storage.value -%}
+{%- assign specs_display = product.metafields.specs.display.value | default: product.metafields.custom.display.value -%}
+{%- assign specs_battery = product.metafields.specs.battery.value | default: product.metafields.custom.battery.value -%}
+{%- assign specs_connectivity = product.metafields.specs.connectivity.value | default: product.metafields.custom.connectivity.value -%}
+{%- assign specs_weight = product.metafields.specs.weight.value | default: product.metafields.custom.weight.value -%}
+{%- assign specs_warranty = product.metafields.specs.warranty.value | default: product.metafields.custom.warranty.value -%}
+{%- assign specs_compatibility = product.metafields.specs.compatibility.value | default: product.metafields.custom.compatibility.value -%}
+{%- assign specs_water_resistance = product.metafields.specs.water_resistance.value | default: product.metafields.custom.water_resistance.value -%}
 
-<div class="ncf-pdp-spec-table-wrapper w-full overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+{%- assign has_any_spec = false -%}
+{%- if specs_processor != blank or specs_ram != blank or specs_storage != blank or specs_display != blank or specs_battery != blank or specs_connectivity != blank or specs_weight != blank or specs_warranty != blank or specs_compatibility != blank or specs_water_resistance != blank -%}
+  {%- assign has_any_spec = true -%}
+{%- endif -%}
+
+{%- if has_any_spec -%}
+<div class="ncf-pdp-spec-table-wrapper w-full overflow-hidden rounded-xl border border-[#E5E7E5] bg-[#FFFFFF]">
   <table class="w-full text-left text-xs border-collapse">
-    <thead class="bg-slate-50 dark:bg-slate-800/80 border-b border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 uppercase font-mono font-bold tracking-wider">
+    <thead class="bg-[#F7F8F6] border-b border-[#E5E7E5] text-[#111827] uppercase font-mono font-bold tracking-wider">
       <tr>
-        <th scope="col" class="py-3.5 px-4 sm:px-6 w-1/3">Technical Attribute</th>
-        <th scope="col" class="py-3.5 px-4 sm:px-6 w-2/3">Engineered Specification</th>
+        <th scope="col" class="py-3 px-4 sm:px-6 w-1/3">Specification</th>
+        <th scope="col" class="py-3 px-4 sm:px-6 w-2/3">Details</th>
       </tr>
     </thead>
-    <tbody class="divide-y divide-slate-200 dark:divide-slate-800/80 text-slate-700 dark:text-slate-300">
-      {%- if specs_processor != blank -%}
-        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">
-          <td class="py-3 px-4 sm:px-6 font-mono font-bold text-slate-900 dark:text-slate-100">Processor / DSP</td>
-          <td class="py-3 px-4 sm:px-6">{{ specs_processor }}</td>
-        </tr>
-      {%- endif -%}
-
-      {%- if specs_ram != blank -%}
-        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">
-          <td class="py-3 px-4 sm:px-6 font-mono font-bold text-slate-900 dark:text-slate-100">Memory Buffer</td>
-          <td class="py-3 px-4 sm:px-6">{{ specs_ram }}</td>
-        </tr>
-      {%- endif -%}
-
-      {%- if specs_storage != blank -%}
-        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">
-          <td class="py-3 px-4 sm:px-6 font-mono font-bold text-slate-900 dark:text-slate-100">Storage Capacity</td>
-          <td class="py-3 px-4 sm:px-6">{{ specs_storage }}</td>
-        </tr>
-      {%- endif -%}
-
+    <tbody class="divide-y divide-[#E5E7E5] text-[#111827]">
       {%- if specs_display != blank -%}
-        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">
-          <td class="py-3 px-4 sm:px-6 font-mono font-bold text-slate-900 dark:text-slate-100">Display / Interface</td>
-          <td class="py-3 px-4 sm:px-6">{{ specs_display }}</td>
+        <tr class="hover:bg-[#F7F8F6] transition-colors">
+          <td class="py-3 px-4 sm:px-6 font-medium text-[#667085]">Display</td>
+          <td class="py-3 px-4 sm:px-6 font-semibold">{{ specs_display }}</td>
         </tr>
       {%- endif -%}
 
       {%- if specs_battery != blank -%}
-        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">
-          <td class="py-3 px-4 sm:px-6 font-mono font-bold text-slate-900 dark:text-slate-100">Battery & Charging</td>
-          <td class="py-3 px-4 sm:px-6">{{ specs_battery }}</td>
+        <tr class="hover:bg-[#F7F8F6] transition-colors">
+          <td class="py-3 px-4 sm:px-6 font-medium text-[#667085]">Battery & Charging</td>
+          <td class="py-3 px-4 sm:px-6 font-semibold">{{ specs_battery }}</td>
         </tr>
       {%- endif -%}
 
       {%- if specs_connectivity != blank -%}
-        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">
-          <td class="py-3 px-4 sm:px-6 font-mono font-bold text-slate-900 dark:text-slate-100">Connectivity & Codecs</td>
-          <td class="py-3 px-4 sm:px-6">{{ specs_connectivity }}</td>
+        <tr class="hover:bg-[#F7F8F6] transition-colors">
+          <td class="py-3 px-4 sm:px-6 font-medium text-[#667085]">Connectivity</td>
+          <td class="py-3 px-4 sm:px-6 font-semibold">{{ specs_connectivity }}</td>
+        </tr>
+      {%- endif -%}
+
+      {%- if specs_compatibility != blank -%}
+        <tr class="hover:bg-[#F7F8F6] transition-colors">
+          <td class="py-3 px-4 sm:px-6 font-medium text-[#667085]">Compatibility</td>
+          <td class="py-3 px-4 sm:px-6 font-semibold">{{ specs_compatibility }}</td>
+        </tr>
+      {%- endif -%}
+
+      {%- if specs_water_resistance != blank -%}
+        <tr class="hover:bg-[#F7F8F6] transition-colors">
+          <td class="py-3 px-4 sm:px-6 font-medium text-[#667085]">Water Resistance</td>
+          <td class="py-3 px-4 sm:px-6 font-semibold">{{ specs_water_resistance }}</td>
+        </tr>
+      {%- endif -%}
+
+      {%- if specs_processor != blank -%}
+        <tr class="hover:bg-[#F7F8F6] transition-colors">
+          <td class="py-3 px-4 sm:px-6 font-medium text-[#667085]">Processor / Chipset</td>
+          <td class="py-3 px-4 sm:px-6 font-semibold">{{ specs_processor }}</td>
+        </tr>
+      {%- endif -%}
+
+      {%- if specs_ram != blank -%}
+        <tr class="hover:bg-[#F7F8F6] transition-colors">
+          <td class="py-3 px-4 sm:px-6 font-medium text-[#667085]">Memory Buffer</td>
+          <td class="py-3 px-4 sm:px-6 font-semibold">{{ specs_ram }}</td>
+        </tr>
+      {%- endif -%}
+
+      {%- if specs_storage != blank -%}
+        <tr class="hover:bg-[#F7F8F6] transition-colors">
+          <td class="py-3 px-4 sm:px-6 font-medium text-[#667085]">Storage Capacity</td>
+          <td class="py-3 px-4 sm:px-6 font-semibold">{{ specs_storage }}</td>
         </tr>
       {%- endif -%}
 
       {%- if specs_weight != blank -%}
-        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">
-          <td class="py-3 px-4 sm:px-6 font-mono font-bold text-slate-900 dark:text-slate-100">Weight & Materials</td>
-          <td class="py-3 px-4 sm:px-6">{{ specs_weight }}</td>
+        <tr class="hover:bg-[#F7F8F6] transition-colors">
+          <td class="py-3 px-4 sm:px-6 font-medium text-[#667085]">Weight & Build</td>
+          <td class="py-3 px-4 sm:px-6 font-semibold">{{ specs_weight }}</td>
         </tr>
       {%- endif -%}
 
       {%- if specs_warranty != blank -%}
-        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">
-          <td class="py-3 px-4 sm:px-6 font-mono font-bold text-slate-900 dark:text-slate-100">Warranty Coverage</td>
-          <td class="py-3 px-4 sm:px-6">{{ specs_warranty }}</td>
+        <tr class="hover:bg-[#F7F8F6] transition-colors">
+          <td class="py-3 px-4 sm:px-6 font-medium text-[#667085]">Warranty</td>
+          <td class="py-3 px-4 sm:px-6 font-semibold">{{ specs_warranty }}</td>
         </tr>
       {%- endif -%}
     </tbody>
   </table>
 </div>
+{%- endif -%}

@@ -1,8 +1,19 @@
 /* ==========================================================================
-   Nova Commerce Framework (NCF) - CSS: Product Detail Page (PDP) Architecture
+   CLINZA Commerce - CSS: Product Detail Page (PDP) Architecture
    File: assets/product-page.css
-   Sprint: 4.4 – Product Detail Page Foundation (Phase 1)
+   Color Identity: #173D32 (Dark Green), #EAF1EE (Light Green), #111827 (Text)
    ========================================================================== */
+
+:root {
+  --clinza-pdp-primary: #173D32;
+  --clinza-pdp-primary-hover: #0F2D25;
+  --clinza-pdp-light-green: #EAF1EE;
+  --clinza-pdp-text: #111827;
+  --clinza-pdp-muted: #667085;
+  --clinza-pdp-bg: #FFFFFF;
+  --clinza-pdp-soft-bg: #F7F8F6;
+  --clinza-pdp-border: #E5E7E5;
+}
 
 /* Gallery Viewport & Transitions */
 .ncf-pdp-gallery-container {
@@ -10,15 +21,31 @@
 }
 
 .ncf-pdp-media-item {
-  will-change: opacity, transform;
+  will-change: opacity;
+}
+
+/* Vertical Thumbnail Rail (Desktop) & Horizontal Scroll (Mobile) */
+.ncf-pdp-thumbnails-wrapper {
+  -webkit-overflow-scrolling: touch;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .ncf-pdp-thumb-btn {
   touch-action: manipulation;
+  user-select: none;
 }
 
 .ncf-pdp-thumb-btn[aria-selected="true"] {
-  transform: scale(1.02);
+  border-color: var(--clinza-pdp-primary) !important;
+  box-shadow: 0 0 0 2px var(--clinza-pdp-light-green);
+  opacity: 1 !important;
 }
 
 /* Variant Swatches & Pills */
@@ -28,9 +55,21 @@
   user-select: none;
 }
 
-.ncf-pdp-swatch-btn:hover,
-.ncf-pdp-pill-btn:hover {
-  transform: translateY(-1px);
+.ncf-pdp-pill-btn.is-selected,
+.ncf-pdp-pill-btn[aria-selected="true"] {
+  border-color: var(--clinza-pdp-primary) !important;
+  background-color: var(--clinza-pdp-light-green) !important;
+  color: var(--clinza-pdp-primary) !important;
+  font-weight: 600;
+}
+
+.ncf-pdp-pill-btn.is-disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  text-decoration: line-through;
+  background-color: var(--clinza-pdp-soft-bg) !important;
+  border-color: var(--clinza-pdp-border) !important;
+  color: var(--clinza-pdp-muted) !important;
 }
 
 /* Quantity Input Clean Display */
@@ -48,9 +87,14 @@ input[data-qty-input]::-webkit-inner-spin-button {
 /* Accessibility Focus Ring Standards */
 .ncf-pdp-buybox button:focus-visible,
 .ncf-pdp-gallery-container button:focus-visible,
-.ncf-pdp-highlights a:focus-visible {
-  outline: 2px solid #0284c7;
+[data-accordion-trigger]:focus-visible {
+  outline: 2px solid var(--clinza-pdp-primary);
   outline-offset: 2px;
+}
+
+/* Accordion Smooth Subtle Animation */
+.ncf-pdp-accordion-content {
+  transition: max-height 0.25s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease-in-out;
 }
 
 /* Reduced Motion Support */
@@ -58,26 +102,10 @@ input[data-qty-input]::-webkit-inner-spin-button {
   .ncf-pdp-media-item,
   #ncf-mobile-sticky-atc-bar,
   .ncf-pdp-thumb-btn,
-  .ncf-pdp-swatch-btn,
-  .ncf-pdp-pill-btn {
+  .ncf-pdp-pill-btn,
+  .ncf-pdp-accordion-content {
     transition: none !important;
     animation: none !important;
     transform: none !important;
   }
 }
-
-/* Sprint 4.5 - Tabs & Specifications Extensions */
-.ncf-pdp-tabs-container {
-  contain: layout style;
-}
-
-.ncf-pdp-spec-table-wrapper table th,
-.ncf-pdp-spec-table-wrapper table td {
-  border-bottom-width: 1px;
-}
-
-.ncf-pdp-accordion-item button:focus-visible {
-  outline: 2px solid #0284c7;
-  outline-offset: -2px;
-}
-

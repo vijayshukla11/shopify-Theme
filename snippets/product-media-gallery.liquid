@@ -1,9 +1,8 @@
 {%- comment -%}
-  Nova Commerce Framework (NCF) - Snippet: Product Media Gallery
+  CLINZA Commerce - Snippet: Product Media Gallery
   File: snippets/product-media-gallery.liquid
-  Sprint: 4.4 – Product Detail Page Foundation (Phase 1)
-  Architecture: Shopify Native Media API with Zoom, Fullscreen, Video, 3D Model, Thumbnail Carousel,
-  Swipe Gestures, and WCAG 2.2 AA Accessibility.
+  Architecture: Minimalist Electronics Media Gallery with Vertical Thumbnail Rail on Desktop,
+  Touch Swipe on Mobile, Zoom & Fullscreen Modal, and WCAG 2.2 AA Accessibility.
 {%- endcomment -%}
 
 {%- assign enable_zoom = section.settings.enable_gallery_zoom | default: true -%}
@@ -11,27 +10,89 @@
 {%- assign enable_videos = section.settings.enable_videos | default: true -%}
 {%- assign enable_3d = section.settings.enable_3d_placeholder | default: true -%}
 
-{%- assign demo_gallery_images = "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=1200&q=80,https://images.unsplash.com/photo-1484704849700-f032a568e944?w=1200&q=80,https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=1200&q=80,https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=1200&q=80" | split: "," -%}
+{%- assign media_count = product.media.size -%}
 
 <div
-  class="ncf-pdp-gallery-container relative w-full flex flex-col gap-4"
+  class="ncf-pdp-gallery-container relative w-full flex flex-col-reverse lg:flex-row gap-3 lg:gap-4 items-start"
   data-product-media-gallery
   data-zoom-enabled="{{ enable_zoom }}"
 >
-  {%- comment -%} 1. MAIN FEATURED MEDIA STAGE {%- endcomment -%}
-  <div class="ncf-pdp-media-stage relative w-full aspect-square md:aspect-[4/3] lg:aspect-square rounded-2xl bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-800 overflow-hidden group">
+  {%- comment -%} 1. THUMBNAILS RAIL (Vertical on Desktop, Horizontal on Mobile) {%- endcomment -%}
+  {%- if media_count > 1 or product.media == blank -%}
+    <div
+      class="ncf-pdp-thumbnails-wrapper w-full lg:w-20 lg:max-h-[580px] overflow-x-auto lg:overflow-y-auto scrollbar-none flex-shrink-0 py-1"
+      data-pdp-thumbnails-wrapper
+    >
+      <div
+        class="flex lg:flex-col items-center gap-2.5"
+        role="tablist"
+        aria-label="Product Media Thumbnails"
+      >
+        {%- if product.media.size > 0 -%}
+          {%- for media in product.media -%}
+            <button
+              type="button"
+              role="tab"
+              aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+              aria-controls="media-{{ media.id }}"
+              class="ncf-pdp-thumb-btn w-16 h-16 lg:w-20 lg:h-20 rounded-xl overflow-hidden border-2 transition-all flex-shrink-0 relative focus:outline-none {% if forloop.first %}border-[#173D32] ring-2 ring-[#EAF1EE]{% else %}border-[#E5E7E5] opacity-75 hover:opacity-100 hover:border-[#173D32]/50{% endif %}"
+              data-pdp-thumb-index="{{ forloop.index0 }}"
+              aria-label="View media {{ forloop.index }} of {{ product.media.size }}"
+            >
+              <img
+                src="{{ media.preview_image | image_url: width: 240 }}"
+                alt="{{ media.alt | escape | default: product.title }}"
+                width="80"
+                height="80"
+                loading="lazy"
+                class="w-full h-full object-contain p-1 bg-white"
+              />
+              {%- if media.media_type == 'video' or media.media_type == 'external_video' -%}
+                <span class="absolute inset-0 bg-[#173D32]/40 flex items-center justify-center text-white" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                </span>
+              {%- endif -%}
+            </button>
+          {%- endfor -%}
+        {%- else -%}
+          {%- comment -%} Single fallback thumbnail {%- endcomment -%}
+          {%- if product.featured_image != blank -%}
+            <button
+              type="button"
+              role="tab"
+              aria-selected="true"
+              class="ncf-pdp-thumb-btn w-16 h-16 lg:w-20 lg:h-20 rounded-xl overflow-hidden border-2 border-[#173D32] ring-2 ring-[#EAF1EE] transition-all flex-shrink-0 relative focus:outline-none"
+              data-pdp-thumb-index="0"
+              aria-label="View main product media"
+            >
+              <img
+                src="{{ product.featured_image | image_url: width: 240 }}"
+                alt="{{ product.title | escape }}"
+                width="80"
+                height="80"
+                class="w-full h-full object-contain p-1 bg-white"
+              />
+            </button>
+          {%- endif -%}
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} 2. MAIN FEATURED MEDIA STAGE {%- endcomment -%}
+  <div class="ncf-pdp-media-stage relative w-full flex-1 aspect-square rounded-2xl bg-[#F7F8F6] border border-[#E5E7E5] overflow-hidden group">
     
     {%- comment -%} Badges Overlay {%- endcomment -%}
     <div class="absolute top-3 left-3 z-20 flex flex-col gap-1.5 pointer-events-none">
       {% render 'product-badges', product: product, show_badges: true, show_discount_percent: true %}
     </div>
 
-    {%- comment -%} Stage Media List {%- endcomment -%}
+    {%- comment -%} Stage Media Viewport {%- endcomment -%}
     <div class="w-full h-full relative" data-pdp-media-viewport>
       {%- if product.media.size > 0 -%}
         {%- for media in product.media -%}
           <div
-            class="ncf-pdp-media-item absolute inset-0 w-full h-full transition-opacity duration-300 {% if forloop.first %}opacity-100 z-10{% else %}opacity-0 z-0 pointer-events-none{% endif %}"
+            class="ncf-pdp-media-item absolute inset-0 w-full h-full transition-opacity duration-200 flex items-center justify-center p-4 {% if forloop.first %}opacity-100 z-10{% else %}opacity-0 z-0 pointer-events-none{% endif %}"
             data-media-id="{{ media.id }}"
             data-media-type="{{ media.media_type }}"
             data-media-index="{{ forloop.index0 }}"
@@ -45,162 +106,131 @@
                   height="1200"
                   loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
                   fetchpriority="{% if forloop.first %}high{% else %}auto{% endif %}"
-                  class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 cursor-zoom-in"
+                  class="w-full h-full object-contain cursor-zoom-in transition-transform duration-300 group-hover:scale-[1.02]"
                   data-pdp-zoom-image="{{ media | image_url: width: 2000 }}"
                 />
               {%- when 'video', 'external_video' -%}
                 {%- if enable_videos -%}
-                  <div class="w-full h-full flex items-center justify-center bg-slate-900 text-white relative">
-                    <img src="{{ media.preview_image | image_url: width: 1000 }}" alt="{{ media.alt }}" class="w-full h-full object-cover opacity-60" />
-                    <button type="button" class="absolute w-16 h-16 rounded-full bg-sky-600 text-white flex items-center justify-center shadow-2xl hover:scale-110 transition-transform focus:outline-none" aria-label="Play video">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                  <div class="w-full h-full flex items-center justify-center bg-[#111827] text-white relative rounded-xl overflow-hidden">
+                    <img src="{{ media.preview_image | image_url: width: 1000 }}" alt="{{ media.alt | escape }}" class="w-full h-full object-cover opacity-60" />
+                    <button type="button" class="absolute w-14 h-14 rounded-full bg-[#173D32] hover:bg-[#0F2D25] text-white flex items-center justify-center shadow-lg hover:scale-105 transition-transform focus:outline-none" aria-label="Play video">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
                     </button>
                   </div>
                 {%- endif -%}
               {%- when 'model' -%}
                 {%- if enable_3d -%}
-                  <div class="w-full h-full flex flex-col items-center justify-center bg-slate-900 text-slate-200 relative p-6 text-center">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-sky-400 mb-2 animate-bounce"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
-                    <span class="text-xs font-bold font-mono uppercase tracking-wider text-sky-400">Interactive 3D Model</span>
-                    <span class="text-[11px] text-slate-400 mt-1">Drag or pinch to inspect product architecture</span>
+                  <div class="w-full h-full flex flex-col items-center justify-center bg-[#F7F8F6] text-[#111827] relative p-6 text-center">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#173D32" stroke-width="1.5" class="mb-2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                    <span class="text-xs font-bold uppercase tracking-wider text-[#173D32]">3D Interactive View</span>
+                    <span class="text-[11px] text-[#667085] mt-1">Tap to interact</span>
                   </div>
                 {%- endif -%}
             {%- endcase -%}
           </div>
         {%- endfor -%}
+      {%- elsif product.featured_image != blank -%}
+        <div
+          class="ncf-pdp-media-item absolute inset-0 w-full h-full opacity-100 z-10 flex items-center justify-center p-4"
+          data-media-index="0"
+        >
+          <img
+            src="{{ product.featured_image | image_url: width: 1200 }}"
+            alt="{{ product.title | escape }}"
+            width="1200"
+            height="1200"
+            loading="eager"
+            fetchpriority="high"
+            class="w-full h-full object-contain cursor-zoom-in transition-transform duration-300 group-hover:scale-[1.02]"
+            data-pdp-zoom-image="{{ product.featured_image | image_url: width: 2000 }}"
+          />
+        </div>
       {%- else -%}
-        {%- comment -%} DEMO FALLBACK MEDIA GALLERY {%- endcomment -%}
-        {%- for img_url in demo_gallery_images -%}
-          <div
-            class="ncf-pdp-media-item absolute inset-0 w-full h-full transition-opacity duration-300 {% if forloop.first %}opacity-100 z-10{% else %}opacity-0 z-0 pointer-events-none{% endif %}"
-            data-media-id="demo-{{ forloop.index }}"
-            data-media-type="image"
-            data-media-index="{{ forloop.index0 }}"
-          >
-            <img
-              src="{{ img_url }}"
-              alt="{{ product.title | default: 'CLINZA Smartwatch' }} - Image {{ forloop.index }}"
-              width="1200"
-              height="1200"
-              loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
-              fetchpriority="{% if forloop.first %}high{% else %}auto{% endif %}"
-              class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 cursor-zoom-in"
-              data-pdp-zoom-image="{{ img_url }}"
-            />
-          </div>
-        {%- endfor -%}
+        {%- comment -%} Clean SVG Placeholder when product media is empty {%- endcomment -%}
+        <div class="ncf-pdp-media-item absolute inset-0 w-full h-full opacity-100 z-10 flex items-center justify-center p-8 bg-[#F7F8F6]">
+          {{ 'product-1' | placeholder_svg_tag: 'w-2/3 h-2/3 object-contain opacity-40' }}
+        </div>
       {%- endif -%}
     </div>
 
     {%- comment -%} Floating Gallery Controls (Zoom & Fullscreen) {%- endcomment -%}
-    <div class="absolute top-3 right-3 z-20 flex items-center gap-2">
+    <div class="absolute top-3 right-3 z-20 flex items-center gap-1.5">
       {%- if enable_zoom -%}
         <button
           type="button"
-          class="w-9 h-9 rounded-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-md text-slate-700 dark:text-slate-200 flex items-center justify-center shadow-md hover:bg-sky-500 hover:text-white transition-all focus:outline-none"
+          class="w-8 h-8 rounded-lg bg-white/95 text-[#111827] border border-[#E5E7E5] flex items-center justify-center shadow-xs hover:bg-[#173D32] hover:text-white hover:border-[#173D32] transition-colors focus:outline-none"
           data-pdp-trigger-zoom
           aria-label="Zoom Product Image"
           title="Zoom Product Image"
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
         </button>
       {%- endif -%}
 
       {%- if enable_fullscreen -%}
         <button
           type="button"
-          class="w-9 h-9 rounded-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-md text-slate-700 dark:text-slate-200 flex items-center justify-center shadow-md hover:bg-sky-500 hover:text-white transition-all focus:outline-none"
+          class="w-8 h-8 rounded-lg bg-white/95 text-[#111827] border border-[#E5E7E5] flex items-center justify-center shadow-xs hover:bg-[#173D32] hover:text-white hover:border-[#173D32] transition-colors focus:outline-none"
           data-pdp-trigger-fullscreen
           aria-label="View Fullscreen Gallery"
           title="View Fullscreen Gallery"
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
         </button>
       {%- endif -%}
     </div>
 
-    {%- comment -%} Navigation Arrow Buttons for Stage {%- endcomment -%}
-    <button
-      type="button"
-      class="absolute left-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-md text-slate-800 dark:text-slate-100 flex items-center justify-center shadow-lg hover:bg-sky-600 hover:text-white transition-all focus:outline-none opacity-0 group-hover:opacity-100"
-      data-pdp-gallery-prev
-      aria-label="Previous image"
-    >
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
-    </button>
+    {%- comment -%} Navigation Arrows (Only when > 1 media item) {%- endcomment -%}
+    {%- if media_count > 1 -%}
+      <button
+        type="button"
+        class="absolute left-2.5 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/95 border border-[#E5E7E5] text-[#111827] flex items-center justify-center shadow-md hover:bg-[#173D32] hover:text-white hover:border-[#173D32] transition-all focus:outline-none opacity-0 group-hover:opacity-100"
+        data-pdp-gallery-prev
+        aria-label="Previous image"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
 
-    <button
-      type="button"
-      class="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-md text-slate-800 dark:text-slate-100 flex items-center justify-center shadow-lg hover:bg-sky-600 hover:text-white transition-all focus:outline-none opacity-0 group-hover:opacity-100"
-      data-pdp-gallery-next
-      aria-label="Next image"
-    >
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
-    </button>
-  </div>
-
-  {%- comment -%} 2. THUMBNAILS CAROUSEL / ROW {%- endcomment -%}
-  <div class="w-full overflow-x-auto pb-2 scrollbar-thin" data-pdp-thumbnails-wrapper>
-    <div class="flex items-center gap-3" role="tablist" aria-label="Product Image Thumbnails">
-      {%- if product.media.size > 0 -%}
-        {%- for media in product.media -%}
-          <button
-            type="button"
-            role="tab"
-            aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
-            aria-controls="media-{{ media.id }}"
-            class="ncf-pdp-thumb-btn w-20 h-20 rounded-xl overflow-hidden border-2 transition-all flex-shrink-0 relative group/thumb focus:outline-none {% if forloop.first %}border-sky-600 dark:border-sky-400 ring-2 ring-sky-500/20{% else %}border-slate-200 dark:border-slate-800 opacity-70 hover:opacity-100{% endif %}"
-            data-pdp-thumb-index="{{ forloop.index0 }}"
-          >
-            <img src="{{ media.preview_image | image_url: width: 200 }}" alt="Thumbnail {{ forloop.index }}" width="80" height="80" class="w-full h-full object-cover" />
-            {%- if media.media_type == 'video' or media.media_type == 'external_video' -%}
-              <span class="absolute inset-0 bg-slate-900/40 flex items-center justify-center text-white">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-              </span>
-            {%- endif -%}
-          </button>
-        {%- endfor -%}
-      {%- else -%}
-        {%- comment -%} DEMO THUMBNAILS {%- endcomment -%}
-        {%- for img_url in demo_gallery_images -%}
-          <button
-            type="button"
-            role="tab"
-            aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
-            class="ncf-pdp-thumb-btn w-20 h-20 rounded-xl overflow-hidden border-2 transition-all flex-shrink-0 relative group/thumb focus:outline-none {% if forloop.first %}border-sky-600 dark:border-sky-400 ring-2 ring-sky-500/20{% else %}border-slate-200 dark:border-slate-800 opacity-70 hover:opacity-100{% endif %}"
-            data-pdp-thumb-index="{{ forloop.index0 }}"
-          >
-            <img src="{{ img_url }}" alt="Demo Thumbnail {{ forloop.index }}" width="80" height="80" class="w-full h-full object-cover" />
-          </button>
-        {%- endfor -%}
-      {%- endif -%}
-    </div>
+      <button
+        type="button"
+        class="absolute right-2.5 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/95 border border-[#E5E7E5] text-[#111827] flex items-center justify-center shadow-md hover:bg-[#173D32] hover:text-white hover:border-[#173D32] transition-all focus:outline-none opacity-0 group-hover:opacity-100"
+        data-pdp-gallery-next
+        aria-label="Next image"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+    {%- endif -%}
   </div>
 </div>
 
-{%- comment -%} 3. FULLSCREEN / ZOOM ACCESSIBLE MODAL DIALOG {%- endcomment -%}
+{%- comment -%} 3. FULLSCREEN MODAL DIALOG {%- endcomment -%}
 <div
   id="ncf-pdp-fullscreen-modal"
-  class="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-xl flex flex-col hidden transition-opacity duration-300"
+  class="fixed inset-0 z-50 bg-[#111827]/90 backdrop-blur-sm flex flex-col hidden transition-opacity duration-200"
   role="dialog"
   aria-modal="true"
   aria-label="Fullscreen Product Media Gallery"
 >
-  <div class="flex items-center justify-between px-6 py-4 border-b border-slate-800 text-white">
-    <span class="text-sm font-bold font-mono tracking-wider uppercase text-sky-400" id="ncf-pdp-fullscreen-title">
-      {{ product.title | default: 'CLINZA Product' }} - Media Gallery
+  <div class="flex items-center justify-between px-6 py-4 border-b border-white/10 text-white">
+    <span class="text-xs font-bold font-mono tracking-wider uppercase text-white/90" id="ncf-pdp-fullscreen-title">
+      {{ product.title | escape }}
     </span>
     <button
       type="button"
-      class="w-10 h-10 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition-colors focus:outline-none"
+      class="w-9 h-9 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors focus:outline-none"
       data-pdp-close-fullscreen
       aria-label="Close Fullscreen Gallery"
     >
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
     </button>
   </div>
 
   <div class="flex-1 relative flex items-center justify-center p-4 md:p-8" id="ncf-pdp-fullscreen-stage">
-    <img id="ncf-pdp-fullscreen-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E" alt="Fullscreen view" class="max-w-full max-h-[80vh] object-contain rounded-xl shadow-2xl transition-transform duration-300" />
+    <img
+      id="ncf-pdp-fullscreen-img"
+      src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E"
+      alt="{{ product.title | escape }}"
+      class="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl"
+    />
   </div>
 </div>
